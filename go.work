@@ -1,5 +1,7 @@
 go 1.19
 
+use ./jon_calhoun/01-quiz-game-using-csv
+
 use ./todd_mcleod/00-exercises
 use ./todd_mcleod/01-go-modules
 use ./todd_mcleod/02-iota
