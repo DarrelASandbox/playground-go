@@ -1,15 +1,9 @@
 // Creating a new module
 package hello
 
+import "rsc.io/quote" // Adding a dependency
+
 func Hello() string {
+	println(quote.Hello())
 	return "Hello, world."
 }
-
-// Adding a dependency
-// package hello
-
-// import "rsc.io/quote"
-
-// func Hello() string {
-// 	return quote.Hello()
-// }
