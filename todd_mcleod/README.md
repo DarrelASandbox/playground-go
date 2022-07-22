@@ -72,3 +72,11 @@ go get rsc.io/sampler
 ---
 
 &nbsp;
+
+- [Go Spec - Iota](https://go.dev/ref/spec#Iota)
+
+&nbsp;
+
+---
+
+&nbsp;
