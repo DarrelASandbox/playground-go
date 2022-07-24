@@ -2,6 +2,11 @@
   <summary>Table of Contents</summary>
   <ol>
     <li><a href="#about-the-project">About The Project</a></li>
+    <li><a href="#basics">Basics</a>
+      <ol>
+        <li><a href="#grouping-data">Grouping Data</a></li>
+      </ol>
+    </li>
   </ol>
 </details>
 
@@ -75,6 +80,34 @@ go get rsc.io/sampler
 
 - [Go Spec - Iota](https://go.dev/ref/spec#Iota)
 - [Wiki - Extended Backus–Naur form](https://en.wikipedia.org/wiki/Extended_Backus%E2%80%93Naur_form)
+
+&nbsp;
+
+### Grouping Data
+
+- <b>array</b>
+  - a numbered sequence of elements of a single type
+  - does not change in size
+  - used for Go internals; generally not recommended for your code
+- <b>slice</b>
+  - built on top of an array
+  - changes in size
+  - holds values of the same type
+  - has a length and a capacity
+  - Slices are built on top of arrays. A slice is dynamic in that it will grow in size. The underlying array, however, does not grow in size. When we create a slice, we can use the built in function make to specify how large our slice should be and also how large the underlying array should be. This can enhance performance a little bit.
+- <b>map</b>
+  - key/value storage
+  - an unordered group of elements of one type, called the element type, indexed
+    by a set of unique keys of another type, called the key type.
+- <b>struct</b>
+  - a data structure
+  - a composite type
+  - allows us to collect values of different types together
+
+&nbsp;
+
+- [Go Standard Library](https://pkg.go.dev/std)
+- [Go Forum - Are arrays passed by value or passed by reference in GO?](https://forum.golangbridge.org/t/are-arrays-passed-by-value-or-passed-by-reference-in-go/19255)
 
 &nbsp;
 
