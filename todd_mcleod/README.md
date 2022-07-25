@@ -114,3 +114,13 @@ go get rsc.io/sampler
 ---
 
 &nbsp;
+
+> <b>Matteo: </b>I don't understand what you mean with Overriding: "promotions"
+>
+> <b>Jared: </b>In a previous lesson, he mentioned that "promotion" means you can access the fields of the "inner" type directly, which equates to them being promoted. For example, in his example he had created a type "person" which he then used as an inner type in another type called "secret agent". To access the fields in "person", he didn't have to go through "person", like "s1.person.first". He could access the fields directly, such as "s1.first". I know it's been a year since you asked the question, but it helps me to remember better if I type out an answer :)
+
+&nbsp;
+
+---
+
+&nbsp;
