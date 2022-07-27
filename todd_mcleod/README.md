@@ -124,3 +124,40 @@ go get rsc.io/sampler
 ---
 
 &nbsp;
+
+- <code>func (r receiver) identifier(parameters) (return(s)) {...}</code>
+- we define our func with parameters (if any)
+- we call our func and pass in arguments (in any)
+- <b>Everything in Go is PASS BY VALUE</b>
+- A <b>variadic parameter</b> is a func which takes an unlimited number of arguments.
+- A <b>method</b> is nothing more than a FUNC attached to a TYPE. When you attach a func to a
+  type it is a method of that type. You attach a func to a type with a RECEIVER.
+- <b>Interfaces & polymorphism</b>
+  - In Go, values can be of more than one type.
+  - An interface allows a value to be of more than one type. We create an interface using this syntax: “keyword identifier type” so for an interface it would be: “type human interface”
+  - We then define which method(s) a type must have to implement that interface. If a TYPE has the required methods, which could be none (the empty interface denoted by interface{}), then that TYPE implicitly implements the interface and is also of that interface type.
+  - In Go, values can be of more than one type.
+
+&nbsp;
+
+> <b>Dharlequin: </b>What is the actual idea/concept behind using defer?
+
+> <b>Daniel: </b>Defer is useful for two circumstances. First is making sure a function is run before the surroundings exit, no matter which return statement is used to do the exiting. Go conventions prefers designing your conditions to exit a function early, instead of other languages (mostly c/c++) method of only using a single return at the end of the function. Which makes defer nice since you don't need to worry about the cleanup at every return.
+>
+> Defer is also makes sure it runs when a panic occurs. So if something in your function ends up panicking, but it is then recovered further up the call stack, the defer will still have run to get the cleanup done. In this way, you can consider defer similar to other languages concept of try/finally.
+
+&nbsp;
+
+---
+
+&nbsp;
+
+> <b>Abhishek Kumar: </b>what is the purpose of anonymous function? In what kind of scenario can I use them?
+
+> <b>Todd: </b>You might want to "encapsulate" a variable; narrow the scope of some variables; so you could put it all in a function. You also might want to "abstract" out some code; get it modularized so that you could say "this piece does X, this piece does Y, this piece does Z" where each piece was an anonymous func. You also might want to launch a goroutine so you could do this: <code>go func(){<code here>}()</code> Some of the uses!
+
+&nbsp;
+
+---
+
+&nbsp;
