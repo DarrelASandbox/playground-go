@@ -27,12 +27,14 @@ func main() {
 	anonFunc()
 	funcExpression()
 	returnFunc()
+	callbackFunc()
+	closure()
 }
 
 // Variadic parameters
 func sum(x ...int) int {
-	fmt.Println(x)
-	fmt.Printf("%T\n", x)
+	// fmt.Println("sum:", x)
+	// fmt.Printf("%T\n", x)
 
 	s := 0
 	for _, v := range x {
@@ -102,5 +104,43 @@ func returnFunc() {
 func add() func(a int, b int) int {
 	return func(a int, b int) int {
 		return a + b
+	}
+}
+
+func callbackFunc() {
+	fmt.Println("\n\ncallbackFunc:")
+	ii := []int{5, 15, 20}
+	s := sum(ii...)
+	fmt.Println("All nums:", s)
+
+	s2 := even(sum, ii...)
+	fmt.Println("Even nums:", s2)
+}
+
+func even(f func(x ...int) int, ii ...int) int {
+	var e []int
+	for _, v := range ii {
+		if v%2 == 0 {
+			e = append(e, v)
+		}
+	}
+
+	return f(e...)
+}
+
+func closure() {
+	i := incrementor()
+	// This doesn't panic even though x is not defined in this scope
+	fmt.Println("\n\nclosure:", i())
+}
+
+var x int
+
+// We do not have x defined anywhere, but a function remembers variables in scope where it was defined and that is closure.
+func incrementor() func() int {
+	// Define anonymous func and return it
+	return func() int {
+		x++
+		return x
 	}
 }
