@@ -170,6 +170,12 @@ go get rsc.io/sampler
   - passing a func as an argument
   - [functional programming](https://stackoverflow.com/questions/66839360/does-go-support-functional-programming) not something that is recommended in go, however, it is good to be aware of callbacks
   - idiomatic go: write clear, simple, readable code
+- <b>Pointers</b>
+  - All values are stored in memory. Every location in memory has an address. A pointer is a
+    memory address.
+  - <code>&</code> gives you the address
+  - <code>\*</code> gives you the value stored in the address
+  - <code>\*int</code>
 
 &nbsp;
 
