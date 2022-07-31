@@ -182,3 +182,161 @@ go get rsc.io/sampler
 ---
 
 &nbsp;
+
+- [Go Standard Library encoding/json#Marshal](https://pkg.go.dev/encoding/json#Marshal)
+- [JSON to GO](https://mholt.github.io/json-to-go/)
+
+> <b>Jamal: </b>JSON & Marshaling
+>
+> <b>What is JSON?</b>
+> First JSON(JavaScript Object Notation) everyone should know this, it's just keyvalue pairs in JS and it's easier to transmit than XML. It's a human readable, machine transferable and generally the preferred way to to send and receive data via REST APIs. It's not the most efficient way but it's the web-developer preferred way.
+>
+> <b>What does 'Marshaling' mean?</b>
+>
+> marshaling is the process of transforming the memory representation of an object to a data format suitable for storage or transmission, and it is typically used when data must be moved between different parts of a computer program or from one program to another.
+>
+> The inverse of marshaling is called unmarshaling or demarshaling.
+>
+> <b>As it relates to Golang and this section</b>
+>
+> This Marshaling and Unmarshaling is Golang trying to convert struct into JSON objects and JSON objects into Golang structs. This section of the course is about how you can transfer to JSON and from JSON(string literal byte slice) back into Golang struct.
+>
+> Remember Golang is a web backend language, eventually we'll learn how to get JSON objects via HTTP request. While we don't yet know how to do that, Tod is preparing us for that future where we'll have put into a byte slice a JSON object as a string literal. Or the reverse take a JSON object that is a byte slice and convert it to a Golang struct.
+>
+> Recall that in Golang when you put a string in backtick <code>``</code>, it is treated as raw string literal. Meaning that it is read exactly as is a UTF-8 string with no escape characters only runes(utf-8 characters). Vs the <code>""</code> double quotes which allows for escaped characters.
+>
+> In quotes <code>""</code> you need to escape new lines, tabs and other characters(in Golang these are called verbs) that do not need to be escaped in backticks <code>``</code>. If you put a line break(\n) in a backtick string, it is interpreted as a <code>'\n'</code> meaning, it's not converted into the actual line break but read as the full characters contained within the ticks.
+>
+> So now we have this JSON object that we got from HTTP somehow. How do we get it into a struct or how do we get our nice Golang struct into JSON? That is what the JSON package is for.
+>
+> <b>Marshal function in JSON Package</b>
+>
+> When we want to convert a Golang struct into a JSON object, we use the json.Marshal. Marshal is Golangs way of saying "encode/convert to JSON Object". Because Golang is a strictly typed language and JSON is a dynamically typed language. A few things need to be known while constructing your struct for JSON transfer.
+>
+> <b>Exposed vs not Exposed fields</b>
+>
+> As with all structs in Go, it’s important to remember that only fields with a capital first letter are visible to external programs/packages like the JSON Marshaller. Meaning that if you don't capitalize the first letter it won't get exposed when you convert it to JSON using the json.Marshall() function. This is because you cannot access that field outside of the struct, remember if it's not a capital first letter it cannot be accessed outside of the struct.
+>
+> <b>Meaning of Interface{}</b>
+>
+> If you’re not familiar an empty <code>interface{}</code> is a way of defining a variable in Go as “this could be anything”. At runtime Go will then allocate the appropriate memory to fit whatever you decide to store in it.
+>
+> More detail on interface{}
+>
+> In Go, every type creates a empty interface (interface{}) implicitly (just by existing). A interface is just that, a way to interface with a type! Recall when we were writing explicit interfaces? We had to explicitly say that if a type contains these methods then it is this type.
+
+```go
+type Human interface{
+  speak()
+  walk()
+  sleep()
+}
+```
+
+> This is a example of a interface, something is considered a human by what actions it can do. In programming this is called duck typing, by specifying the actions something can do you specify its type.
+>
+> Now to explain the Empty interface,
+>
+> every type in Go implements an empty interface without you having to do anything. A empty interface is, any type that implements zero methods. By explicit design of the Go lang specifications every type at least implements a zero method interface called a empty interface.
+>
+> <b>Some insight about interfaces</b>
+>
+> This early on it may not be apparent why interfaces are really cool, but I'll give you a sneak peak. Interfaces allow you to be future proof and allow for additions to code you can't predict right now. What happens if we have the following type in the future?
+
+```go
+type cyborg {}
+func (c cyborg) speak(){}
+func (c cyborg) walk(){}
+func (c cyborg) sleep(){}
+```
+
+> Without us having to do anything, we can now use the cyborg type anywhere Human type was used previously without any issues. Interfaces are some really genius level constructs they in my opinion are better than class inheritance in other languages. Also they're used extensively in the standard library to simplify code!
+>
+> <b>One of the things that will get really confusing later on if you don't understand it now</b> by implementing a Reader/Writer you by default get some functionality without having to do any work yourself. I'll expand on this in the notes to the videos in this section. But just know, that when we define a interface to Writer/Reader we get some cool functionality through the interface system!
+>
+> <b>JSON Marshall</b>
+> The function signature for json.marshal
+> <b>func Marshal(v interface{}) ([]byte, error)</b>
+>
+> it takes a v interface{}, which can be 'any' go type. Basically everything from a struct to a primitive it will take it and try to convert it to a JSON object. It returns two things.
+>
+> 1.  a slice of byte []byte, containing the literal string that is the JSON object.
+> 2.  And error, letting you know if anything went wrong
+>
+> Typically you give the JSON marshal function a pre-filled struct, or a raw string literal formatted to JSON
+> <b>How are go types represented in JSON by the json Marshaller?</b>
+
+```go
+bool for JSON booleans,
+float64 for JSON numbers,
+string for JSON strings,
+nil for JSON null.
+```
+
+> Only data that can be represented as JSON will be encoded(converted) by the json.marshal() function.
+>
+> Only the exported (public) fields of a struct will be present in the JSON output. A field with a json: tag is stored with its tag name instead of its variable name. Pointers will be encoded as the values they point to, or null if the pointer is nil.
+>
+> Important: When you tag a struct field with a 'json: tag' you are telling the Marshall package how to interpret the Go Struct. Meaning you can tag something in Json to have a different name than what you are storing in the Go struct. This is really powerful, because you have the ability to define what the json field will be stored as name wise, which can help simplify things to a great deal!
+> <b>Unmarshal function in the JSON package</b>
+>
+> When we want to convert a JSON Object into a Golang struct, we use the json.Unmarshal. Umarshal is Golangs way of saying "parse this JSON object into a valid Golang struct".
+> <b>The function signature for unmarshal</b>
+>
+> func Unmarshal(data []byte, v interface{}) error
+>
+> unmarshal takes the following parameters:
+>
+> 1. a slice of bytes (This a raw string, this is the JSON object that you want to parse)
+> 2. A pointer to a struct to parse the JSON into
+>
+> Unmarshal returns,
+>
+> A error if anything went wrong with parsing.
+>
+> <b>How does Unmarshal decide which fields to try and parse?</b>
+>
+> For any key found in the JSON, Unmarshal will try to match it to a key found in the struct with the following logic.
+>
+> For explanation sakes, I'm using "FieldName" to represent any member of a struct.
+>
+> 1. It will first look for an exported(field member with a capital letter) with a tag json:"FieldName"
+> 2. A exported (field member with a capital letter) with the name FieldName
+> 3. Any exported field name, that matches the fieldname if casesensitivity is not an issue, e,g fIeLdNaMe, FIELDNAME, feildname.
+>
+> <b>ONLY FIELDS FOUNDS IN THE destination type(struct) will be decoded.</b>
+>
+> Only when a field is found in the destination struct will it be decoded, meaning if there is a field in the JSON that isn't in the destination it will be ignored.
+>
+> This is useful when you wish to pick only a few specific fields. In particular, any unexported fields in the destination struct will be unaffected.
+>
+> <b>The escaped character %+V</b>
+> The escaped character %+V, in the printf statement in this video does the following. If it's a struct it will print the value of that structure with %V, when you have the +, %+V it will print the members of the struct in the print statement.
+> <b>Relationship between strings and byte slices</b>
+> Recall that a string in Go is just a sequence of bytes. A byte is just an alias(type byte uint8) for a a uint8. So the underpinnings of a string is a sequence of bytes This is why we can easily do a conversion on a sequence of bytes and turn it into a string and vice versa. So when the marshal function returns a sequence of bytes, remember it's just a raw UTF-8 string.
+
+&nbsp;
+
+---
+
+&nbsp;
+
+> <b>Jerry: </b>Stable and Unstable sort
+>
+> The stability of a sorting algo. refers to preserving the order of duplicate values.
+> in a stable sort by age:
+>
+> <code>{"James",32},{"Joe",20},{"Mark",20}</code> becomes <code>{"Joe",20},{"Mark",20},{"James",32}</code>
+>
+> Joe and Mark keep their relative position
+> In an unstable sort, this can happen:
+>
+> <code>{"James",32},{"Joe",20},{"Mark",20}</code> becomes <code>{"Mark",20},{"Joe",20},{"James",32}</code>
+>
+> Mark and Joe switched positions, but the list is still sorted.
+
+&nbsp;
+
+---
+
+&nbsp;
