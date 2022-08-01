@@ -185,6 +185,7 @@ go get rsc.io/sampler
 
 - [Go Standard Library encoding/json#Marshal](https://pkg.go.dev/encoding/json#Marshal)
 - [JSON to GO](https://mholt.github.io/json-to-go/)
+- [JSON encoding vs marshalling](https://stackoverflow.com/questions/33061117/in-golang-what-is-the-difference-between-json-encoding-and-marshalling)
 
 > <b>Jamal: </b>JSON & Marshaling
 >
