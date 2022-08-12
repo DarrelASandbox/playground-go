@@ -5,6 +5,8 @@ import (
 	"runtime"
 	"sync"
 	"time"
+
+	"github.com/darrela/playground-go/todd_mcleod/concurrency/packages"
 )
 
 var wg sync.WaitGroup
@@ -14,6 +16,9 @@ func main() {
 	fooRunsWithWG()
 	raceConditionFunc()
 
+	// Setup go.work -> setup go.mod -> setup packages -> local import functions
+	packages.Mutex()
+	packages.Atomic()
 }
 
 func fileLine() string {

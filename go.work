@@ -1,3 +1,4 @@
 go 1.18
 
 use ./todd_mcleod/go_modules
+use ./todd_mcleod/concurrency

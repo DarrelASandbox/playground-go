@@ -1,27 +1,33 @@
-package main
+package packages
 
 import (
 	"fmt"
 	"runtime"
 	"sync"
-	"sync/atomic"
 )
 
-func main() {
+func Mutex() {
+	fmt.Println("\n\nMutex package:")
 	fmt.Println("CPUs:", runtime.NumCPU())
 	fmt.Println("Goroutines:", runtime.NumGoroutine())
 
-	var counter int64
+	counter := 0
 
 	const gs = 100
 	var wg sync.WaitGroup
 	wg.Add(gs)
 
+	var mu sync.Mutex
+
 	for i := 0; i < gs; i++ {
 		go func() {
-			atomic.AddInt64(&counter, 1)
+			mu.Lock()
+			v := counter
+			// time.Sleep(time.Second)
 			runtime.Gosched()
-			fmt.Println("Counter\t", atomic.LoadInt64(&counter))
+			v++
+			counter = v
+			mu.Unlock()
 			wg.Done()
 		}()
 		fmt.Println("Goroutines:", runtime.NumGoroutine())
