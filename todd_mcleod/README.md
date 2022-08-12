@@ -341,3 +341,23 @@ nil for JSON null.
 ---
 
 &nbsp;
+
+### Concurrency
+
+- In programming, concurrency is the composition of independently executing processes, while parallelism is the simultaneous execution of (possibly related) computations.
+- <b>Concurrency</b> is about dealing with lots of things at once.
+- <b>Parallelism</b> is about doing lots of things at once.
+- A <b>WaitGroup</b> waits for a collection of goroutines to finish. The main goroutine calls Add to set the number of goroutines to wait for. Then each of the goroutines runs and calls Done when finished. At the same time, Wait can be used to block until all goroutines have finished. Writing concurrent code is super easy: all we do is put “go” in front of a function or method call.
+- [Go Standard Library sync#example-WaitGroup](https://pkg.go.dev/sync@go1.18.5#example-WaitGroup)
+- [Go spec - Method sets](https://go.dev/ref/spec#Method_sets)
+  - [Go Tour - methods/6](https://go.dev/tour/methods/6)
+  - [Go Tour - methods/7](https://go.dev/tour/methods/7)
+- A <b>“mutex”</b> is a mutual exclusion lock. Mutexes allow us to lock our code so that only one goroutine can access that locked chunk of code at a time.
+- [Go Standard Library sync#Mutex](https://pkg.go.dev/sync@go1.18.5#Mutex)
+- [Go Standard Library sync/atomic](https://pkg.go.dev/sync/atomic)
+
+&nbsp;
+
+---
+
+&nbsp;
