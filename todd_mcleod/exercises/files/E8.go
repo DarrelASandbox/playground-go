@@ -1,4 +1,4 @@
-package main
+package files
 
 import (
 	"encoding/json"
@@ -13,7 +13,10 @@ type user struct {
 	Sayings []string `json:"Sayings"`
 }
 
-func main() {
+func E8() {
+	fmt.Println("\n\n##################################################")
+	fmt.Println("E8:")
+
 	u1 := user{First: "James", Last: "Bomb", Age: 81}
 	u2 := user{First: "Larry", Last: "Fairy", Age: 18}
 	u3 := user{First: "Mong", Last: "Kong", Age: 54, Sayings: []string{

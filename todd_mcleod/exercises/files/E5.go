@@ -1,14 +1,17 @@
-package main
+package files
 
 import "fmt"
 
-func main() {
-	person()
+func E5() {
+	fmt.Println("\n\n##################################################")
+	fmt.Println("E5:")
+
+	personFunc()
 	vehicle()
 	anonStruct()
 }
 
-func person() {
+func personFunc() {
 	fmt.Println("\n\nperson:")
 	type person struct {
 		first       string

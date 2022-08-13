@@ -1,4 +1,4 @@
-package main
+package files
 
 import (
 	"fmt"
@@ -34,7 +34,10 @@ func printArea(s shape) {
 	}
 }
 
-func main() {
+func E6() {
+	fmt.Println("\n\n##################################################")
+	fmt.Println("E6:")
+
 	c := circle{
 		radius: 4,
 	}

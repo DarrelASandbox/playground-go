@@ -1,10 +1,13 @@
-package main
+package files
 
 import (
 	"fmt"
 )
 
-func main() {
+func E1() {
+	fmt.Println("\n\n##################################################")
+	fmt.Println("E1:")
+
 	x, y, z := 42, "James Bond", true
 
 	fmt.Println("x, y, z are: ", x, y, z)

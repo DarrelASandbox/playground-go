@@ -1,4 +1,4 @@
-package main
+package files
 
 import (
 	"fmt"
@@ -6,7 +6,10 @@ import (
 	"text/tabwriter"
 )
 
-func main() {
+func E4() {
+	fmt.Println("\n\n##################################################")
+	fmt.Println("E4:")
+
 	overwriteSlice()
 	statesInUSA()
 	sliceOfSlice()

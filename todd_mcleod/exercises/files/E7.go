@@ -1,4 +1,4 @@
-package main
+package files
 
 import "fmt"
 
@@ -6,7 +6,10 @@ type person struct {
 	name string
 }
 
-func main() {
+func E7() {
+	fmt.Println("\n\n##################################################")
+	fmt.Println("E7:")
+
 	x := 42
 	fmt.Println("address of x ", &x)
 

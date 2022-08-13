@@ -1,4 +1,4 @@
-package main
+package files
 
 import (
 	"fmt"
@@ -14,7 +14,9 @@ const (
 	y4 = 2022 + iota
 )
 
-func main() {
+func E2() {
+	fmt.Println("\n\n##################################################")
+	fmt.Println("E2:")
 	num := 42 // decimal, binary, and hex
 	fmt.Printf("%d\t%b\t%#x", num, num, num)
 

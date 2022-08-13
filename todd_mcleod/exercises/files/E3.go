@@ -1,8 +1,11 @@
-package main
+package files
 
 import "fmt"
 
-func main() {
+func E3() {
+	fmt.Println("\n\n##################################################")
+	fmt.Println("E3:")
+
 	x := "Moneypenny"
 
 	if x == "Moneypenny" {
