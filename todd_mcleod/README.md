@@ -356,6 +356,16 @@ nil for JSON null.
 - [Go Standard Library sync#Mutex](https://pkg.go.dev/sync@go1.18.5#Mutex)
 - [Go Standard Library sync/atomic](https://pkg.go.dev/sync/atomic)
 
+```sh
+# data race(s)
+go run --race todd_mcleod/exercises/main.go
+
+# the go scheduler determines which routines run when
+# this is not in your control (mostly)
+# you are giving routines to the go scheduler
+# it then optimizes and runs them as it sees best
+```
+
 &nbsp;
 
 ---
