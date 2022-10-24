@@ -1,5 +1,6 @@
-go 1.18
+go 1.19
 
 use ./todd_mcleod/go_modules
 use ./todd_mcleod/concurrency
 use ./todd_mcleod/exercises
+use ./todd_mcleod/channels

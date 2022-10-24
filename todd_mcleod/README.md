@@ -7,6 +7,8 @@
         <li><a href="#grouping-data">Grouping Data</a></li>
       </ol>
     </li>
+    <li><a href="#concurrency">Concurrency</a>
+    <li><a href="#channels">Channels</a>
   </ol>
 </details>
 
@@ -26,6 +28,7 @@
 ## Basics
 
 - [The Go Blog - Using Go Modules](https://go.dev/blog/using-go-modules)
+- Reference Folders: go_modules, iota, control_flow, structs, functions & application
 
 ```sh
 # Creating a new module
@@ -342,7 +345,7 @@ nil for JSON null.
 
 &nbsp;
 
-### Concurrency
+## Concurrency
 
 - In programming, concurrency is the composition of independently executing processes, while parallelism is the simultaneous execution of (possibly related) computations.
 - <b>Concurrency</b> is about dealing with lots of things at once.
@@ -365,6 +368,63 @@ go run --race todd_mcleod/exercises/main.go
 # you are giving routines to the go scheduler
 # it then optimizes and runs them as it sees best
 ```
+
+&nbsp;
+
+---
+
+&nbsp;
+
+## Channels
+
+- channels allow us to pass values between goroutines
+- send means send
+  - `S` is after `R` so the arrow goes after chan `make(chan <- int) `
+- receive means receive
+  - `R` comes before `S` so the arrow goes before chan `make(<-chan int)`
+- send & receive (bidirectional)
+
+&nbsp;
+
+---
+
+&nbsp;
+
+> <b>Aman: </b>What does blocking really do?
+
+> <b>Todd: </b>BLOCKING means that you have two things waiting on each other in order for goroutine X to proceed, goroutine X needs goroutine Y to complete AND SIMULTANEOUSLY in order for goroutine Y to proceed, goroutine Y needs goroutine X to complete AND SO THEY ARE BOTH WAITING ON EACH OTHER blocked.
+
+&nbsp;
+
+---
+
+&nbsp;
+
+> <b>Jean-Claude: </b>I don't understand why with a normal channel (none-buffer) and without goroutine we get a "all goroutines are asleep - deadlock" error, while with a buffer-channel we don't have this error.
+
+> <b>Trina: </b>see this from the go lang specs
+>
+> A new, initialized channel value can be made using the built-in function `make`, which takes the channel type and an optional capacity as arguments:
+>
+> `make(chan,int)`
+>
+> The capacity, in number of elements, sets the size of the buffer in the channel. If the capacity is zero or absent, the channel is unbuffered and communication succeeds only when both a sender and receiver are ready. Otherwise, the channel is buffered and communication succeeds without blocking if the buffer is not full (sends) or not empty (receives). A `nil` channel is never ready for communication.
+>
+> I was confused as well, so I read the go lang specs
+
+&nbsp;
+
+---
+
+&nbsp;
+
+> <b>Mayur: </b>What is the use of send only and receive only channel?
+>
+> In send only channel, we can ONLY put data into it, so no body can consume/receive this data. So what is use of send only channel? Same goes for receive only channel
+
+> <b>Todd: </b>Provides clarity and self-documentation.
+
+> <b>Vyacheslav: </b>IMHO a possible use case for send\receive only channels is when you need to pass a non directional channel as an argument to some function and want to make sure that the function will perform only allowed operation on the channel (only send or receive). This way you have a self-documented code that tells you about expected actions inside the function and prevents the function from abusing the channel.
 
 &nbsp;
 
