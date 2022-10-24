@@ -1,14 +1,20 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/DarrelASandbox/playground-go/todd_mcleod/channels/packages"
+)
 
 func main() {
 	// blockingDeadlock()
 	successfulBuffer()
 	// unsuccessfulBuffer()
-	directionalChannel()
-	// invalidDirectionalChannel1()
-	// invalidDirectionalChannel2()
+
+	packages.DirectionalChannel()
+	// packages.InvalidDirectionalChannel1()
+	// packages.InvalidDirectionalChannel2()
+	packages.BidirectionalChannel()
 }
 
 func blockingDeadlock() {
@@ -51,51 +57,3 @@ func unsuccessfulBuffer() {
 
 	fmt.Println("this doesn't print because the now its blocking", <-c)
 }
-
-func directionalChannel() {
-	fmt.Println("\n\ndirectionalChannel:")
-	c := make(chan int, 2)
-
-	c <- 42
-	c <- 43
-
-	fmt.Println(<-c)
-	fmt.Println(<-c)
-
-	fmt.Println("-----")
-	fmt.Printf("%T\n", c)
-}
-
-/*
-func invalidDirectionalChannel1() {
-	fmt.Println("\n\ninvalidDirectionalChannel1:")
-	c := make(chan<- int, 2)
-
-	c <- 42
-	c <- 43
-
-	// invalid operation: cannot receive from send-only channel c (variable of type chan<- int)
-	fmt.Println(<-c)
-	fmt.Println(<-c)
-
-	fmt.Println("-----")
-	fmt.Printf("%T\n", c)
-}
-*/
-
-/*
-func invalidDirectionalChannel2() {
-	fmt.Println("\n\ninvalidDirectionalChannel2:")
-	c := make(<-chan int, 2)
-
-	// invalid operation: cannot send to receive-only channel c (variable of type <-chan int)
-	c <- 42
-	c <- 43
-
-	fmt.Println(<-c)
-	fmt.Println(<-c)
-
-	fmt.Println("-----")
-	fmt.Printf("%T\n", c)
-}
-*/
