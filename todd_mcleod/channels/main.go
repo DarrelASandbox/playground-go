@@ -6,6 +6,11 @@ import (
 	"github.com/DarrelASandbox/playground-go/todd_mcleod/channels/packages"
 )
 
+/*
+WaitGroups are just enough if you don’t need any data returned from a goroutine.
+However, you’ll often need to pass data around when building concurrent applications, which channels are extremely helpful for.
+*/
+
 func main() {
 	// blockingDeadlock()
 	successfulBuffer()
@@ -15,6 +20,12 @@ func main() {
 	// packages.InvalidDirectionalChannel1()
 	// packages.InvalidDirectionalChannel2()
 	packages.BidirectionalChannel()
+	packages.SendReceive()
+	packages.Range()
+	packages.Select()
+	packages.CommaWithBool()
+	packages.CommaWithInt()
+	packages.CommaOnly()
 }
 
 func blockingDeadlock() {

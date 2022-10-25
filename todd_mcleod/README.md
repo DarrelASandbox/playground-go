@@ -199,11 +199,11 @@ go get rsc.io/sampler
 >
 > marshaling is the process of transforming the memory representation of an object to a data format suitable for storage or transmission, and it is typically used when data must be moved between different parts of a computer program or from one program to another.
 >
-> The inverse of marshaling is called unmarshaling or demarshaling.
+> The inverse of marshaling is called unmarshalling or demarshalling.
 >
 > <b>As it relates to Golang and this section</b>
 >
-> This Marshaling and Unmarshaling is Golang trying to convert struct into JSON objects and JSON objects into Golang structs. This section of the course is about how you can transfer to JSON and from JSON(string literal byte slice) back into Golang struct.
+> This Marshaling and Unmarshalling is Golang trying to convert struct into JSON objects and JSON objects into Golang structs. This section of the course is about how you can transfer to JSON and from JSON(string literal byte slice) back into Golang struct.
 >
 > Remember Golang is a web backend language, eventually we'll learn how to get JSON objects via HTTP request. While we don't yet know how to do that, Tod is preparing us for that future where we'll have put into a byte slice a JSON object as a string literal. Or the reverse take a JSON object that is a byte slice and convert it to a Golang struct.
 >
@@ -215,7 +215,7 @@ go get rsc.io/sampler
 >
 > <b>Marshal function in JSON Package</b>
 >
-> When we want to convert a Golang struct into a JSON object, we use the json.Marshal. Marshal is Golangs way of saying "encode/convert to JSON Object". Because Golang is a strictly typed language and JSON is a dynamically typed language. A few things need to be known while constructing your struct for JSON transfer.
+> When we want to convert a Golang struct into a JSON object, we use the json.Marshal. Marshal is Golang way of saying "encode/convert to JSON Object". Because Golang is a strictly typed language and JSON is a dynamically typed language. A few things need to be known while constructing your struct for JSON transfer.
 >
 > <b>Exposed vs not Exposed fields</b>
 >
@@ -284,7 +284,7 @@ nil for JSON null.
 > Important: When you tag a struct field with a 'json: tag' you are telling the Marshall package how to interpret the Go Struct. Meaning you can tag something in Json to have a different name than what you are storing in the Go struct. This is really powerful, because you have the ability to define what the json field will be stored as name wise, which can help simplify things to a great deal!
 > <b>Unmarshal function in the JSON package</b>
 >
-> When we want to convert a JSON Object into a Golang struct, we use the json.Unmarshal. Umarshal is Golangs way of saying "parse this JSON object into a valid Golang struct".
+> When we want to convert a JSON Object into a Golang struct, we use the json.Unmarshal. Unmarshal is Golang way of saying "parse this JSON object into a valid Golang struct".
 > <b>The function signature for unmarshal</b>
 >
 > func Unmarshal(data []byte, v interface{}) error
@@ -306,13 +306,13 @@ nil for JSON null.
 >
 > 1. It will first look for an exported(field member with a capital letter) with a tag json:"FieldName"
 > 2. A exported (field member with a capital letter) with the name FieldName
-> 3. Any exported field name, that matches the fieldname if casesensitivity is not an issue, e,g fIeLdNaMe, FIELDNAME, feildname.
+> 3. Any exported field name, that matches the field name if case-sensitivity is not an issue, e,g fIeLdNaMe, FIELDNAME, fieldname.
 >
 > <b>ONLY FIELDS FOUNDS IN THE destination type(struct) will be decoded.</b>
 >
 > Only when a field is found in the destination struct will it be decoded, meaning if there is a field in the JSON that isn't in the destination it will be ignored.
 >
-> This is useful when you wish to pick only a few specific fields. In particular, any unexported fields in the destination struct will be unaffected.
+> This is useful when you wish to pick only a few specific fields. In particular, any fields not exported in the destination struct will be unaffected.
 >
 > <b>The escaped character %+V</b>
 > The escaped character %+V, in the printf statement in this video does the following. If it's a struct it will print the value of that structure with %V, when you have the +, %+V it will print the members of the struct in the print statement.
@@ -377,6 +377,7 @@ go run --race todd_mcleod/exercises/main.go
 
 ## Channels
 
+- [Concurrency patterns in Golang: WaitGroups and Goroutines](https://blog.logrocket.com/concurrency-patterns-golang-waitgroups-goroutines/)
 - channels allow us to pass values between goroutines
 - send means send
   - `S` is after `R` so the arrow goes after chan `make(chan <- int) `
