@@ -378,12 +378,17 @@ go run --race todd_mcleod/exercises/main.go
 ## Channels
 
 - [Concurrency patterns in Golang: WaitGroups and Goroutines](https://blog.logrocket.com/concurrency-patterns-golang-waitgroups-goroutines/)
+- [The Go Blog - Go Concurrency Patterns: Context](https://go.dev/blog/context)
 - channels allow us to pass values between goroutines
 - send means send
   - `S` is after `R` so the arrow goes after chan `make(chan <- int) `
 - receive means receive
   - `R` comes before `S` so the arrow goes before chan `make(<-chan int)`
 - send & receive (bidirectional)
+- **Range:** Range stops reading from a channel when the channel is closed
+- **Select:** Select statements pull the value from whatever channel has a value ready to be pulled
+- **Fan In:** Taking values from many channels, and putting those values onto one channel
+- **Fan Out:** Taking some work and putting the chunks of work onto many goroutines
 
 &nbsp;
 

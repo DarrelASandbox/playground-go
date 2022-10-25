@@ -20,12 +20,20 @@ func main() {
 	// topics.InvalidDirectionalChannel1()
 	// topics.InvalidDirectionalChannel2()
 	topics.BidirectionalChannel()
+
 	topics.SendReceive()
 	topics.Range()
 	topics.Select()
 	topics.CommaWithBool()
 	topics.CommaWithInt()
 	topics.CommaOnly()
+
+	topics.FanIn()
+	topics.FanInBoring()
+	topics.FanOut()
+
+	topics.Ctx()
+	topics.CtxWithGoRoutine()
 }
 
 func blockingDeadlock() {
