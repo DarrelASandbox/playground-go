@@ -1,17 +1,15 @@
 package main
 
-import (
-	"github.com/DarrelASandbox/playground-go/todd_mcleod/exercises/files"
-)
+import "github.com/DarrelASandbox/playground-go/todd_mcleod/exercises/topics"
 
 func main() {
-	// files.E1()
-	// files.E2()
-	// files.E3()
-	// files.E4()
-	// files.E5()
-	// files.E6()
-	// files.E7()
-	// files.E8()
-	files.E9()
+	topics.E1()
+	topics.E2()
+	topics.E3()
+	topics.E4()
+	topics.E5()
+	topics.E6()
+	topics.E7()
+	topics.E8()
+	topics.E9()
 }

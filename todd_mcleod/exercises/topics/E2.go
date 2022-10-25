@@ -1,11 +1,13 @@
-package files
+package topics
 
 import (
 	"fmt"
 )
 
+/*
 const e = 42     // untyped
 const f int = 43 // typed
+*/
 
 const (
 	y1 = 2022 + iota

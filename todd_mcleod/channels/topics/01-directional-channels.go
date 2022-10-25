@@ -1,11 +1,11 @@
-package packages
+package topics
 
 import (
 	"fmt"
 )
 
 func DirectionalChannel() {
-	fmt.Println("\n\npackages.DirectionalChannel():")
+	fmt.Println("\n\ntopics.DirectionalChannel():")
 	c := make(chan int, 2)
 
 	c <- 42
@@ -52,7 +52,7 @@ func InvalidDirectionalChannel2() {
 */
 
 func BidirectionalChannel() {
-	fmt.Println("\n\npackages.BidirectionalChannel():")
+	fmt.Println("\n\ntopics.BidirectionalChannel():")
 	c := make(chan int)
 	cr := make(<-chan int) // receive
 	cs := make(chan<- int) // send

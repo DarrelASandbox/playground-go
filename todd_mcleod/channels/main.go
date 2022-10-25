@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/DarrelASandbox/playground-go/todd_mcleod/channels/packages"
+	"github.com/DarrelASandbox/playground-go/todd_mcleod/channels/topics"
 )
 
 /*
@@ -16,16 +16,16 @@ func main() {
 	successfulBuffer()
 	// unsuccessfulBuffer()
 
-	packages.DirectionalChannel()
-	// packages.InvalidDirectionalChannel1()
-	// packages.InvalidDirectionalChannel2()
-	packages.BidirectionalChannel()
-	packages.SendReceive()
-	packages.Range()
-	packages.Select()
-	packages.CommaWithBool()
-	packages.CommaWithInt()
-	packages.CommaOnly()
+	topics.DirectionalChannel()
+	// topics.InvalidDirectionalChannel1()
+	// topics.InvalidDirectionalChannel2()
+	topics.BidirectionalChannel()
+	topics.SendReceive()
+	topics.Range()
+	topics.Select()
+	topics.CommaWithBool()
+	topics.CommaWithInt()
+	topics.CommaOnly()
 }
 
 func blockingDeadlock() {

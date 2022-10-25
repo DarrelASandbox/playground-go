@@ -1,4 +1,4 @@
-package files
+package topics
 
 import (
 	"fmt"
@@ -18,7 +18,9 @@ func E4() {
 
 func overwriteSlice() {
 	fmt.Println("\n\noverwriteSlice:")
-	x := make([]string, 5, 5)
+	x := make([]string, 5)
+	fmt.Println("x := make([]string, 5, 5)", x)
+
 	x = []string{"one", "two", "three", "four"} // 4 elements
 
 	fmt.Println("capacity:", cap(x)) // prints 4 instead of 5
@@ -34,7 +36,7 @@ func overwriteSlice() {
 
 func statesInUSA() {
 	fmt.Println("\n\nstatesInUSA:")
-	y := make([]string, 50, 50)
+	y := make([]string, 50)
 	fmt.Println("Check slice after make:\t\tlength:", len(y), "capacity:", cap(y))
 
 	states := []string{` Alabama`, ` Alaska`, ` Arizona`, ` Arkansas`, ` California`, ` Colorado`, ` Connecticut`, ` Delaware`, ` Florida`, ` Georgia`, ` Hawaii`, ` Idaho`, ` Illinois`, ` Indiana`, ` Iowa`, ` Kansas`, ` Kentucky`, ` Louisiana`, ` Maine`, ` Maryland`, ` Massachusetts`, ` Michigan`, ` Minnesota`, ` Mississippi`, ` Missouri`, ` Montana`, ` Nebraska`, ` Nevada`, ` New Hampshire`, ` New Jersey`, ` New Mexico`, ` New York`, ` North Carolina`, ` North Dakota`, ` Ohio`, ` Oklahoma`, ` Oregon`, ` Pennsylvania`, ` Rhode Island`, ` South Carolina`, ` South Dakota`, ` Tennessee`, ` Texas`, ` Utah`, ` Vermont`, ` Virginia`, ` Washington`, ` West Virginia`, ` Wisconsin`, ` Wyoming`}
@@ -53,7 +55,7 @@ func sliceOfSlice() {
 	fmt.Println("\n\nsliceOfSlice:")
 	x := [][]string{
 		{"James", "Bond", "Shaken, not stirred"},
-		{"Miss", "Moneypenny", "Hellooo, James."},
+		{"Miss", "Moneypenny", "Hello, James."},
 	}
 
 	for i, xs := range x {

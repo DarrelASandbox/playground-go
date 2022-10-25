@@ -1,10 +1,3 @@
-module example.com/username/repo
+module github.com/DarrelASandbox/playground-go/todd_mcleod/go_modules
 
-go 1.18
-
-require rsc.io/quote v1.5.2
-
-require (
-	golang.org/x/text v0.3.7 // indirect
-	rsc.io/sampler v1.99.99 // indirect
-)
+go 1.19

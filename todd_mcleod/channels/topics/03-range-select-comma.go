@@ -1,9 +1,9 @@
-package packages
+package topics
 
 import "fmt"
 
 func Range() {
-	fmt.Println("\n\npackages.Range():")
+	fmt.Println("\n\ntopics.Range():")
 
 	c := make(chan int)
 
@@ -28,7 +28,7 @@ func Range() {
 /* #################################################################################################### */
 
 func Select() {
-	fmt.Println("\n\npackages.Select():")
+	fmt.Println("\n\ntopics.Select():")
 
 	even := make(chan int)
 	odd := make(chan int)
@@ -75,7 +75,7 @@ func receive1(e, o, q <-chan int) {
 /* #################################################################################################### */
 
 func CommaWithBool() {
-	fmt.Println("\n\npackages.CommaWithBool():")
+	fmt.Println("\n\ntopics.CommaWithBool():")
 
 	even := make(chan int)
 	odd := make(chan int)
@@ -122,7 +122,7 @@ func receive2(e, o <-chan int, q <-chan bool) {
 /* #################################################################################################### */
 
 func CommaWithInt() {
-	fmt.Println("\n\npackages.CommaWithInt():")
+	fmt.Println("\n\ntopics.CommaWithInt():")
 
 	even := make(chan int)
 	odd := make(chan int)
@@ -169,7 +169,7 @@ func receive3(e, o, q <-chan int) {
 /* #################################################################################################### */
 
 func CommaOnly() {
-	fmt.Println("\n\npackages.CommaOnly():")
+	fmt.Println("\n\ntopics.CommaOnly():")
 
 	c := make(chan int)
 	go func() {

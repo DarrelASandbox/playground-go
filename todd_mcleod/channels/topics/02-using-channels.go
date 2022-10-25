@@ -1,9 +1,9 @@
-package packages
+package topics
 
 import "fmt"
 
 func SendReceive() {
-	fmt.Println("\n\npackages.SendReceive():")
+	fmt.Println("\n\ntopics.SendReceive():")
 
 	c := make(chan int)
 

@@ -1,4 +1,4 @@
-package files
+package topics
 
 import (
 	"encoding/json"

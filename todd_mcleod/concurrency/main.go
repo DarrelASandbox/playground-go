@@ -6,7 +6,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/DarrelASandbox/playground-go/todd_mcleod/concurrency/packages"
+	"github.com/DarrelASandbox/playground-go/todd_mcleod/concurrency/topics"
 )
 
 var wg sync.WaitGroup
@@ -17,8 +17,8 @@ func main() {
 	raceConditionFunc()
 
 	// Setup go.work -> setup go.mod -> setup packages -> local import functions
-	packages.Mutex()
-	packages.Atomic()
+	topics.Mutex()
+	topics.Atomic()
 }
 
 func fileLine() string {
