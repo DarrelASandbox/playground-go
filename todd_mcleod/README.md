@@ -437,3 +437,30 @@ go run --race todd_mcleod/exercises/main.go
 ---
 
 &nbsp;
+
+> <b>Milos: </b>Accidental discovery: Another way to range over channels
+> You have something like this in your code for the channel ingestor:
+
+```go
+for v := range c {
+  fmt.Println(v)
+}
+```
+
+I accidentally found that this works as well:
+
+```go
+for range c {
+    fmt.Println(<-c)
+}
+```
+
+> Code works exactly the same regardless of which of the two for loops I use. Not sure if this is safe or any less idiomatic then the for loop used in the exercise, but i'd like to hear other people's opinions.
+>
+> <b>IMPORTANT: </b>upon further review, this method is _not_ safe. You will get only 50% of the data via Println, because an incoming data chunk gets "ingested" by the range builtin. Sorry for posting the original comment without testing it more!
+
+&nbsp;
+
+---
+
+&nbsp;
