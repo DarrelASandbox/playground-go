@@ -1,6 +1,6 @@
 package main
 
-import "github.com/DarrelASandbox/playground-go/todd_mcleod/exercises/topics"
+import "github.com/DarrelASandbox/playground-go/todd_mcleod/00-exercises/topics"
 
 func main() {
 	// topics.E1()

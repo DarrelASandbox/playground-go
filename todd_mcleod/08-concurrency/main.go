@@ -6,7 +6,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/DarrelASandbox/playground-go/todd_mcleod/concurrency/topics"
+	"github.com/DarrelASandbox/playground-go/todd_mcleod/08-concurrency/topics"
 )
 
 var wg sync.WaitGroup

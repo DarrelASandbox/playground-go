@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/DarrelASandbox/playground-go/todd_mcleod/channels/topics"
+	"github.com/DarrelASandbox/playground-go/todd_mcleod/09-channels/topics"
 )
 
 /*
