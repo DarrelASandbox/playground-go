@@ -5,8 +5,9 @@ use ./todd_mcleod/01-go-modules
 use ./todd_mcleod/02-iota
 use ./todd_mcleod/03-control-flow
 use ./todd_mcleod/04-grouping-data
-use ./todd_mcleod/05-struct
+use ./todd_mcleod/05-structs
 use ./todd_mcleod/06-functions
 use ./todd_mcleod/07-application
 use ./todd_mcleod/08-concurrency
 use ./todd_mcleod/09-channels
+use ./todd_mcleod/10-error-handling

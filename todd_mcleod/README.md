@@ -4,11 +4,17 @@
     <li><a href="#about-the-project">About The Project</a></li>
     <li><a href="#basics">Basics</a>
       <ol>
-        <li><a href="#grouping-data">Grouping Data</a></li>
+        <li><a href="#01-go-modules">01-go-modules</a></li>
+        <li><a href="#03-control-flow">03-control-flow</a></li>
+        <li><a href="#04-grouping-data">04-grouping-data</a></li>
+        <li><a href="#05-structs">05-structs</a>
+        <li><a href="#06-functions">06-functions</a>
       </ol>
     </li>
-    <li><a href="#concurrency">Concurrency</a>
-    <li><a href="#channels">Channels</a>
+    <li><a href="#07-application">07-application</a>
+    <li><a href="#08-concurrency">08-concurrency</a>
+    <li><a href="#09-channels">09-channels</a>
+    <li><a href="#10-error-handling">10-error-handling</a>
   </ol>
 </details>
 
@@ -26,6 +32,8 @@
 &nbsp;
 
 ## Basics
+
+### 01-go-modules
 
 - [The Go Blog - Using Go Modules](https://go.dev/blog/using-go-modules)
 - Reference Folders: go_modules, iota, control_flow, structs, functions & application
@@ -59,6 +67,8 @@ go get rsc.io/sampler
 
 &nbsp;
 
+### 03-control-flow
+
 - Control flow
   - sequence
   - loop; iterative
@@ -86,7 +96,7 @@ go get rsc.io/sampler
 
 &nbsp;
 
-### Grouping Data
+### 04-grouping-data
 
 - <b>array</b>
   - a numbered sequence of elements of a single type
@@ -118,6 +128,8 @@ go get rsc.io/sampler
 
 &nbsp;
 
+### 05-structs
+
 > <b>Matteo: </b>I don't understand what you mean with Overriding: "promotions"
 >
 > <b>Jared: </b>In a previous lesson, he mentioned that "promotion" means you can access the fields of the "inner" type directly, which equates to them being promoted. For example, in his example he had created a type "person" which he then used as an inner type in another type called "secret agent". To access the fields in "person", he didn't have to go through "person", like "s1.person.first". He could access the fields directly, such as "s1.first". I know it's been a year since you asked the question, but it helps me to remember better if I type out an answer :)
@@ -127,6 +139,8 @@ go get rsc.io/sampler
 ---
 
 &nbsp;
+
+### 06-functions
 
 - <code>func (r receiver) identifier(parameters) (return(s)) {...}</code>
 - we define our func with parameters (if any)
@@ -185,6 +199,8 @@ go get rsc.io/sampler
 ---
 
 &nbsp;
+
+## 07-application
 
 - [Go Standard Library encoding/json#Marshal](https://pkg.go.dev/encoding/json#Marshal)
 - [JSON to GO](https://mholt.github.io/json-to-go/)
@@ -345,7 +361,7 @@ nil for JSON null.
 
 &nbsp;
 
-## Concurrency
+## 08-concurrency
 
 - In programming, concurrency is the composition of independently executing processes, while parallelism is the simultaneous execution of (possibly related) computations.
 - <b>Concurrency</b> is about dealing with lots of things at once.
@@ -375,7 +391,7 @@ go run --race todd_mcleod/exercises/main.go
 
 &nbsp;
 
-## Channels
+## 09-channels
 
 - [Concurrency patterns in Golang: WaitGroups and Goroutines](https://blog.logrocket.com/concurrency-patterns-golang-waitgroups-goroutines/)
 - [The Go Blog - Go Concurrency Patterns: Context](https://go.dev/blog/context)
@@ -458,6 +474,14 @@ for range c {
 > Code works exactly the same regardless of which of the two for loops I use. Not sure if this is safe or any less idiomatic then the for loop used in the exercise, but i'd like to hear other people's opinions.
 >
 > <b>IMPORTANT: </b>upon further review, this method is _not_ safe. You will get only 50% of the data via Println, because an incoming data chunk gets "ingested" by the range builtin. Sorry for posting the original comment without testing it more!
+
+&nbsp;
+
+---
+
+&nbsp;
+
+## 10-error-handling
 
 &nbsp;
 
