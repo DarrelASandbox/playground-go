@@ -15,6 +15,7 @@
     <li><a href="#08-concurrency">08-concurrency</a>
     <li><a href="#09-channels">09-channels</a>
     <li><a href="#10-error-handling">10-error-handling</a>
+    <li><a href="#11-documentation">11-documentation</a>
   </ol>
 </details>
 
@@ -25,6 +26,7 @@
 - Learn How To Code: Google's Go (golang) Programming Language
 - The Ultimate Comprehensive Course - Perfect for Both Beginners and Experienced Developers
 - [Todd McLeod](https://github.com/GoesToEleven)
+- [Original Repo](https://github.com/GoesToEleven/go-programming)
 
 &nbsp;
 
@@ -508,6 +510,25 @@ func New(text string) error {
 > I don't get it because even though the pointer(address) is returned, the underlying struct should not survive because its scope is within function New.
 
 > <b>Daniel: </b>If this was C or C++ that would be the case, but Go uses a garbage collector and escape analysis. Escape analysis is, during compile time, Go looks at all variables and values, and determines if they can run on the stack, or need to escape to the heap. Then a garbage collector will watch the values on the heap, and clean up when they are no longer accessible. In this example, because the value needs to go up the stack, Go will place the errorString on the heap, and the garbage collector will keep an eye on it.
+
+&nbsp;
+
+---
+
+&nbsp;
+
+## 11-documentation
+
+- [Go Doc Comments](https://go.dev/doc/comment)
+  - `go help doc`
+- [Go Package - godoc](https://pkg.go.dev/golang.org/x/tools/cmd/godoc?utm_source=godoc)
+- [The Go Blog - Godoc: documenting Go code](https://go.dev/blog/godoc)
+- `go install golang.org/x/tools/cmd/godoc@latest`
+
+```sh
+cd 11-documentation
+go doc mymath
+```
 
 &nbsp;
 
