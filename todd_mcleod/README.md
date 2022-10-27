@@ -24,6 +24,7 @@
 
 - Learn How To Code: Google's Go (golang) Programming Language
 - The Ultimate Comprehensive Course - Perfect for Both Beginners and Experienced Developers
+- [Todd McLeod](https://github.com/GoesToEleven)
 
 &nbsp;
 
@@ -482,6 +483,31 @@ for range c {
 &nbsp;
 
 ## 10-error-handling
+
+- [Go - Why does Go not have exceptions?](https://go.dev/doc/faq#exceptions)
+- [The Go Blog - Error handling and Go](https://go.dev/blog/error-handling-and-go)
+- [The Go Blog - Defer, Panic, and Recover](https://go.dev/blog/defer-panic-and-recover)
+- [Go Standard Library - errors](https://pkg.go.dev/errors)
+
+&nbsp;
+
+---
+
+&nbsp;
+
+> <b>Chanwoo: </b>How can errorSting in New() survive after the function is done?
+
+```go
+func New(text string) error {
+  return &errorString{text}
+}
+```
+
+> As far as I know, errorString{text} which is returned from function New is a temporary value and should disappear after return statement. However, it seems that we can still reference errorString(text).
+>
+> I don't get it because even though the pointer(address) is returned, the underlying struct should not survive because its scope is within function New.
+
+> <b>Daniel: </b>If this was C or C++ that would be the case, but Go uses a garbage collector and escape analysis. Escape analysis is, during compile time, Go looks at all variables and values, and determines if they can run on the stack, or need to escape to the heap. Then a garbage collector will watch the values on the heap, and clean up when they are no longer accessible. In this example, because the value needs to go up the stack, Go will place the errorString on the heap, and the garbage collector will keep an eye on it.
 
 &nbsp;
 
