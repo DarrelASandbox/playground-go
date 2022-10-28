@@ -1,18 +1,11 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/DarrelASandbox/playground-go/todd_mcleod/12-testing-benchmarking/topics"
+)
 
 func main() {
-	fmt.Println("2 + 3 =", mySum(2, 3))
-}
-
-func mySum(xi ...int) int {
-	fmt.Println("\n\nmySum:")
-
-	sum := 0
-	for _, v := range xi {
-		sum += v
-	}
-
-	return sum
+	fmt.Println("2 + 3 =", topics.MySum(2, 3))
 }

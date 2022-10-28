@@ -540,13 +540,22 @@ go doc mymath
 ## 12-testing-benchmarking
 
 - [Golang Book - Testing](https://www.golang-book.com/books/intro/12)
+- [The Go Blog - Testable Examples in Go](https://go.dev/blog/examples)
 - **Tests must**
   - be in a file that ends with `\_test.go`
   - put the file in the **same package as the one being tested**
   - be in a func with a signature `func TestXxx(\*testing.T)`
 - `go test`
+- `go test ./...`
 - use `t.Error` to signal failure
 - **Nice idiom:** "expected" & "got"
+
+```sh
+cd todd_mcleod/12-testing-benchmarking/topics
+go doc
+go doc MySum
+go doc --all
+```
 
 &nbsp;
 

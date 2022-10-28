@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"testing"
+
+	"github.com/DarrelASandbox/playground-go/todd_mcleod/12-testing-benchmarking/topics"
 )
 
 func TestMySum(t *testing.T) {
@@ -20,7 +22,7 @@ func TestMySum(t *testing.T) {
 	}
 
 	for i, v := range tests {
-		x := mySum(v.data...)
+		x := topics.MySum(v.data...)
 		if x != v.answer {
 			t.Error("Expected", v.answer, "Got", x)
 		} else {
@@ -29,4 +31,11 @@ func TestMySum(t *testing.T) {
 	}
 
 	fmt.Print("\n\n")
+}
+
+func ExampleMySum() {
+	fmt.Println(topics.MySum(2, 3))
+	// Output:
+	// mySum:
+	// 5
 }
