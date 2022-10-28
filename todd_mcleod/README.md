@@ -16,6 +16,7 @@
     <li><a href="#09-channels">09-channels</a>
     <li><a href="#10-error-handling">10-error-handling</a>
     <li><a href="#11-documentation">11-documentation</a>
+    <li><a href="#12-testing-benchmarking">12-testing-benchmarking</a>
   </ol>
 </details>
 
@@ -529,6 +530,23 @@ func New(text string) error {
 cd 11-documentation
 go doc mymath
 ```
+
+&nbsp;
+
+---
+
+&nbsp;
+
+## 12-testing-benchmarking
+
+- [Golang Book - Testing](https://www.golang-book.com/books/intro/12)
+- **Tests must**
+  - be in a file that ends with `\_test.go`
+  - put the file in the **same package as the one being tested**
+  - be in a func with a signature `func TestXxx(\*testing.T)`
+- `go test`
+- use `t.Error` to signal failure
+- **Nice idiom:** "expected" & "got"
 
 &nbsp;
 
