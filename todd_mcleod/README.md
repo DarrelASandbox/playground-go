@@ -547,8 +547,6 @@ go doc mymath
   - be in a func with a signature `func TestXxx(\*testing.T)`
 - `go test`
 - `go test ./...`
-- `go test -bench .`
-- `go help testflag`
 - use `t.Error` to signal failure
 - **Nice idiom:** "expected" & "got"
 
@@ -557,6 +555,13 @@ cd todd_mcleod/12-testing-benchmarking/topics
 go doc
 go doc MySum
 go doc --all
+
+go test -bench .
+
+go help testflag
+go test -cover`
+go test -coverprofile c.out
+go tool cover -html=c.out
 ```
 
 | BenchmarkMySum-8 |       100000000       |          10.44 ns/op           |           0 B/op            |                    0 allocs/op                    |

@@ -1,10 +1,8 @@
-package main
+package topics
 
 import (
 	"fmt"
 	"testing"
-
-	"github.com/DarrelASandbox/playground-go/todd_mcleod/12-testing-benchmarking/topics"
 )
 
 type test struct {
@@ -21,7 +19,7 @@ var tests = []test{
 
 func TestMySum(t *testing.T) {
 	for i, v := range tests {
-		x := topics.MySum(v.data...)
+		x := MySum(v.data...)
 		if x != v.answer {
 			t.Error("Expected", v.answer, "Got", x)
 		} else {
@@ -33,7 +31,7 @@ func TestMySum(t *testing.T) {
 }
 
 func ExampleMySum() {
-	fmt.Println(topics.MySum(2, 3))
+	fmt.Println(MySum(2, 3))
 	// Output:
 	// 5
 }
@@ -41,7 +39,7 @@ func ExampleMySum() {
 func BenchmarkMySum(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		for _, v := range tests {
-			topics.MySum(v.data...)
+			MySum(v.data...)
 		}
 	}
 }
