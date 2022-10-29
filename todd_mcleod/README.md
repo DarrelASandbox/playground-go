@@ -547,6 +547,8 @@ go doc mymath
   - be in a func with a signature `func TestXxx(\*testing.T)`
 - `go test`
 - `go test ./...`
+- `go test -bench .`
+- `go help testflag`
 - use `t.Error` to signal failure
 - **Nice idiom:** "expected" & "got"
 
@@ -556,6 +558,10 @@ go doc
 go doc MySum
 go doc --all
 ```
+
+| BenchmarkMySum-8 |       100000000       |          10.44 ns/op           |           0 B/op            |                    0 allocs/op                    |
+| :--------------: | :-------------------: | :----------------------------: | :-------------------------: | :-----------------------------------------------: |
+|     8 cores      | 100_000_000</br>times | nano sec</br>per</br>operation | bytes</br>per</br>operation | distinct memory</br>allocations</br>per operation |
 
 &nbsp;
 

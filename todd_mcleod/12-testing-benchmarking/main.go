@@ -7,5 +7,6 @@ import (
 )
 
 func main() {
+	fmt.Println("\n\ntopics.mySum():")
 	fmt.Println("2 + 3 =", topics.MySum(2, 3))
 }
