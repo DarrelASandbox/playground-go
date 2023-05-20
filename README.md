@@ -1,1 +1,1 @@
-- Refer to respective README files in the folders titled with the author name.
+- Please refer to the corresponding README files located in each sub-folder.
