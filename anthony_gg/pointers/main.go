@@ -25,6 +25,19 @@ func takeDamagePointer(player *Player) {
 	player.health -= explosionDmg
 }
 
+// Syntactic sugar
+// Method not a function
+func (player Player) takeDamageReceiver(dmg int) {
+	fmt.Println("Player took some damage.")
+	player.health -= dmg
+}
+
+// Same as `takeDamageReceiver`
+func takeDamageNoReceiver(player Player, dmg int) {
+	fmt.Println("Player took some damage.")
+	player.health -= dmg
+}
+
 func main() {
 	player := Player{
 		health: 100,
@@ -49,15 +62,24 @@ func main() {
 	takeDamagePointer(player2)
 	fmt.Printf("After damage %+v\n", player)
 
-	player3 := &Player{
-		health: 100,
-	}
+	// player3 := &Player{
+	// 	health: 100,
+	// }
 
 	// pointer issue
-	fmt.Printf("\nBefore damage %+v\n", player)
+	// fmt.Printf("\nBefore damage %+v\n", player)
 	// somehow deleted player3
 	// invalid memory address or nil pointer dereference
-	player3 = nil
-	takeDamagePointer(player3)
+	// player3 = nil
+	// takeDamagePointer(player3)
+	// fmt.Printf("After damage %+v\n", player)
+
+	// receivers
+	fmt.Printf("\nBefore damage %+v\n", player)
+	player.takeDamageReceiver(20) // Copy
+	fmt.Printf("After damage %+v\n", player)
+
+	fmt.Printf("\nBefore damage %+v\n", player)
+	takeDamageNoReceiver(player, 30) // Copy
 	fmt.Printf("After damage %+v\n", player)
 }
