@@ -6,13 +6,19 @@
 
 # Pointers
 
+- In Go, everything is passed by value. This means that the `Player` struct passed to the `takeDamage` function is a copy of the original.
+- Any modifications to `player` in `takeDamage` will not affect the original `Player` struct in the `main` function.
+- Hence, the player's health after the explosion will still be 100 as per the initial declaration.
+
 ## Functional
 
-- In this version, `takeDamage` still takes a `Player` struct as an argument and modifies it.
+- In this version, `takeDamageFunctional` still takes a `Player` struct as an argument and modifies it.
 - However, instead of modifying the original struct, it returns a new `Player` struct that represents the state of the player after the damage has been taken.
 - This new `Player` struct is then reassigned to the `player` variable in the `main` function.
 
 ## Pointer
+
+- In this version, `takeDamagePointer` takes a pointer to `Player` as an argument, and the `Player` struct in `main` is also declared as a pointer using the `&` operator. This allows the `takeDamagePointer` function to modify the original `Player` struct. Therefore, the player's health will be 90 after the explosion.
 
 ## Comparison
 
