@@ -20,6 +20,18 @@
 
 - In this version, `takeDamagePointer` takes a pointer to `Player` as an argument, and the `Player` struct in `main` is also declared as a pointer using the `&` operator. This allows the `takeDamagePointer` function to modify the original `Player` struct. Therefore, the player's health will be 90 after the explosion.
 
+```go
+type BigData struct {
+	// 500 MB
+}
+
+// Calling it 10,000 times using BigData of 500 MB will be very expensive
+// So use pointer which only uses 8 bytes
+func processBigData(bd *BigData) {
+
+}
+```
+
 ## Comparison
 
 **Functional Approach:**
