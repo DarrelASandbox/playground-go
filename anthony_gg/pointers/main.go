@@ -48,4 +48,16 @@ func main() {
 	fmt.Printf("\nBefore damage %+v\n", player)
 	takeDamagePointer(player2)
 	fmt.Printf("After damage %+v\n", player)
+
+	player3 := &Player{
+		health: 100,
+	}
+
+	// pointer issue
+	fmt.Printf("\nBefore damage %+v\n", player)
+	// somehow deleted player3
+	// invalid memory address or nil pointer dereference
+	player3 = nil
+	takeDamagePointer(player3)
+	fmt.Printf("After damage %+v\n", player)
 }
