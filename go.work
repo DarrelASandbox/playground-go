@@ -15,3 +15,5 @@ use ./todd_mcleod/09-channels
 use ./todd_mcleod/10-error-handling
 use ./todd_mcleod/11-documentation
 use ./todd_mcleod/12-testing-benchmarking
+
+use ./anthony_gg/pointers
