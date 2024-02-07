@@ -1,19 +1,35 @@
-go 1.19
+go 1.21
+
+toolchain go1.21.7
 
 use ./jon_calhoun/01-quiz-game-using-csv
 
 use ./todd_mcleod/00-exercises
+
 use ./todd_mcleod/01-go-modules
+
 use ./todd_mcleod/02-iota
+
 use ./todd_mcleod/03-control-flow
+
 use ./todd_mcleod/04-grouping-data
+
 use ./todd_mcleod/05-structs
+
 use ./todd_mcleod/06-functions
+
 use ./todd_mcleod/07-application
+
 use ./todd_mcleod/08-concurrency
+
 use ./todd_mcleod/09-channels
+
 use ./todd_mcleod/10-error-handling
+
 use ./todd_mcleod/11-documentation
+
 use ./todd_mcleod/12-testing-benchmarking
 
 use ./anthony_gg/pointers
+
+use ./chris_james/01-hello-world
