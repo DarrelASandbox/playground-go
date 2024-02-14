@@ -33,3 +33,5 @@ use ./todd_mcleod/12-testing-benchmarking
 use ./anthony_gg/pointers
 
 use ./chris_james/01-hello-world
+
+use ./chris_james/02-integers
