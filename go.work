@@ -37,3 +37,5 @@ use ./chris_james/01-hello-world
 use ./chris_james/02-integers
 
 use ./chris_james/03-iteration
+
+use ./chris_james/04-arrays-and-slices
