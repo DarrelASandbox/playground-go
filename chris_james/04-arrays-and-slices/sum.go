@@ -16,12 +16,16 @@ func Sum(numbers []int) int {
 	return sum
 }
 
+/*
+As mentioned, slices have a capacity.
+If you have a slice with a capacity of 2 and try to do mySlice[10] = 1 you will get a runtime error.
+However, you can use the append function which takes a slice and a new value,
+then returns a new slice with all the items in it.
+*/
 func SumAll(numbersToSum ...[]int) []int {
-	lengthOfNumbers := len(numbersToSum)
-	sums := make([]int, lengthOfNumbers)
-
-	for i, numbers := range numbersToSum {
-		sums[i] = Sum(numbers)
+	var sums []int
+	for _, numbers := range numbersToSum {
+		sums = append(sums, Sum(numbers))
 	}
 
 	return sums

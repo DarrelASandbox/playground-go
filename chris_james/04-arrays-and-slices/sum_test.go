@@ -35,7 +35,7 @@ func TestSum(t *testing.T) {
 	*/
 	t.Run("sum of all slices", func(t *testing.T) {
 		got := SumAll([]int{1, 2}, []int{0, 9})
-		want := "bob"
+		want := []int{3, 9}
 
 		if !reflect.DeepEqual(got, want) {
 			t.Errorf("got %v want %v", got, want)
