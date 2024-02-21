@@ -27,24 +27,37 @@ func TestSum(t *testing.T) {
 			t.Errorf("got %d want %d given, %v", got, want, numbers)
 		}
 	})
+}
 
+func TestSumAll(t *testing.T) {
 	/*
 		  Go does not let you use equality operators with slices.
 			It's important to note that reflect.DeepEqual is not "type safe" -
 			the code will compile even if you did something a bit silly.
 	*/
-	t.Run("sum of all slices", func(t *testing.T) {
-		got := SumAll([]int{1, 2}, []int{0, 9})
-		want := []int{3, 9}
+
+	got := SumAll([]int{1, 2}, []int{0, 9})
+	want := []int{3, 9}
+
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("got %v want %v", got, want)
+	}
+}
+
+// Change `SumAll` to `SumAllTails`
+func TestSumAllTails(t *testing.T) {
+	t.Run("make the sums of some slices", func(t *testing.T) {
+		got := SumAllTails([]int{1, 2}, []int{0, 9})
+		want := []int{2, 9}
 
 		if !reflect.DeepEqual(got, want) {
-			t.Errorf("got %v want %v", got, want)
+			t.Error("got %v want %v", got, want)
 		}
 	})
 
-	t.Run("sum of all tails", func(t *testing.T) {
-		got := SumAllTails([]int{1, 2}, []int{0, 9})
-		want := []int{2, 9}
+	t.Run("safely sum empty slices", func(t *testing.T) {
+		got := SumAllTails([]int{}, []int{3, 4, 5})
+		want := []int{0, 9}
 
 		if !reflect.DeepEqual(got, want) {
 			t.Errorf("got %v want %v", got, want)
