@@ -43,3 +43,16 @@ func SumAllTails(numbersToSum ...[]int) []int {
 	}
 	return sums
 }
+
+func SliceCopy() ([]string, []string, []string) {
+	x := [3]string{"Лайка", "Белка", "Стрелка"}
+
+	y := x[:] // slice "y" points to the underlying array "x"
+
+	z := make([]string, len(x))
+	copy(z, x[:]) // slice "z" is a copy of the slice created from array "x"
+
+	y[1] = "Belka" // the value at index 1 is now "Belka" for both "y" and "x"
+
+	return x[:], y, z
+}

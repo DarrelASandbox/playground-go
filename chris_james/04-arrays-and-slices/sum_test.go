@@ -67,3 +67,22 @@ func TestSumAllTails(t *testing.T) {
 		checkSums(t, got, want)
 	})
 }
+
+// Example of slicing an array and how changing the slice affects the original array;
+// but a "copy" of the slice will not affect the original array.
+func TestSliceCopy(t *testing.T) {
+	gotX, gotY, gotZ := SliceCopy()
+	wantX := []string{"Лайка", "Belka", "Стрелка"}
+	wantY := []string{"Лайка", "Belka", "Стрелка"}
+	wantZ := []string{"Лайка", "Белка", "Стрелка"}
+
+	if !reflect.DeepEqual(gotX, wantX) {
+		t.Errorf("gotX %v want %v", gotX, wantX)
+	}
+	if !reflect.DeepEqual(gotY, wantY) {
+		t.Errorf("gotY %v want %v", gotY, wantY)
+	}
+	if !reflect.DeepEqual(gotZ, wantZ) {
+		t.Errorf("gotZ %v want %v", gotZ, wantZ)
+	}
+}
