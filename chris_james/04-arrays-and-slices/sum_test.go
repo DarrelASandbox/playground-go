@@ -86,3 +86,31 @@ func TestSliceCopy(t *testing.T) {
 		t.Errorf("gotZ %v want %v", gotZ, wantZ)
 	}
 }
+
+func TestAnotherSliceCopy(t *testing.T) {
+	// Call the function to get the copied slice
+	got := AnotherSliceCopy()
+
+	// Check if the length of the returned slice is 2
+	if len(got) != 2 {
+		t.Errorf("Expected slice length of 2, got %d", len(got))
+	}
+
+	// Since the original slice `a` was made with make([]int, 1e6),
+	// and no values were assigned, it should contain zeros.
+	// Therefore, the copied slice should also contain zeros.
+	want := []int{0, 0}
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("Expected slice values to be %v, got %v", want, got)
+	}
+
+	// Modify the original slice `a` to ensure it does not affect the copied slice.
+	// This step assumes you have access to modify `a` from the test,
+	// which in this case, you don't. This is more of a conceptual check.
+	// If `a` was accessible: a[0] = 10
+
+	// Assuming you could modify `a`, you would then check that `copiedSlice` is unaffected.
+	// This part of the test is more theoretical in this context, as `a` is not accessible here.
+	// However, it's an important aspect to consider when writing tests for real applications
+	// where the original data source might be modified after a copy operation.
+}
