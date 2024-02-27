@@ -39,3 +39,5 @@ use ./chris_james/02-integers
 use ./chris_james/03-iteration
 
 use ./chris_james/04-arrays-and-slices
+
+use ./chris_james/05-structs-methods-interfaces
