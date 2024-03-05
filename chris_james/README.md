@@ -25,3 +25,5 @@ Adding methods so you can add functionality to your data types and so you can im
 [Table driven tests](https://go.dev/wiki/TableDrivenTests) to make your assertions clearer and your test suites easier to extend & maintain
 
 At some point you may wish to use structs to manage state, exposing methods to let users change the state in a way that you can control.
+
+Pointers to struct have their own name: struct pointers and they are [automatically dereferenced](https://go.dev/ref/spec#Method_values)
