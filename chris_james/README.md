@@ -23,3 +23,5 @@ Declaring interfaces so you can define functions that can be used by different t
 Adding methods so you can add functionality to your data types and so you can implement interfaces
 
 [Table driven tests](https://go.dev/wiki/TableDrivenTests) to make your assertions clearer and your test suites easier to extend & maintain
+
+At some point you may wish to use structs to manage state, exposing methods to let users change the state in a way that you can control.
