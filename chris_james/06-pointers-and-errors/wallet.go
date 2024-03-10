@@ -1,6 +1,9 @@
 package wallet
 
-import "fmt"
+import (
+	"errors"
+	"fmt"
+)
 
 type Stringer interface {
 	String() string
@@ -22,12 +25,16 @@ type Wallet struct {
 // In Go, when you call a function or a method the arguments are copied.
 // Hence, set a pointer to a wallet
 func (w *Wallet) Deposit(amount Bitcoin) {
-	fmt.Printf("address of balance in test is %p \n", &w.balance)
 	w.balance += amount
 }
 
-func (w *Wallet) Withdraw(amount Bitcoin) {
+func (w *Wallet) Withdraw(amount Bitcoin) error {
+	if amount > w.balance {
+		return errors.New("you're too poor")
+	}
+
 	w.balance -= amount
+	return nil
 }
 
 func (w *Wallet) Balance() Bitcoin {
