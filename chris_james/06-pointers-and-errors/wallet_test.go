@@ -14,10 +14,17 @@ func TestWallet(t *testing.T) {
 		}
 	}
 
-	assertError := func(t testing.TB, err error) {
+	// We've introduced t.Fatal which will stop the test if it is called.
+	// This is because we don't want to make any more assertions on the error returned if there isn't one around.
+	// Without this the test would carry on to the next step and panic because of a nil pointer.
+	assertError := func(t testing.TB, got error, want string) {
 		t.Helper()
-		if err == nil {
-			t.Error("wanted an error but didn't get one")
+		if got == nil {
+			t.Fatal("didn't get an error but wanted one")
+		}
+
+		if got.Error() != want {
+			t.Errorf("got %q, want %q", got, want)
 		}
 	}
 
@@ -38,7 +45,7 @@ func TestWallet(t *testing.T) {
 		wallet := Wallet{startingBalance}
 		err := wallet.Withdraw(Bitcoin(100))
 
-		assertError(t, err)
+		assertError(t, err, "you're too poor")
 		assertBalance(t, wallet, startingBalance)
 	})
 }
