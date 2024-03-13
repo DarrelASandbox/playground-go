@@ -5,29 +5,6 @@ import (
 )
 
 func TestWallet(t *testing.T) {
-	assertBalance := func(t testing.TB, wallet Wallet, want Bitcoin) {
-		t.Helper()
-		got := wallet.Balance()
-
-		if got != want {
-			t.Errorf("got %s want %s", got, want)
-		}
-	}
-
-	// We've introduced t.Fatal which will stop the test if it is called.
-	// This is because we don't want to make any more assertions on the error returned if there isn't one around.
-	// Without this the test would carry on to the next step and panic because of a nil pointer.
-	assertError := func(t testing.TB, got error, want string) {
-		t.Helper()
-		if got == nil {
-			t.Fatal("didn't get an error but wanted one")
-		}
-
-		if got.Error() != want {
-			t.Errorf("got %q, want %q", got, want)
-		}
-	}
-
 	t.Run("deposit", func(t *testing.T) {
 		wallet := Wallet{}
 		wallet.Deposit(Bitcoin(10))
@@ -45,7 +22,30 @@ func TestWallet(t *testing.T) {
 		wallet := Wallet{startingBalance}
 		err := wallet.Withdraw(Bitcoin(100))
 
-		assertError(t, err, "you're too poor")
+		assertError(t, err, ErrInsufficientFunds)
 		assertBalance(t, wallet, startingBalance)
 	})
+}
+
+func assertBalance(t testing.TB, wallet Wallet, want Bitcoin) {
+	t.Helper()
+	got := wallet.Balance()
+
+	if got != want {
+		t.Errorf("got %q, want %q", got, want)
+	}
+}
+
+// We've introduced t.Fatal which will stop the test if it is called.
+// This is because we don't want to make any more assertions on the error returned if there isn't one around.
+// Without this the test would carry on to the next step and panic because of a nil pointer.
+func assertError(t testing.TB, got, want error) {
+	t.Helper()
+	if got == nil {
+		t.Fatal("didn't get an error but wanted one")
+	}
+
+	if got != want {
+		t.Errorf("got %q, want %q", got, want)
+	}
 }

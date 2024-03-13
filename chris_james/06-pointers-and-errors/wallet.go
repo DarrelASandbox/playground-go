@@ -28,9 +28,12 @@ func (w *Wallet) Deposit(amount Bitcoin) {
 	w.balance += amount
 }
 
+// The `var` keyword allows us to define values global to the package.
+var ErrInsufficientFunds = errors.New("you're too poor")
+
 func (w *Wallet) Withdraw(amount Bitcoin) error {
 	if amount > w.balance {
-		return errors.New("you're too poor")
+		return ErrInsufficientFunds
 	}
 
 	w.balance -= amount
