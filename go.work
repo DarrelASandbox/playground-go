@@ -2,44 +2,32 @@ go 1.21
 
 toolchain go1.21.7
 
-use ./jon_calhoun/01-quiz-game-using-csv
-
-use ./todd_mcleod/00-exercises
-
-use ./todd_mcleod/01-go-modules
-
-use ./todd_mcleod/02-iota
-
-use ./todd_mcleod/03-control-flow
-
-use ./todd_mcleod/04-grouping-data
-
-use ./todd_mcleod/05-structs
-
-use ./todd_mcleod/06-functions
-
-use ./todd_mcleod/07-application
-
-use ./todd_mcleod/08-concurrency
-
-use ./todd_mcleod/09-channels
-
-use ./todd_mcleod/10-error-handling
-
-use ./todd_mcleod/11-documentation
-
-use ./todd_mcleod/12-testing-benchmarking
-
 use ./anthony_gg/pointers
 
-use ./chris_james/01-hello-world
+use ./jon_calhoun/01-quiz-game-using-csv
 
-use ./chris_james/02-integers
+use (
+	./todd_mcleod/00-exercises
+	./todd_mcleod/01-go-modules
+	./todd_mcleod/02-iota
+	./todd_mcleod/03-control-flow
+	./todd_mcleod/04-grouping-data
+	./todd_mcleod/05-structs
+	./todd_mcleod/06-functions
+	./todd_mcleod/07-application
+	./todd_mcleod/08-concurrency
+	./todd_mcleod/09-channels
+	./todd_mcleod/10-error-handling
+	./todd_mcleod/11-documentation
+	./todd_mcleod/12-testing-benchmarking
+)
 
-use ./chris_james/03-iteration
-
-use ./chris_james/04-arrays-and-slices
-
-use ./chris_james/05-structs-methods-interfaces
-
-use ./chris_james/06-pointers-and-errors
+use (
+	./chris_james/01-hello-world
+	./chris_james/02-integers
+	./chris_james/03-iteration
+	./chris_james/04-arrays-and-slices
+	./chris_james/05-structs-methods-interfaces
+	./chris_james/06-pointers-and-errors
+	./chris_james/07-maps
+)
