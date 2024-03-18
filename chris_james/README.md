@@ -51,3 +51,32 @@ Useful for when you want to describe a value that could be missing
 # Errors
 
 [Don’t just check errors, handle them gracefully](https://dave.cheney.net/2016/04/27/dont-just-check-errors-handle-them-gracefully)
+
+# map
+
+[If a map isn’t a reference variable, what is it?](https://dave.cheney.net/2017/04/30/if-a-map-isnt-a-reference-variable-what-is-it)
+
+An interesting property of maps is that you can modify them without passing as an address to it (e.g `&myMap`)
+
+This may make them feel like a "reference type" which they are not
+(A map value is a pointer to a `runtime.hmap` structure.)
+
+So when you pass a map to a function/method, you are indeed copying it, but just the pointer part,
+not the underlying data structure that contains the data.
+
+A gotcha with maps is that they can be a nil value. A nil map behaves like an empty map when reading, but attempts to write to a nil map will cause a runtime panic.
+
+Therefore, you should never initialize an empty map variable:
+`var m map[string]string`
+
+Instead, you can initialize an empty map like we were doing above, or use the make keyword to create a map for you:
+
+```go
+var dictionary = map[string]string{}
+
+// OR
+
+var dictionary = make(map[string]string)
+```
+
+Both approaches create an empty `hash map` and point `dictionary` at it. Which ensures that you will never get a runtime panic.
