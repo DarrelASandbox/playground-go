@@ -3,6 +3,8 @@ package maps
 type Dictionary map[string]string
 type DictionaryErr string
 
+// We could reuse `ErrNotFound` and not add a new error.
+// However, it is often better to have a precise error for when an update fails.
 const (
 	ErrNotFound          = DictionaryErr("could not find the word you were looking for")
 	ErrWordExists        = DictionaryErr("cannot add word because it already exists")
@@ -38,6 +40,16 @@ func (d Dictionary) Add(word, definition string) error {
 }
 
 func (d Dictionary) Update(word, definition string) error {
-	d[word] = definition
+	_, err := d.Search((word))
+
+	switch err {
+	case ErrNotFound:
+		return ErrWordDoesNotExists
+	case nil:
+		d[word] = definition
+	default:
+		return err
+	}
+
 	return nil
 }
