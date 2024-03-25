@@ -30,4 +30,5 @@ use (
 	./chris_james/05-structs-methods-interfaces
 	./chris_james/06-pointers-and-errors
 	./chris_james/07-maps
+	./chris_james/08-dependency-injection
 )

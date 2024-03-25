@@ -80,3 +80,10 @@ var dictionary = make(map[string]string)
 ```
 
 Both approaches create an empty `hash map` and point `dictionary` at it. Which ensures that you will never get a runtime panic.
+
+# Dependency Injection
+
+- You don't need a framework
+- It does not overcomplicate your design
+- It facilitates testing
+- It allows you to write great, general-purpose functions
