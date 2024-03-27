@@ -1,9 +1,10 @@
-package di
+package main
 
 import (
 	"fmt"
 	"io"
-	"os"
+	"log"
+	"net/http"
 )
 
 // `fmt.Fprintf` is like `fmt.Printf` but instead takes a `Writer` to send the string to,
@@ -13,6 +14,11 @@ func Greet(writer io.Writer, name string) {
 	fmt.Fprintf(writer, "Hello, %s", name)
 }
 
-func di() {
-	Greet(os.Stdout, "Ellery")
+func MyGreeterHandler(w http.ResponseWriter, r *http.Request) {
+	Greet(w, "world")
+}
+
+// http://localhost:5001/
+func main() {
+	log.Fatal(http.ListenAndServe(":5001", http.HandlerFunc(MyGreeterHandler)))
 }
