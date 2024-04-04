@@ -99,3 +99,43 @@ Motivated by our tests we refactored the code so we could control where the data
 - Every forward-thinking post about software development emphasizes the importance of quick feedback loops.
 - Slow tests ruin developer productivity.
 - If we can mock `time.Sleep` we can use dependency injection to use it instead of a "real" `time.Sleep` and then we can **spy on the calls** to make assertions on them.
+
+People normally get in to a bad state when they don't listen to their tests and are not respecting the refactoring stage.
+
+If your mocking code is becoming complicated or you are having to mock out lots of things to test something, you should listen to that bad feeling and think about your code. Usually it is a sign of
+
+- The thing you are testing is having to do too many things (because it has too many dependencies to mock)
+  - Break the module apart so it does less
+- Its dependencies are too fine-grained
+  - Think about how you can consolidate some of these dependencies into one meaningful module
+- Your test is too concerned with implementation details
+  - Favour testing expected behavior rather than the implementation
+
+Normally a lot of mocking points to bad abstraction in your code.
+
+What people see here is a weakness in TDD but it is actually a strength, more often than not poor test code is a result of bad design or put more nicely, well-designed code is easy to test.
+
+## Guidelines
+
+The definition of refactoring is that the code changes but the behavior stays the same. If you have decided to do some refactoring in theory you should be able to make the commit without any test changes. So when writing a test ask yourself
+
+- Am I testing the behavior I want, or the implementation details?
+- If I were to refactor this code, would I have to make lots of changes to the tests?
+
+Although Go lets you test private functions, I would avoid it as private functions are implementation detail to support public behavior. Test the public behavior. Sandi Metz describes private functions as being "less stable" and you don't want to couple your tests to them.
+
+I feel like if a test is working with more than 3 mocks then it is a red flag - time for a rethink on the design
+
+Use spies with caution. Spies let you see the insides of the algorithm you are writing which can be very useful but that means a tighter coupling between your test code and the implementation. Be sure you actually care about these details if you're going to spy on them
+
+In collaborative projects there is value in auto-generating mocks. In a team, a mock generation tool codifies consistency around the test doubles. This will avoid inconsistently written test doubles which can translate to inconsistently written tests.
+
+You should only use a mock generator that generates test doubles against an interface. Any tool that overly dictates how tests are written, or that use lots of 'magic', can get in the sea.
+
+Without mocking important areas of your code will be untested. In our case we would not be able to test that our code paused between each print but there are countless other examples. Calling a service that can fail? Wanting to test your system in a particular state? It is very hard to test these scenarios without mocking.
+
+Without mocks you may have to set up databases and other third parties things just to test simple business rules. You're likely to have slow tests, resulting in slow feedback loops.
+
+By having to spin up a database or a webservice to test something you're likely to have fragile tests due to the unreliability of such services.
+
+Once a developer learns about mocking it becomes very easy to over-test every single facet of a system in terms of the way it works rather than what it does. Always be mindful about the **value of your tests** and what impact they would have in future refactoring.
