@@ -32,4 +32,5 @@ use (
 	./chris_james/07-maps
 	./chris_james/08-dependency-injection
 	./chris_james/09-mocking
+	./chris_james/10-concurrency
 )
