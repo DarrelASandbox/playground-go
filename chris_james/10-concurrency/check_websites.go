@@ -12,11 +12,18 @@ func CheckWebsites(wc WebsiteChecker, urls []string) map[string]bool {
 	// But each of our goroutines have a reference to the url variable - they don't have their own independent copy.
 	// So they're all writing the value that url has at the end of the iteration - the last url.
 	// Which is why the one result we have is the last url.
+
+	// By giving each anonymous function a parameter for the url - `u` - and then calling the anonymous function with the url as the argument,
+	// we make sure that the value of `u` is fixed as the value of `url` for the iteration of the loop that we're launching the goroutine in.
+	// `u` is a copy of the value of `url`, and so can't be changed.
 	for _, url := range urls {
-		go func() {
-			results[url] = wc(url)
-		}()
+		go func(u string) {
+			results[u] = wc(u)
+		}(url)
 	}
+
+	// Wait while all the goroutines do their work, and then return
+	// time.Sleep(2 * time.Second)
 
 	return results
 }

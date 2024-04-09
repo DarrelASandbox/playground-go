@@ -19,6 +19,8 @@ errcheck .
 
 cd 10-concurrency
 go test -bench=.
+
+go test -race
 ```
 
 It is important to question the value of your tests. It should not be a goal to have as many tests as possible, but rather to have as much confidence as possible in your code base. Having too many tests can turn in to a real problem and it just adds more overhead in maintenance. Every test has a cost.
@@ -142,3 +144,7 @@ Without mocks you may have to set up databases and other third parties things ju
 By having to spin up a database or a webservice to test something you're likely to have fragile tests due to the unreliability of such services.
 
 Once a developer learns about mocking it becomes very easy to over-test every single facet of a system in terms of the way it works rather than what it does. Always be mindful about the **value of your tests** and what impact they would have in future refactoring.
+
+# goroutines
+
+[race-detector](https://go.dev/blog/race-detector)
