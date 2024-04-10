@@ -2,28 +2,39 @@ package concurrency
 
 type WebsiteChecker func(string) bool
 
+type result struct {
+	string
+	bool
+}
+
 // It returns a map of each URL checked to a boolean value: `true` for a good response; `false` for a bad response.
 func CheckWebsites(wc WebsiteChecker, urls []string) map[string]bool {
 	results := make(map[string]bool)
+	resultChannel := make(chan result)
 
-	// Maintain access to the lexical scope in which they are defined - all the variables that are available at the point when you declare the anonymous function are also available in the body of the function.
+	// Alongside the `results` map we now have a `resultChannel`, which we `make` in the same way. `chan result` is the type of the channel - a channel of `result`. The new type, `result` has been made to associate the return value of the `WebsiteChecker` with the url being checked - it's a struct of `string` and `bool`. As we don't need either value to be named, each of them is anonymous within the struct; this can be useful in when it's hard to know what to name a value.
 
-	// The problem here is that the variable url is reused for each iteration of the for loop - it takes a new value from urls each time.
-	// But each of our goroutines have a reference to the url variable - they don't have their own independent copy.
-	// So they're all writing the value that url has at the end of the iteration - the last url.
-	// Which is why the one result we have is the last url.
-
-	// By giving each anonymous function a parameter for the url - `u` - and then calling the anonymous function with the url as the argument,
-	// we make sure that the value of `u` is fixed as the value of `url` for the iteration of the loop that we're launching the goroutine in.
-	// `u` is a copy of the value of `url`, and so can't be changed.
+	// Now when we iterate over the urls, instead of writing to the `map` directly we're sending a `result` struct for each call to `wc` to the `resultChannel` with a send statement.
 	for _, url := range urls {
 		go func(u string) {
-			results[u] = wc(u)
+			resultChannel <- result{u, wc(u)} // Send Statement
 		}(url)
 	}
 
-	// Wait while all the goroutines do their work, and then return
-	// time.Sleep(2 * time.Second)
+	// The next `for` loop iterates once for each of the urls. Inside we're using a receive expression, which assigns a value received from a channel to a variable. This also uses the `<-` operator, but with the two operands now reversed: the channel is now on the right and the variable that we're assigning to is on the left:
+	for i := 0; i < len(urls); i++ {
+		r := <-resultChannel // Receive expression
+		results[r.string] = r.bool
+	}
 
 	return results
 }
+
+// By sending the results into a channel, we can control the timing of each write into the results map,
+// ensuring that it happens one at a time.
+// Although each of the calls of wc, and each send to the result channel, is happening concurrently inside its own process,
+// each of the results is being dealt with one at a time as we take values out of the result channel with the receive expression.
+
+// We have used concurrency for the part of the code that we wanted to make faster,
+// while making sure that the part that cannot happen simultaneously still happens linearly.
+// And we have communicated across the multiple processes involved by using channels.

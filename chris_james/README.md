@@ -147,4 +147,12 @@ Once a developer learns about mocking it becomes very easy to over-test every si
 
 # goroutines
 
-[race-detector](https://go.dev/blog/race-detector)
+Channels are a Go data structure that can both receive and send values. These operations, along with their details, allow communication between different processes.
+
+goroutines, the basic unit of concurrency in Go, which let us manage more than one website check request.
+
+anonymous functions, which we used to start each of the concurrent processes that check websites.
+
+channels, to help organize and control the communication between the different processes, allowing us to avoid a race condition bug.
+
+the [race-detector](https://go.dev/blog/race-detector) which helped us debug problems with concurrent code
