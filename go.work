@@ -33,4 +33,5 @@ use (
 	./chris_james/08-dependency-injection
 	./chris_james/09-mocking
 	./chris_james/10-concurrency
+	./chris_james/11-racer
 )
