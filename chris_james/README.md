@@ -156,3 +156,7 @@ anonymous functions, which we used to start each of the concurrent processes tha
 channels, to help organize and control the communication between the different processes, allowing us to avoid a race condition bug.
 
 the [race-detector](https://go.dev/blog/race-detector) which helped us debug problems with concurrent code
+
+# reflection
+
+- [reflection](https://go.dev/blog/laws-of-reflection)
