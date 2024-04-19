@@ -1,6 +1,9 @@
 package reflection
 
-import "testing"
+import (
+	"reflect"
+	"testing"
+)
 
 // We want to store a slice of strings (`got`) which stores which strings were passed into `fn` by `walk`.
 // Often in previous chapters, we have made dedicated types for this to spy on function/method invocations
@@ -28,6 +31,20 @@ func TestWalk(t *testing.T) {
 	}
 }
 
+/*
+This code is very unsafe and very naive,
+but remember: our goal when we are in "red" (the tests failing) is to write the smallest amount of code possible.
+We then write more tests to address our concerns.
+
+We need to use reflection to have a look at x and try and look at its properties.
+
+make some very optimistic assumptions about the value passed in:
+  - We look at the first and only field. However, there may be no fields at all, which would cause a panic.
+  - We then call String(), which returns the underlying value as a string.
+    However, this would be wrong if the field was something other than a string.
+*/
 func walk(x interface{}, fn func(input string)) {
-	fn("I still can't believe South Korea beat Germany 2-0 to put them last in their group")
+	val := reflect.ValueOf(x)
+	field := val.Field(0)
+	fn(field.String())
 }
