@@ -5,6 +5,16 @@ import (
 	"testing"
 )
 
+type Person struct {
+	Name    string
+	Profile Profile
+}
+
+type Profile struct {
+	Age  int
+	City string
+}
+
 /*
 This test function systematically verifies that the walk function behaves correctly for different structures and values.
 By defining expected outcomes and comparing them with actual results,
@@ -44,16 +54,7 @@ func TestWalk(t *testing.T) {
 		},
 		{
 			"nested fields",
-			struct {
-				Name    string
-				Profile struct {
-					Age  int
-					City string
-				}
-			}{"Chris", struct {
-				Age  int
-				City string
-			}{33, "London"}}, []string{"Chris", "London"},
+			Person{"Chris", Profile{33, "London"}}, []string{"Chris", "London"},
 		},
 	}
 
