@@ -17,6 +17,12 @@ make some very optimistic assumptions about the value passed in:
 func walk(x interface{}, fn func(input string)) {
 	val := reflect.ValueOf(x)
 
+	// You can't use `NumField` on a pointer `Value`,
+	// we need to extract the underlying value before we can do that by using `Elem()`.
+	if val.Kind() == reflect.Pointer {
+		val = val.Elem()
+	}
+
 	for i := 0; i < val.NumField(); i++ {
 		field := val.Field(i)
 
