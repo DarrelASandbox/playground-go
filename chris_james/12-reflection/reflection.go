@@ -15,13 +15,7 @@ make some very optimistic assumptions about the value passed in:
     However, this would be wrong if the field was something other than a string.
 */
 func walk(x interface{}, fn func(input string)) {
-	val := reflect.ValueOf(x)
-
-	// You can't use `NumField` on a pointer `Value`,
-	// we need to extract the underlying value before we can do that by using `Elem()`.
-	if val.Kind() == reflect.Pointer {
-		val = val.Elem()
-	}
+	val := getValue(x)
 
 	for i := 0; i < val.NumField(); i++ {
 		field := val.Field(i)
@@ -33,4 +27,21 @@ func walk(x interface{}, fn func(input string)) {
 			walk(field.Interface(), fn)
 		}
 	}
+}
+
+/*
+Abstraction
+- Get the reflect.Value of x so I can inspect it, I don't care how.
+- Iterate over the fields, doing whatever needs to be done depending on its type.
+*/
+func getValue(x interface{}) reflect.Value {
+	val := reflect.ValueOf(x)
+
+	// You can't use `NumField` on a pointer `Value`,
+	// we need to extract the underlying value before we can do that by using `Elem()`.
+	if val.Kind() == reflect.Pointer {
+		val = val.Elem()
+	}
+
+	return val
 }
