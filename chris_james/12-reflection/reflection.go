@@ -2,48 +2,40 @@ package reflection
 
 import "reflect"
 
-/*
-We need to use reflection to have a look at x and try and look at its properties.
-
-make some very optimistic assumptions about the value passed in:
-  - We look at the first and only field. However, there may be no fields at all, which would cause a panic.
-  - We then call String(), which returns the underlying value as a string.
-    However, this would be wrong if the field was something other than a string.
-
-We just have a check at the start to see if it's a slice
-(with a return to stop the rest of the code executing)
-and if it's not we just assume it's a struct.
-*/
+// walk recursively iterates over elements in a data structure
+// and applies the provided function `fn` to all string values found.
 func walk(x interface{}, fn func(input string)) {
-	val := getValue(x)
+	val := getValue(x) // Retrieve the reflect.Value of the provided interface{}.
+
+	numberOfValues := 0                  // Initialize count of sub-values we need to iterate over.
+	var getField func(int) reflect.Value // Function to retrieve sub-values by index.
 
 	switch val.Kind() {
-	case reflect.Struct:
-		for i := 0; i < val.NumField(); i++ {
-			walk(val.Field(i).Interface(), fn)
-		}
-	case reflect.Slice:
-		for i := 0; i < val.Len(); i++ {
-			walk(val.Index(i).Interface(), fn)
-		}
 	case reflect.String:
-		fn(val.String())
+		fn(val.String()) // If it's a string, apply the function directly.
+	case reflect.Struct:
+		numberOfValues = val.NumField() // If it's a struct, get the number of fields.
+		getField = val.Field            // Function to access fields by index.
+	case reflect.Slice:
+		numberOfValues = val.Len() // If it's a slice, get the length.
+		getField = val.Index       // Function to access elements by index.
+	}
+
+	// Recursive iteration over fields or elements if they exist.
+	for i := 0; i < numberOfValues; i++ {
+		walk(getField(i).Interface(), fn) // Apply walk recursively to each sub-value.
 	}
 }
 
-/*
-Abstraction
-- Get the reflect.Value of x so I can inspect it, I don't care how.
-- Iterate over the fields, doing whatever needs to be done depending on its type.
-*/
+// getValue extracts the underlying value of `x` if `x` is a pointer,
+// or simply returns the reflect.Value of `x` if not a pointer.
 func getValue(x interface{}) reflect.Value {
-	val := reflect.ValueOf(x)
+	val := reflect.ValueOf(x) // Convert interface to reflect.Value.
 
-	// You can't use `NumField` on a pointer `Value`,
-	// we need to extract the underlying value before we can do that by using `Elem()`.
+	// Handle pointers by retrieving the value they point to.
 	if val.Kind() == reflect.Pointer {
-		val = val.Elem()
+		val = val.Elem() // Extract underlying value from pointer.
 	}
 
-	return val
+	return val // Return the possibly dereferenced value.
 }
