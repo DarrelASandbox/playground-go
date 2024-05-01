@@ -16,7 +16,7 @@ func walk(x interface{}, fn func(input string)) {
 	case reflect.Struct:
 		numberOfValues = val.NumField() // If it's a struct, get the number of fields.
 		getField = val.Field            // Function to access fields by index.
-	case reflect.Slice:
+	case reflect.Slice, reflect.Array:
 		numberOfValues = val.Len() // If it's a slice, get the length.
 		getField = val.Index       // Function to access elements by index.
 	}
