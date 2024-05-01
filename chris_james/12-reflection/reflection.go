@@ -19,6 +19,12 @@ func walk(x interface{}, fn func(input string)) {
 	case reflect.Slice, reflect.Array:
 		numberOfValues = val.Len() // If it's a slice, get the length.
 		getField = val.Index       // Function to access elements by index.
+	case reflect.Map:
+		// Iterate over each key-value pair in the map.
+		for _, key := range val.MapKeys() {
+			// Recursively apply walk to the value associated with each key.
+			walk(val.MapIndex(key).Interface(), fn)
+		}
 	}
 
 	// Recursive iteration over fields or elements if they exist.
