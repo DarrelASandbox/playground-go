@@ -161,3 +161,4 @@ the [race-detector](https://go.dev/blog/race-detector) which helped us debug pro
 
 - [reflection](https://go.dev/blog/laws-of-reflection)
 - [proposal: spec: type inferred composite literals #12854](https://github.com/golang/go/issues/12854)
+- [laws of reflection](https://go.dev/blog/laws-of-reflection)
