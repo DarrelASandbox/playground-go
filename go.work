@@ -35,4 +35,5 @@ use (
 	./chris_james/10-concurrency
 	./chris_james/11-racer
 	./chris_james/12-reflection
+	./chris_james/13-sync
 )
