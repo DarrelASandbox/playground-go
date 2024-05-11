@@ -1,3 +1,21 @@
+# TOC
+
+- [TOC](#toc)
+- [shell](#shell)
+- [Structs](#structs)
+- [Pointers](#pointers)
+- [nil](#nil)
+- [Errors](#errors)
+- [map](#map)
+- [Dependency Injection](#dependency-injection)
+- [Mocking](#mocking)
+  - [Guidelines](#guidelines)
+- [goroutines](#goroutines)
+- [reflection](#reflection)
+- [sync](#sync)
+
+# shell
+
 - [quii](https://github.com/quii)
 
 ```sh
@@ -21,6 +39,8 @@ cd 10-concurrency
 go test -bench=.
 
 go test -race
+
+go vet
 ```
 
 It is important to question the value of your tests. It should not be a goal to have as many tests as possible, but rather to have as much confidence as possible in your code base. Having too many tests can turn in to a real problem and it just adds more overhead in maintenance. Every test has a cost.
@@ -162,3 +182,24 @@ the [race-detector](https://go.dev/blog/race-detector) which helped us debug pro
 - [reflection](https://go.dev/blog/laws-of-reflection)
 - [proposal: spec: type inferred composite literals #12854](https://github.com/golang/go/issues/12854)
 - [laws of reflection](https://go.dev/blog/laws-of-reflection)
+
+# sync
+
+- I've seen other examples where the sync.Mutex is embedded into the struct.
+
+```go
+type Counter struct {
+	sync.Mutex
+	value int
+}
+
+func (c *Counter) Inc() {
+	c.Lock()
+	defer c.Unlock()
+	c.value++
+}
+```
+
+Sometimes people forget that embedding types means the methods of that type becomes part of the public interface; and you often will not want that. Remember that we should be very careful with our public APIs, the moment we make something public is the moment other code can couple themselves to it. We always want to avoid unnecessary coupling.
+
+Exposing `Lock` and `Unlock` is at best confusing but at worst potentially very harmful to your software if callers of your type start calling these methods.

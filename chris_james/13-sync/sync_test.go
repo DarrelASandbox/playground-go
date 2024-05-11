@@ -5,6 +5,8 @@ import (
 	"testing"
 )
 
+// run `go vet` in shell
+// the documentation of `sync.Mutex` tells that a Mutex must not be copied after first use.
 func TestCounter(t *testing.T) {
 	t.Run("incrementing the counter 3 times leaves it at 3", func(t *testing.T) {
 		counter := Counter{}
@@ -14,12 +16,6 @@ func TestCounter(t *testing.T) {
 
 		assertCounter(t, counter, 3)
 	})
-
-	/*
-	  The test will probably fail with a different number,
-	  but nonetheless it demonstrates it does not work when multiple goroutines
-	  are trying to mutate the value of the counter at the same time.
-	*/
 
 	t.Run("it runs safely concurrently", func(t *testing.T) {
 		wantedCount := 1000
