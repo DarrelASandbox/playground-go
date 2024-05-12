@@ -13,6 +13,8 @@
 - [goroutines](#goroutines)
 - [reflection](#reflection)
 - [sync](#sync)
+  - [When to use locks over channels and goroutines?](#when-to-use-locks-over-channels-and-goroutines)
+  - [Don't use embedding because it's convenient](#dont-use-embedding-because-its-convenient)
 
 # shell
 
@@ -203,3 +205,15 @@ func (c *Counter) Inc() {
 Sometimes people forget that embedding types means the methods of that type becomes part of the public interface; and you often will not want that. Remember that we should be very careful with our public APIs, the moment we make something public is the moment other code can couple themselves to it. We always want to avoid unnecessary coupling.
 
 Exposing `Lock` and `Unlock` is at best confusing but at worst potentially very harmful to your software if callers of your type start calling these methods.
+
+## When to use locks over channels and goroutines?
+
+- [Go Wiki: Use a sync.Mutex or a channel?](https://go.dev/wiki/MutexOrChannel)
+  - Use channels when passing ownership of data
+  - Use mutexes for managing state
+
+## Don't use embedding because it's convenient
+
+- Think about the effect embedding has on your public API.
+- Do you really want to expose these methods and have people coupling their own code to them?
+- With respect to mutexes, this could be potentially disastrous in very unpredictable and weird ways, imagine some nefarious code unlocking a mutex when it shouldn't be; this would cause some very strange bugs that will be hard to track down.
