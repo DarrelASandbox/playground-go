@@ -15,6 +15,7 @@
 - [sync](#sync)
   - [When to use locks over channels and goroutines?](#when-to-use-locks-over-channels-and-goroutines)
   - [Don't use embedding because it's convenient](#dont-use-embedding-because-its-convenient)
+- [context](#context)
 
 # shell
 
@@ -217,3 +218,11 @@ Exposing `Lock` and `Unlock` is at best confusing but at worst potentially very 
 - Think about the effect embedding has on your public API.
 - Do you really want to expose these methods and have people coupling their own code to them?
 - With respect to mutexes, this could be potentially disastrous in very unpredictable and weird ways, imagine some nefarious code unlocking a mutex when it shouldn't be; this would cause some very strange bugs that will be hard to track down.
+
+# context
+
+Software often kicks off long-running, resource-intensive processes (often in goroutines). If the action that caused this gets cancelled or fails for some reason you need to stop these processes in a consistent way through your application.
+
+If you don't manage this your snappy Go application that you're so proud of could start having difficult to debug performance problems.
+
+We'll use the package `context` to help us manage long-running processes.
