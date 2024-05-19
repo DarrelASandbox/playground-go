@@ -1,36 +1,39 @@
 package mycontext
 
 import (
+	"context"
 	"fmt"
 	"net/http"
 )
 
 type Store interface {
-	Fetch() string
+	Fetch(ctx context.Context) (string, error)
 	Cancel()
 }
 
 /*
-`context` has a method `Done()` which returns a channel which gets sent a signal when the context is "done" or "cancelled". We want to listen to that signal and call `store.Cancel` if we get it but we want to ignore it if our `Store` manages to `Fetch` before it.
-
-To manage this we run `Fetch` in a goroutine and it will write the result into a new channel `data`. We then use `select` to effectively race to the two asynchronous processes and then we either write a response or `Cancel`.
+We'll have to change our existing tests as their responsibilities are changing. The only thing our handler is responsible for now is making sure it sends a context through to the downstream `Store` and that it handles the error that will come from the `Store` when it is cancelled.
 */
 
 func Server(store Store) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		ctx := r.Context()
 
-		data := make(chan string, 1)
+		data, _ := store.Fetch(r.Context())
+		fmt.Fprint(w, data)
 
-		go func() {
-			data <- store.Fetch()
-		}()
+		// ctx := r.Context()
 
-		select {
-		case d := <-data:
-			fmt.Fprint(w, d)
-		case <-ctx.Done():
-			store.Cancel()
-		}
+		// data := make(chan string, 1)
+
+		// go func() {
+		// 	data <- store.Fetch()
+		// }()
+
+		// select {
+		// case d := <-data:
+		// 	fmt.Fprint(w, d)
+		// case <-ctx.Done():
+		// 	store.Cancel()
+		// }
 	}
 }
