@@ -18,7 +18,12 @@ We'll have to change our existing tests as their responsibilities are changing. 
 func Server(store Store) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 
-		data, _ := store.Fetch(r.Context())
+		data, err := store.Fetch(r.Context())
+
+		if err != nil {
+			return // @TODO: log error however you like
+		}
+
 		fmt.Fprint(w, data)
 
 		// ctx := r.Context()
