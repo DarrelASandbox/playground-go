@@ -16,6 +16,7 @@
   - [When to use locks over channels and goroutines?](#when-to-use-locks-over-channels-and-goroutines)
   - [Don't use embedding because it's convenient](#dont-use-embedding-because-its-convenient)
 - [context](#context)
+  - [context.Value](#contextvalue)
 
 # shell
 
@@ -226,3 +227,24 @@ Software often kicks off long-running, resource-intensive processes (often in go
 If you don't manage this your snappy Go application that you're so proud of could start having difficult to debug performance problems.
 
 We'll use the package `context` to help us manage long-running processes.
+
+## context.Value
+
+Some engineers have advocated passing values through `context` as it feels convenient.
+
+Convenience is often the cause of bad code.
+
+The problem with `context.Values` is that it's just an untyped map so you have no type-safety and you have to handle it not actually containing your value. You have to create a coupling of map keys from one module to another and if someone changes something things start breaking.
+
+In short, **if a function needs some values, put them as typed parameters rather than trying to fetch them from**
+`context.Value`. This makes it statically checked and documented for everyone to see.
+
+But...
+
+On other hand, it can be helpful to include information that is orthogonal to a request in a context, such as a trace id. Potentially this information would not be needed by every function in your call-stack and would make your functional signatures very messy.
+
+[Jack Lindamood says Context.Value should inform, not control](https://medium.com/@cep21/how-to-correctly-use-context-context-in-go-1-7-8f2c0fafdf39)
+
+[Context should go away for Go 2](https://faiface.github.io/post/context-should-go-away-go2/)
+
+[Go Concurrency Patterns: Context](https://go.dev/blog/context)
