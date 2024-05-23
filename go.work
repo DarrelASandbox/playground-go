@@ -37,4 +37,5 @@ use (
 	./chris_james/12-reflection
 	./chris_james/13-sync
 	./chris_james/14-context
+	./chris_james/15-intro-to-property-based-tests
 )
