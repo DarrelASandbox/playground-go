@@ -16,6 +16,9 @@ func TestRomanNumerals(t *testing.T) {
 		{"3 gets converted to III", 3, "III"},
 		{"4 gets converted to IV (can't repeat more than 3 times)", 4, "IV"},
 		{"5 gets converted to V", 5, "V"},
+		{"6 gets converted to VI", 6, "VI"},
+		{"7 gets converted to VII", 7, "VII"},
+		{"8 gets converted to VIII", 8, "VIII"},
 	}
 
 	for _, test := range cases {
@@ -32,16 +35,18 @@ func ConvertToRoman(arabic int) string {
 	// A Builder is used to efficiently build a string using Write methods. It minimizes memory copying.
 	var result strings.Builder
 
-	for i := arabic; i > 0; i-- {
-		if i == 5 {
+	for arabic > 0 {
+		switch {
+		case arabic > 4:
 			result.WriteString("V")
-			break
-		}
-		if i == 4 {
+			arabic -= 5
+		case arabic > 3:
 			result.WriteString("IV")
-			break
+			arabic -= 4
+		default:
+			result.WriteString("I")
+			arabic--
 		}
-		result.WriteString("I")
 	}
 
 	return result.String()
