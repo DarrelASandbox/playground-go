@@ -5,6 +5,21 @@ import (
 	"testing"
 )
 
+type RomanNumeral struct {
+	Value  int
+	Symbol string
+}
+
+var allRomanNumerals = []RomanNumeral{
+	{50, "L"},
+	{40, "XL"},
+	{10, "X"},
+	{9, "IX"},
+	{5, "V"},
+	{4, "IV"},
+	{1, "I"},
+}
+
 func TestRomanNumerals(t *testing.T) {
 	cases := []struct {
 		Description string
@@ -25,6 +40,10 @@ func TestRomanNumerals(t *testing.T) {
 		{"18 gets converted to XVIII", 18, "XVIII"},
 		{"20 gets converted to XX", 20, "XX"},
 		{"39 gets converted to XXXIX", 39, "XXXIX"},
+		{"40 gets converted to XL", 40, "XL"},
+		{"47 gets converted to XLVII", 47, "XLVII"},
+		{"49 gets converted to XLIX", 49, "XLIX"},
+		{"50 gets converted to L", 50, "L"},
 	}
 
 	for _, test := range cases {
@@ -41,23 +60,10 @@ func ConvertToRoman(arabic int) string {
 	// A Builder is used to efficiently build a string using Write methods. It minimizes memory copying.
 	var result strings.Builder
 
-	for arabic > 0 {
-		switch {
-		case arabic > 9:
-			result.WriteString("X")
-			arabic -= 10
-		case arabic > 8:
-			result.WriteString("IX")
-			arabic -= 9
-		case arabic > 4:
-			result.WriteString("V")
-			arabic -= 5
-		case arabic > 3:
-			result.WriteString("IV")
-			arabic -= 4
-		default:
-			result.WriteString("I")
-			arabic--
+	for _, numeral := range allRomanNumerals {
+		for arabic >= numeral.Value {
+			result.WriteString(numeral.Symbol)
+			arabic -= numeral.Value
 		}
 	}
 
