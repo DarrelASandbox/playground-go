@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strings"
 	"testing"
+	"testing/quick"
 )
 
 type RomanNumeral struct {
@@ -109,4 +110,16 @@ func ConvertToArabic(roman string) int {
 	}
 
 	return arabic
+}
+
+func TestPropertiesOfConversion(t *testing.T) {
+	assertion := func(arabic int) bool {
+		roman := ConvertToRoman(arabic)
+		fromRoman := ConvertToArabic(roman)
+		return fromRoman == arabic
+	}
+
+	if err := quick.Check(assertion, nil); err != nil {
+		t.Error("failed checks", err)
+	}
 }

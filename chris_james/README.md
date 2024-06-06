@@ -17,6 +17,8 @@
   - [Don't use embedding because it's convenient](#dont-use-embedding-because-its-convenient)
 - [context](#context)
   - [context.Value](#contextvalue)
+- [Property Based Tests](#property-based-tests)
+  - [Domain of Roman Numerals](#domain-of-roman-numerals)
 
 # shell
 
@@ -248,3 +250,13 @@ On other hand, it can be helpful to include information that is orthogonal to a 
 [Context should go away for Go 2](https://faiface.github.io/post/context-should-go-away-go2/)
 
 [Go Concurrency Patterns: Context](https://go.dev/blog/context)
+
+# Property Based Tests
+
+Property based tests help you do this by throwing random data at your code and verifying the rules you describe always hold true. A lot of people think property based tests are mainly about random data but they would be mistaken. The real challenge about property based tests is having a good understanding of your domain so you can write these properties.
+
+## Domain of Roman Numerals
+
+1. Can't have more than 3 consecutive symbols
+2. Only I (1), X (10) and C (100) can be "subtractors"
+3. Taking the result of `ConvertToRoman(N)` and passing it to `ConvertToArabic` should return us `N`
