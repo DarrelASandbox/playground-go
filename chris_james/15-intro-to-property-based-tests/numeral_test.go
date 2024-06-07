@@ -2,6 +2,7 @@ package numeral
 
 import (
 	"fmt"
+	"log"
 	"strings"
 	"testing"
 	"testing/quick"
@@ -114,6 +115,16 @@ func ConvertToArabic(roman string) int {
 
 func TestPropertiesOfConversion(t *testing.T) {
 	assertion := func(arabic int) bool {
+
+		// We used int as our input but:
+		// You can't do negative numbers with Roman Numerals
+		// Given our rule of a max of 3 consecutive symbols we can't represent a value greater than 3999
+		// and int has a much higher maximum value than 3999.
+		if arabic < 0 || arabic > 3999 {
+			log.Println(arabic)
+			return true
+		}
+
 		roman := ConvertToRoman(arabic)
 		fromRoman := ConvertToArabic(roman)
 		return fromRoman == arabic
