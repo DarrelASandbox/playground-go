@@ -2,14 +2,13 @@ package numeral
 
 import (
 	"fmt"
-	"log"
 	"strings"
 	"testing"
 	"testing/quick"
 )
 
 type RomanNumeral struct {
-	Value  int
+	Value  uint16
 	Symbol string
 }
 
@@ -30,7 +29,7 @@ var allRomanNumerals = []RomanNumeral{
 }
 
 var cases = []struct {
-	Arabic int
+	Arabic uint16
 	Roman  string
 }{
 	{Arabic: 1, Roman: "I"},
@@ -75,7 +74,7 @@ func TestRomanNumerals(t *testing.T) {
 	}
 }
 
-func ConvertToRoman(arabic int) string {
+func ConvertToRoman(arabic uint16) string {
 	// A Builder is used to efficiently build a string using Write methods. It minimizes memory copying.
 	var result strings.Builder
 
@@ -100,8 +99,8 @@ func TestArabicNumerals(t *testing.T) {
 	}
 }
 
-func ConvertToArabic(roman string) int {
-	var arabic = 0
+func ConvertToArabic(roman string) uint16 {
+	var arabic uint16 = 0
 
 	for _, numeral := range allRomanNumerals {
 		for strings.HasPrefix(roman, numeral.Symbol) {
@@ -114,17 +113,14 @@ func ConvertToArabic(roman string) int {
 }
 
 func TestPropertiesOfConversion(t *testing.T) {
-	assertion := func(arabic int) bool {
+	assertion := func(arabic uint16) bool {
 
-		// We used int as our input but:
-		// You can't do negative numbers with Roman Numerals
-		// Given our rule of a max of 3 consecutive symbols we can't represent a value greater than 3999
-		// and int has a much higher maximum value than 3999.
-		if arabic < 0 || arabic > 3999 {
-			log.Println(arabic)
+		// Go has types for unsigned integers, which means they cannot be negative
+		if arabic > 3999 {
 			return true
 		}
 
+		t.Log("testing", arabic)
 		roman := ConvertToRoman(arabic)
 		fromRoman := ConvertToArabic(roman)
 		return fromRoman == arabic
