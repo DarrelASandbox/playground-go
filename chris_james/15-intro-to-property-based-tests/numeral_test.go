@@ -126,7 +126,8 @@ func TestPropertiesOfConversion(t *testing.T) {
 		return fromRoman == arabic
 	}
 
-	if err := quick.Check(assertion, nil); err != nil {
+	// The default number of runs quick.Check performs is 100 but you can change that with a config.
+	if err := quick.Check(assertion, &quick.Config{MaxCount: 1000}); err != nil {
 		t.Error("failed checks", err)
 	}
 }
