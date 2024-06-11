@@ -19,6 +19,8 @@
   - [context.Value](#contextvalue)
 - [Property Based Tests](#property-based-tests)
   - [Domain of Roman Numerals](#domain-of-roman-numerals)
+- [Maths](#maths)
+  - [An SVG of a clock](#an-svg-of-a-clock)
 
 # shell
 
@@ -263,3 +265,33 @@ Property based tests help you do this by throwing random data at your code and v
 1. Can't have more than 3 consecutive symbols
 2. Only I (1), X (10) and C (100) can be "subtractors"
 3. Taking the result of `ConvertToRoman(N)` and passing it to `ConvertToArabic` should return us `N`
+
+# Maths
+
+## An SVG of a clock
+
+```svg
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg"
+     width="100%"
+     height="100%"
+     viewBox="0 0 300 300"
+     version="2.0">
+
+  <!-- bezel -->
+  <circle cx="150" cy="150" r="100" style="fill:#fff;stroke:#000;stroke-width:5px;"/>
+
+  <!-- hour hand -->
+  <line x1="150" y1="150" x2="114.150000" y2="132.260000"
+        style="fill:none;stroke:#000;stroke-width:7px;"/>
+
+  <!-- minute hand -->
+  <line x1="150" y1="150" x2="101.290000" y2="99.730000"
+        style="fill:none;stroke:#000;stroke-width:7px;"/>
+
+  <!-- second hand -->
+  <line x1="150" y1="150" x2="77.190000" y2="202.900000"
+        style="fill:none;stroke:#f00;stroke-width:3px;"/>
+</svg>
+```
