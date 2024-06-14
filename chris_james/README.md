@@ -21,6 +21,7 @@
   - [Domain of Roman Numerals](#domain-of-roman-numerals)
 - [Maths](#maths)
   - [An SVG of a clock](#an-svg-of-a-clock)
+  - [Floating Point Math](#floating-point-math)
 
 # shell
 
@@ -295,3 +296,15 @@ Property based tests help you do this by throwing random data at your code and v
         style="fill:none;stroke:#f00;stroke-width:3px;"/>
 </svg>
 ```
+
+## Floating Point Math
+
+- [0.30000000000000004](https://0.30000000000000004.com/)
+
+- There are two ways around this:
+  - Live with it
+  - Refactor our function by refactoring our equation
+
+Now (1) may not seem all that appealing, but it's often the only way to make floating point equality work. Being inaccurate by some infinitesimal fraction is frankly not going to matter for the purposes of drawing a clockface, so we could write a function that defines a 'close enough' equality for our angles. But there's a simple way we can get the accuracy back: we rearrange the equation so that we're no longer dividing down and then multiplying up. We can do it all by just dividing.
+
+So instead of `numberOfSeconds * π / 30` we can write `π / (30 / numberOfSeconds)`
