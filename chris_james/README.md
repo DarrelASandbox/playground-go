@@ -22,6 +22,7 @@
 - [Maths](#maths)
   - [An SVG of a clock](#an-svg-of-a-clock)
   - [Floating Point Math](#floating-point-math)
+  - [A note on dividing by zero](#a-note-on-dividing-by-zero)
 
 # shell
 
@@ -308,3 +309,28 @@ Property based tests help you do this by throwing random data at your code and v
 Now (1) may not seem all that appealing, but it's often the only way to make floating point equality work. Being inaccurate by some infinitesimal fraction is frankly not going to matter for the purposes of drawing a clockface, so we could write a function that defines a 'close enough' equality for our angles. But there's a simple way we can get the accuracy back: we rearrange the equation so that we're no longer dividing down and then multiplying up. We can do it all by just dividing.
 
 So instead of `numberOfSeconds * π / 30` we can write `π / (30 / numberOfSeconds)`
+
+## A note on dividing by zero
+
+Computers often don't like dividing by zero because infinity is a bit strange.
+
+```go
+package main
+
+import (
+	"fmt"
+	"math"
+)
+
+func main() {
+	fmt.Println(secondsinradians())
+}
+
+func zero() float64 {
+	return 0.0
+}
+
+func secondsinradians() float64 {
+	return (math.Pi / (30 / (float64(zero()))))
+}
+```
