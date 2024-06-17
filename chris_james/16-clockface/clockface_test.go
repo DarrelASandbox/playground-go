@@ -2,6 +2,7 @@ package clockface
 
 import (
 	"math"
+	"math/big"
 	"testing"
 	"time"
 )
@@ -35,14 +36,6 @@ func TestSecondsInRadian(t *testing.T) {
 	}
 }
 
-func simpleTime(hours, minutes, seconds int) time.Time {
-	return time.Date(312, time.October, 28, hours, minutes, seconds, 0, time.UTC)
-}
-
-func testName(t time.Time) string {
-	return t.Format("15:04:05")
-}
-
 func TestSecondHandPoint(t *testing.T) {
 	cases := []struct {
 		time  time.Time
@@ -60,6 +53,35 @@ func TestSecondHandPoint(t *testing.T) {
 			}
 		})
 	}
+}
+
+func TestBigFloatSecondHandPoint(t *testing.T) {
+	t.Skip("Skipping this very big number test")
+
+	cases := []struct {
+		time  time.Time
+		point BigPoint
+	}{
+		{simpleTime(0, 0, 30), BigPoint{big.NewFloat(0), big.NewFloat(-1)}},
+		{simpleTime(0, 0, 45), BigPoint{big.NewFloat(-1), big.NewFloat(0)}},
+	}
+
+	for _, c := range cases {
+		t.Run(testName(c.time), func(t *testing.T) {
+			got := bigFloatSecondHandPoint(c.time)
+			if got.X.Cmp(c.point.X) != 0 || got.Y.Cmp(c.point.Y) != 0 {
+				t.Fatalf("Wanted %v Point, but got %v", c.point, got)
+			}
+		})
+	}
+}
+
+func simpleTime(hours, minutes, seconds int) time.Time {
+	return time.Date(312, time.October, 28, hours, minutes, seconds, 0, time.UTC)
+}
+
+func testName(t time.Time) string {
+	return t.Format("15:04:05")
 }
 
 func roughlyEqualFloat64(a, b float64) bool {
