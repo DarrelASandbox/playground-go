@@ -11,10 +11,17 @@ type Point struct {
 	Y float64
 }
 
-// SecondHand is the unit vector of the second hand of an analogue clock at time `t`
-// represented as a Point
+/*
+1. Scale it to the length of the hand
+2. Flip it over the X axis to account for the SVG having an origin in the top left hand corner
+3. Translate it to the right position (so that it's coming from an origin of (150,150))
+*/
 func SecondHand(t time.Time) Point {
-	return Point{150, 60}
+	p := secondHandPoint(t)
+	p = Point{p.X * 90, p.Y * 90}   // scale
+	p = Point{p.X, -p.Y}            // flip
+	p = Point{p.X + 150, p.Y + 150} // translate
+	return p
 }
 
 func secondsInRadian(t time.Time) float64 {
