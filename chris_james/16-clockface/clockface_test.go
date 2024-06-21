@@ -55,12 +55,20 @@ func TestSecondHandPoint(t *testing.T) {
 	}
 }
 
+/*
+Sixty seconds in a minute
+thirty minutes in a half turn of the circle (math.Pi radians)
+so 30 * 60 seconds in a half turn.
+So if the time is 7 seconds past the hour ...
+... we're expecting to see the minute hand at 7 * (math.Pi / (30 * 60)) radians past the 12.
+*/
 func TestMinuteHandInRadian(t *testing.T) {
 	cases := []struct {
 		time  time.Time
 		angle float64
 	}{
 		{simpleTime(0, 30, 0), math.Pi},
+		{simpleTime(0, 0, 7), 7 * (math.Pi / (30 * 60))},
 	}
 
 	for _, c := range cases {
