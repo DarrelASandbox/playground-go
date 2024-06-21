@@ -63,6 +63,36 @@ func TestSVGWriterSecondHand(t *testing.T) {
 	}
 }
 
+/*
+FAIL: TestSVGWriterMinuteHand/00:00:00 (0.00s)
+
+	clockface_acceptance_test.go:83:
+		Expected to find the minute hand line {X1:150 Y1:150 X2:150 Y2:70},
+		in the SVG lines [{X1:150 Y1:150 X2:150 Y2:60}]
+*/
+func TestSVGWriterMinuteHand(t *testing.T) {
+	cases := []struct {
+		time time.Time
+		line Line
+	}{
+		{simpleTime(0, 0, 0), Line{150, 150, 150, 70}},
+	}
+
+	for _, c := range cases {
+		t.Run(testName(c.time), func(t *testing.T) {
+			b := bytes.Buffer{}
+			clockface.SVGWriter(&b, c.time)
+
+			svg := SVG{}
+			xml.Unmarshal(b.Bytes(), &svg)
+
+			if !containsLine(c.line, svg.Line) {
+				t.Errorf("Expected to find the minute hand line %+v, in the SVG lines %+v", c.line, svg.Line)
+			}
+		})
+	}
+}
+
 func containsLine(l Line, ls []Line) bool {
 	for _, line := range ls {
 		if line == l {
