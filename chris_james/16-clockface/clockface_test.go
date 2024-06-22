@@ -10,7 +10,7 @@ import (
 func TestSecondsInRadian(t *testing.T) {
 	thirtySeconds := time.Date(312, time.October, 28, 0, 0, 30, 0, time.UTC)
 	want := math.Pi
-	got := secondsInRadian(thirtySeconds)
+	got := secondsInRadians(thirtySeconds)
 
 	if want != got {
 		t.Fatalf("Wanted %v radians, but got %v", want, got)
@@ -28,7 +28,7 @@ func TestSecondsInRadian(t *testing.T) {
 
 	for _, c := range cases {
 		t.Run(testName(c.time), func(t *testing.T) {
-			got := secondsInRadian(c.time)
+			got := secondsInRadians(c.time)
 			if got != c.angle {
 				t.Fatalf("Wanted %v radians, but got %v", c.angle, got)
 			}
@@ -87,6 +87,7 @@ func TestMinuteHandPoint(t *testing.T) {
 		point Point
 	}{
 		{simpleTime(0, 30, 0), Point{0, -1}},
+		{simpleTime(0, 45, 0), Point{-1, 0}},
 	}
 
 	for _, c := range cases {
