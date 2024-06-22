@@ -81,6 +81,24 @@ func TestMinuteHandInRadian(t *testing.T) {
 	}
 }
 
+func TestMinuteHandPoint(t *testing.T) {
+	cases := []struct {
+		time  time.Time
+		point Point
+	}{
+		{simpleTime(0, 30, 0), Point{0, -1}},
+	}
+
+	for _, c := range cases {
+		t.Run(testName(c.time), func(t *testing.T) {
+			got := minuteHandPoint(c.time)
+			if !roughlyEqualPoint(got, c.point) {
+				t.Fatalf("Wanted %v Point, but got %v", c.point, got)
+			}
+		})
+	}
+}
+
 func TestBigFloatSecondHandPoint(t *testing.T) {
 	t.Skip("Skipping this very big number test")
 
