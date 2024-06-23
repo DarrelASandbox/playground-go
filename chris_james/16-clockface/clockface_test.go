@@ -36,7 +36,7 @@ func TestSecondsInRadians(t *testing.T) {
 	}
 }
 
-func TestSecondsHandPoint(t *testing.T) {
+func TestSecondHandPoint(t *testing.T) {
 	cases := []struct {
 		time  time.Time
 		point Point
@@ -83,7 +83,7 @@ so 30 * 60 seconds in a half turn.
 So if the time is 7 seconds past the hour ...
 ... we're expecting to see the minute hand at 7 * (math.Pi / (30 * 60)) radians past the 12.
 */
-func TestMinutesHandInRadians(t *testing.T) {
+func TestMinutesInRadians(t *testing.T) {
 	cases := []struct {
 		time  time.Time
 		angle float64
@@ -102,7 +102,7 @@ func TestMinutesHandInRadians(t *testing.T) {
 	}
 }
 
-func TestMinutesHandPoint(t *testing.T) {
+func TestMinuteHandPoint(t *testing.T) {
 	cases := []struct {
 		time  time.Time
 		point Point
@@ -121,7 +121,7 @@ func TestMinutesHandPoint(t *testing.T) {
 	}
 }
 
-func TestHoursHandInRadians(t *testing.T) {
+func TestHoursInRadians(t *testing.T) {
 	cases := []struct {
 		time  time.Time
 		angle float64
