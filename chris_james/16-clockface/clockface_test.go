@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-func TestSecondsInRadian(t *testing.T) {
+func TestSecondsInRadians(t *testing.T) {
 	thirtySeconds := time.Date(312, time.October, 28, 0, 0, 30, 0, time.UTC)
 	want := math.Pi
 	got := secondsInRadians(thirtySeconds)
@@ -36,7 +36,7 @@ func TestSecondsInRadian(t *testing.T) {
 	}
 }
 
-func TestSecondHandPoint(t *testing.T) {
+func TestSecondsHandPoint(t *testing.T) {
 	cases := []struct {
 		time  time.Time
 		point Point
@@ -62,7 +62,7 @@ so 30 * 60 seconds in a half turn.
 So if the time is 7 seconds past the hour ...
 ... we're expecting to see the minute hand at 7 * (math.Pi / (30 * 60)) radians past the 12.
 */
-func TestMinuteHandInRadian(t *testing.T) {
+func TestMinutesHandInRadians(t *testing.T) {
 	cases := []struct {
 		time  time.Time
 		angle float64
@@ -81,7 +81,7 @@ func TestMinuteHandInRadian(t *testing.T) {
 	}
 }
 
-func TestMinuteHandPoint(t *testing.T) {
+func TestMinutesHandPoint(t *testing.T) {
 	cases := []struct {
 		time  time.Time
 		point Point
@@ -100,7 +100,7 @@ func TestMinuteHandPoint(t *testing.T) {
 	}
 }
 
-func TestBigFloatSecondHandPoint(t *testing.T) {
+func TestBigFloatSecondsHandPoint(t *testing.T) {
 	t.Skip("Skipping this very big number test")
 
 	cases := []struct {
@@ -116,6 +116,24 @@ func TestBigFloatSecondHandPoint(t *testing.T) {
 			got := bigFloatSecondHandPoint(c.time)
 			if got.X.Cmp(c.point.X) != 0 || got.Y.Cmp(c.point.Y) != 0 {
 				t.Fatalf("Wanted %v Point, but got %v", c.point, got)
+			}
+		})
+	}
+}
+
+func TestHoursHandInRadians(t *testing.T) {
+	cases := []struct {
+		time  time.Time
+		angle float64
+	}{
+		{simpleTime(6, 0, 0), math.Pi},
+	}
+
+	for _, c := range cases {
+		t.Run(testName(c.time), func(t *testing.T) {
+			got := hoursInRadians(c.time)
+			if got != c.angle {
+				t.Fatalf("Wanted %v radians, but got %v", c.angle, got)
 			}
 		})
 	}
