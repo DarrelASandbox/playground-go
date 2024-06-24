@@ -4,7 +4,7 @@ import (
 	"os"
 	"time"
 
-	clockface "github.com/DarrelASandbox/playground-go/chris_james/16-clockface"
+	svg "github.com/DarrelASandbox/playground-go/chris_james/16-clockface/svg"
 )
 
 /*
@@ -17,5 +17,5 @@ cd ..
 
 func main() {
 	t := time.Now()
-	clockface.SVGWriter(os.Stdout, t)
+	svg.SVGWriter(os.Stdout, t)
 }

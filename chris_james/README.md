@@ -23,6 +23,7 @@
   - [An SVG of a clock](#an-svg-of-a-clock)
   - [Floating Point Math](#floating-point-math)
   - [A note on dividing by zero](#a-note-on-dividing-by-zero)
+  - [The Most Valuable Test](#the-most-valuable-test)
 
 # shell
 
@@ -54,6 +55,9 @@ go vet
 
 # Run tests with verbose output
 go test -v
+
+# To run all tests in a Go project, including those in subdirectories
+go test ./...
 ```
 
 It is important to question the value of your tests. It should not be a goal to have as many tests as possible, but rather to have as much confidence as possible in your code base. Having too many tests can turn in to a real problem and it just adds more overhead in maintenance. Every test has a cost.
@@ -336,3 +340,11 @@ func secondsinradians() float64 {
 	return (math.Pi / (30 / (float64(zero()))))
 }
 ```
+
+## The Most Valuable Test
+
+The most sophisticated code for handling SVGs in our project is found in our test code, not in the application code. This might feel uncomfortable, prompting us to consider using a text/template, an XML library, or an SVG library to refactor our code. However, the critical aspect is not how we produce the SVG but ensuring that the output is a valid SVG.
+
+The test code needs to understand SVGs thoroughly to ensure our output is correct. While it might seem excessive to invest significant time in these SVG tests, this effort is crucial. These tests, which involve importing an XML library, parsing XML, and refactoring structs, are highly valuable. They ensure our SVG output remains valid regardless of the production code changes.
+
+Tests are not secondary; they are essential and often more enduring than the code they test. Investing time in writing good tests is worthwhile and should never be seen as spending 'too much time.' It's an investment in the quality and reliability of our codebase.

@@ -1,4 +1,4 @@
-package clockface
+package clockface_big
 
 import (
 	"math"
@@ -22,7 +22,7 @@ func bigFloatSecondsInRadian(t time.Time) *big.Float {
 	return angleFloat
 }
 
-func bigFloatSecondHandPoint(t time.Time) BigPoint {
+func BigFloatSecondHandPoint(t time.Time) BigPoint {
 	angle := bigFloatSecondsInRadian(t)
 	sin := bigFloatSin(angle)
 	cos := bigFloatCos(angle)

@@ -1,10 +1,13 @@
-package clockface
+package clockface_test
 
 import (
 	"math"
 	"math/big"
 	"testing"
 	"time"
+
+	. "github.com/DarrelASandbox/playground-go/chris_james/16-clockface"
+	. "github.com/DarrelASandbox/playground-go/chris_james/16-clockface/clockface_big"
 )
 
 func TestSecondsInRadians(t *testing.T) {
@@ -20,7 +23,7 @@ func TestSecondsInRadians(t *testing.T) {
 
 	for _, c := range cases {
 		t.Run(testName(c.time), func(t *testing.T) {
-			got := secondsInRadians(c.time)
+			got := SecondsInRadians(c.time)
 			if !roughlyEqualFloat64(got, c.angle) {
 				t.Fatalf("Wanted %v radians, but got %v", c.angle, got)
 			}
@@ -39,7 +42,7 @@ func TestSecondHandPoint(t *testing.T) {
 
 	for _, c := range cases {
 		t.Run(testName(c.time), func(t *testing.T) {
-			got := secondHandPoint(c.time)
+			got := SecondHandPoint(c.time)
 			if !roughlyEqualPoint(got, c.point) {
 				t.Fatalf("Wanted %v Point, but got %v", c.point, got)
 			}
@@ -54,13 +57,13 @@ func TestBigFloatSecondsHandPoint(t *testing.T) {
 		time  time.Time
 		point BigPoint
 	}{
-		{simpleTime(0, 0, 30), BigPoint{big.NewFloat(0), big.NewFloat(-1)}},
-		{simpleTime(0, 0, 45), BigPoint{big.NewFloat(-1), big.NewFloat(0)}},
+		{simpleTime(0, 0, 30), BigPoint{X: big.NewFloat(0), Y: big.NewFloat(-1)}},
+		{simpleTime(0, 0, 45), BigPoint{X: big.NewFloat(-1), Y: big.NewFloat(0)}},
 	}
 
 	for _, c := range cases {
 		t.Run(testName(c.time), func(t *testing.T) {
-			got := bigFloatSecondHandPoint(c.time)
+			got := BigFloatSecondHandPoint(c.time)
 			if got.X.Cmp(c.point.X) != 0 || got.Y.Cmp(c.point.Y) != 0 {
 				t.Fatalf("Wanted %v Point, but got %v", c.point, got)
 			}
@@ -86,7 +89,7 @@ func TestMinutesInRadians(t *testing.T) {
 
 	for _, c := range cases {
 		t.Run(testName(c.time), func(t *testing.T) {
-			got := minutesInRadians(c.time)
+			got := MinutesInRadians(c.time)
 			if !roughlyEqualFloat64(got, c.angle) {
 				t.Fatalf("Wanted %v radians, but got %v", c.angle, got)
 			}
@@ -105,7 +108,7 @@ func TestMinuteHandPoint(t *testing.T) {
 
 	for _, c := range cases {
 		t.Run(testName(c.time), func(t *testing.T) {
-			got := minuteHandPoint(c.time)
+			got := MinuteHandPoint(c.time)
 			if !roughlyEqualPoint(got, c.point) {
 				t.Fatalf("Wanted %v Point, but got %v", c.point, got)
 			}
@@ -126,7 +129,7 @@ func TestHoursInRadians(t *testing.T) {
 
 	for _, c := range cases {
 		t.Run(testName(c.time), func(t *testing.T) {
-			got := hoursInRadians(c.time)
+			got := HoursInRadians(c.time)
 			if !roughlyEqualFloat64(got, c.angle) {
 				t.Fatalf("Wanted %v radians, but got %v", c.angle, got)
 			}
@@ -145,7 +148,7 @@ func TestHourHandPoint(t *testing.T) {
 
 	for _, c := range cases {
 		t.Run(testName(c.time), func(t *testing.T) {
-			got := hourHandPoint(c.time)
+			got := HourHandPoint(c.time)
 			if !roughlyEqualPoint(got, c.point) {
 				t.Fatalf("Wanted %v Point, but got %v", c.point, got)
 			}
