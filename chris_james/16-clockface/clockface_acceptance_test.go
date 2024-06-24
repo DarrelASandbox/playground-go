@@ -86,13 +86,6 @@ func TestSVGWriterMinuteHand(t *testing.T) {
 	}
 }
 
-/*
---- FAIL: TestSVGWriteHourHand/06:00:00 (0.00s)
-
-	clockface_acceptance_test.go:106:
-		Expected to find the hour hand line {X1:150 Y1:150 X2:150 Y2:200}, in the SVG lines [{X1:150 Y1:150 X2:150 Y2:60} {X1:150 Y1:150 X2:150 Y2:70}]
-*/
-/*
 func TestSVGWriteHourHand(t *testing.T) {
 	cases := []struct {
 		time time.Time
@@ -115,7 +108,6 @@ func TestSVGWriteHourHand(t *testing.T) {
 		})
 	}
 }
-*/
 
 func containsLine(l Line, ls []Line) bool {
 	for _, line := range ls {
