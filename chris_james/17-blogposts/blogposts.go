@@ -5,6 +5,7 @@ import (
 )
 
 type Post struct {
+	Title string
 }
 
 /*
