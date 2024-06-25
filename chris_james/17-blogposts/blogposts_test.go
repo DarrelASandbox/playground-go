@@ -8,11 +8,20 @@ By appending `_test` to our intended package name, we only access exported membe
 package blogposts_test
 
 import (
+	"errors"
+	"io/fs"
 	"testing"
 	"testing/fstest"
 
 	blogposts "github.com/DarrelASandbox/playground-go/chris_james/17-blogposts"
 )
+
+type StubFailingFS struct {
+}
+
+func (s StubFailingFS) Open(name string) (fs.File, error) {
+	return nil, errors.New("oh no, i always fail")
+}
 
 // A MapFS is a simple in-memory file system for use in tests, represented as a map from path names (arguments to Open) to information about the files or directories they represent.
 func TestNewBlogPosts(t *testing.T) {
@@ -21,7 +30,12 @@ func TestNewBlogPosts(t *testing.T) {
 		"hello-world2.md": {Data: []byte("hola")},
 	}
 
-	posts := blogposts.NewPostsFromFS(fs)
+	// posts, err := blogposts.NewPostsFromFS(StubFailingFS{})
+	posts, err := blogposts.NewPostsFromFS(fs)
+
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	if len(posts) != len(fs) {
 		t.Errorf("got %d posts, wanted %d posts", len(posts), len(fs))
