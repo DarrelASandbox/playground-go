@@ -24,6 +24,12 @@
   - [Floating Point Math](#floating-point-math)
   - [A note on dividing by zero](#a-note-on-dividing-by-zero)
   - [The Most Valuable Test](#the-most-valuable-test)
+- [Reading Blogposts](#reading-blogposts)
+  - [File system abstractions introduced in Go 1.16](#file-system-abstractions-introduced-in-go-116)
+
+> **Write the test we want to see.** Think about how we'd like to use the code we're going to write from a consumer's point of view.
+>
+> Focus on what and why, but don't get distracted by how.
 
 # shell
 
@@ -348,3 +354,29 @@ The most sophisticated code for handling SVGs in our project is found in our tes
 The test code needs to understand SVGs thoroughly to ensure our output is correct. While it might seem excessive to invest significant time in these SVG tests, this effort is crucial. These tests, which involve importing an XML library, parsing XML, and refactoring structs, are highly valuable. They ensure our SVG output remains valid regardless of the production code changes.
 
 Tests are not secondary; they are essential and often more enduring than the code they test. Investing time in writing good tests is worthwhile and should never be seen as spending 'too much time.' It's an investment in the quality and reliability of our codebase.
+
+# Reading Blogposts
+
+```go
+var posts []blogposts.Post
+posts blogposts.NewPostsFromFS("some-folder")
+```
+
+- To write a test around this, we'd need some kind of test folder with some example posts in it. There's nothing terribly wrong with this, but you are making some trade-offs:
+  - for each test you may need to create new files to test a particular behavior
+  - some behavior will be challenging to test, such as failing to load files
+  - the tests will run a little slower because they will need to access the file system
+- We're also unnecessarily coupling ourselves to a specific implementation of the file system.
+
+## File system abstractions introduced in Go 1.16
+
+> [On the producer side of the interface, the new embed.FS type implements fs.FS, as does zip.Reader. The new os.DirFS function provides an implementation of fs.FS backed by a tree of operating system files.](https://go.dev/doc/go1.16#fs)
+
+If we use this interface, users of our package have a number of options baked-in to the standard library to use. Learning to leverage interfaces defined in Go's standard library (e.g. `io.fs`, `io.Reader`, `io.Writer`), is vital to writing loosely coupled packages. These packages can then be re-used in contexts different to those you imagined, with minimal fuss from your consumers.
+
+```go
+var posts []blogposts.Post
+posts = blogposts.NewPostsFromFS(someFS)
+```
+
+- [How to level up your TDD skills?](https://deniseyu.github.io/leveling-up-tdd/)
