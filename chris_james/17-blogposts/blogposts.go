@@ -18,15 +18,15 @@ Change the argument to our `NewPostsFromFS` function to accept the interface fro
 `fs.FS`: An interface for representing read-only file systems in a generic way, allowing for different implementations.
 `fstest.MapFS`: A specific implementation of fs.FS designed for testing, providing an in-memory file system.
 */
-func NewPostsFromFS(filesystem fs.FS) ([]Post, error) {
-	dir, err := fs.ReadDir(filesystem, ".")
+func NewPostsFromFS(fileSystem fs.FS) ([]Post, error) {
+	dir, err := fs.ReadDir(fileSystem, ".")
 	if err != nil {
 		return nil, err
 	}
 
 	var posts []Post
 	for _, f := range dir {
-		post, err := getPost(filesystem, f)
+		post, err := getPost(fileSystem, f.Name())
 		if err != nil {
 			return nil, err // @TODO: needs clarification, should we totally fail if one file fails? or just ignore?
 		}
@@ -46,8 +46,8 @@ Does newPost have to be coupled to an `fs.File`?
 Do we use all the methods and data from this type?
 What do we really need?
 */
-func getPost(fileSystem fs.FS, f fs.DirEntry) (Post, error) {
-	postFile, err := fileSystem.Open(f.Name())
+func getPost(fileSystem fs.FS, fileName string) (Post, error) {
+	postFile, err := fileSystem.Open(fileName)
 	if err != nil {
 		return Post{}, err
 	}
