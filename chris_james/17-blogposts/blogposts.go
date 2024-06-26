@@ -37,6 +37,15 @@ func NewPostsFromFS(filesystem fs.FS) ([]Post, error) {
 	return posts, nil
 }
 
+/*
+When you refactor out new functions or methods, take care and think about the arguments.
+You're designing here, and are free to think deeply about what is appropriate because you have passing tests.
+Think about coupling and cohesion. In this case you should ask yourself:
+
+Does newPost have to be coupled to an `fs.File`?
+Do we use all the methods and data from this type?
+What do we really need?
+*/
 func getPost(fileSystem fs.FS, f fs.DirEntry) (Post, error) {
 	postFile, err := fileSystem.Open(f.Name())
 	if err != nil {
@@ -47,7 +56,11 @@ func getPost(fileSystem fs.FS, f fs.DirEntry) (Post, error) {
 	return newPost(postFile)
 }
 
-func newPost(postFile fs.File) (Post, error) {
+/*
+In our case we only use it as an argument to io.ReadAll which needs an io.Reader.
+So we should loosen the coupling in our function and ask for an io.Reader.
+*/
+func newPost(postFile io.Reader) (Post, error) {
 	postData, err := io.ReadAll(postFile)
 	if err != nil {
 		return Post{}, err
