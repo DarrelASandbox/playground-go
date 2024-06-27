@@ -1,6 +1,7 @@
 package blogposts
 
 import (
+	"bufio"
 	"io"
 )
 
@@ -10,15 +11,16 @@ type Post struct {
 }
 
 /*
-In our case we only use it as an argument to io.ReadAll which needs an io.Reader.
-So we should loosen the coupling in our function and ask for an io.Reader.
+`bufio.Scanner` scans through data, line by line
 */
 func newPost(postFile io.Reader) (Post, error) {
-	postData, err := io.ReadAll(postFile)
-	if err != nil {
-		return Post{}, err
-	}
+	scanner := bufio.NewScanner(postFile)
 
-	post := Post{Title: string(postData)[7:]}
-	return post, nil
+	scanner.Scan()
+	titleLine := scanner.Text()
+
+	scanner.Scan()
+	descriptionLine := scanner.Text()
+
+	return Post{Title: titleLine[7:], Description: descriptionLine[13:]}, nil
 }
