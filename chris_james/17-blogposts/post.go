@@ -2,6 +2,8 @@ package blogposts
 
 import (
 	"bufio"
+	"bytes"
+	"fmt"
 	"io"
 	"strings"
 )
@@ -21,7 +23,18 @@ const (
 
 /*
 `bufio.Scanner` scans through data, line by line
-Separating the what from the how of reading lines to make the code a little more declarative to the reader.
+
+Scan the next line to ignore the --- separator.
+Keep scanning until there's nothing left to scan.
+
+`scanner.Scan()` returns a `bool` which indicates whether there's more data to scan,
+so we can use that with a `for` loop to keep reading through the data until the end.
+
+After every `Scan()` we write the data into the buffer using `fmt.Fprintln`.
+We use the version that adds a newline because the scanner removes the newlines from each line,
+but we need to maintain them.
+
+Because of the above, we need to trim the final newline, so we don't have a trailing one.
 */
 func newPost(postFile io.Reader) (Post, error) {
 	scanner := bufio.NewScanner(postFile)
@@ -31,9 +44,23 @@ func newPost(postFile io.Reader) (Post, error) {
 		return strings.TrimPrefix(scanner.Text(), tagName)
 	}
 
+	title := readMetaLine(titleSeparator)
+	description := readMetaLine(descriptionSeparator)
+	tags := strings.Split(readMetaLine(tagSeparator), ", ")
+
+	scanner.Scan() // ignore a line
+	buf := bytes.Buffer{}
+
+	for scanner.Scan() {
+		fmt.Fprintln(&buf, scanner.Text())
+	}
+
+	body := strings.TrimSuffix(buf.String(), "\n")
+
 	return Post{
-		Title:       readMetaLine(titleSeparator),
-		Description: readMetaLine(descriptionSeparator),
-		Tags:        strings.Split(readMetaLine(tagSeparator), ", "),
+		Title:       title,
+		Description: description,
+		Tags:        tags,
+		Body:        body,
 	}, nil
 }
