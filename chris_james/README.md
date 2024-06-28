@@ -26,6 +26,8 @@
   - [The Most Valuable Test](#the-most-valuable-test)
 - [Reading Blogposts](#reading-blogposts)
   - [File system abstractions introduced in Go 1.16](#file-system-abstractions-introduced-in-go-116)
+  - [Additional Implementation Details](#additional-implementation-details)
+  - [Further Reading](#further-reading)
 
 > **Write the test we want to see.** Think about how we'd like to use the code we're going to write from a consumer's point of view.
 >
@@ -380,3 +382,15 @@ posts = blogposts.NewPostsFromFS(someFS)
 ```
 
 - [How to level up your TDD skills?](https://deniseyu.github.io/leveling-up-tdd/)
+
+## Additional Implementation Details
+
+- Need to handle:
+  - when the file's format is not correct
+  - the file is not a `.md`
+  - what if the order of the metadata fields is different? Should that be allowed? Should we be able to handle it?
+
+## Further Reading
+
+- [A Tour of Go 1.16's io/fs package](https://benjamincongdon.me/blog/2021/01/21/A-Tour-of-Go-116s-iofs-package/)
+- [io/fs: add file system interfaces #41190](https://github.com/golang/go/issues/41190)
