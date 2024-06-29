@@ -16,7 +16,6 @@ func TestReader(t *testing.T) {
 			Tags:        []string{"go", "tdd"},
 		}
 	)
-
 	t.Run("it converts a single post into HTML", func(t *testing.T) {
 		buf := bytes.Buffer{}
 		err := blog_renderer.Render(&buf, aPost)
@@ -26,7 +25,8 @@ func TestReader(t *testing.T) {
 		}
 
 		got := buf.String()
-		want := `<h1>hello world</h1>`
+		want := `<h1>hello world</h1><p>This is a description</p>Tags: <ul><li>go</li><li>tdd</li></ul>`
+
 		if got != want {
 			t.Errorf("got '%s' want '%s'", got, want)
 		}
