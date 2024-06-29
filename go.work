@@ -40,4 +40,5 @@ use (
 	./chris_james/15-intro-to-property-based-tests
 	./chris_james/16-clockface
 	./chris_james/17-blogposts
+	./chris_james/18-templating
 )
