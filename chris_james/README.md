@@ -28,6 +28,9 @@
   - [File system abstractions introduced in Go 1.16](#file-system-abstractions-introduced-in-go-116)
   - [Additional Implementation Details](#additional-implementation-details)
   - [Further Reading](#further-reading)
+- [Templating](#templating)
+  - [Embed](#embed)
+  - [Approval Tests](#approval-tests)
 
 > **Write the test we want to see.** Think about how we'd like to use the code we're going to write from a consumer's point of view.
 >
@@ -394,3 +397,28 @@ posts = blogposts.NewPostsFromFS(someFS)
 
 - [A Tour of Go 1.16's io/fs package](https://benjamincongdon.me/blog/2021/01/21/A-Tour-of-Go-116s-iofs-package/)
 - [io/fs: add file system interfaces #41190](https://github.com/golang/go/issues/41190)
+
+# Templating
+
+## Embed
+
+> Package embed provides access to files embedded in the running Go program.
+> Go source files that import "embed" can use the //go:embed directive to initialize a variable of type string, []byte, or FS with the contents of files read from the package directory or subdirectories at compile time.
+
+Why would we want to use this? Well the alternative is that we can load our templates from a "normal" file system. However this means we'd have to make sure that the templates are in the correct file path wherever we want to use this software. In your job you may have various environments like development, staging and live. For this to work, you'd need to make sure your templates are copied to the correct place.
+
+With embed, the files are included in your Go program when you build it. This means once you've built your program (which you should only do once), the files are always available to you.
+
+What's handy is you can not only embed individual files, but also file systems; and that filesystem implements [`io/fs`](https://pkg.go.dev/io/fs) which means your code doesn't need to care what kind of file system it is working with.
+
+If you wish to use different templates depending on configuration though, you may wish to stick to loading templates from disk in the more conventional way.
+
+## Approval Tests
+
+- [approvals/go-approval-tests](https://github.com/approvals/go-approval-tests)
+
+> ApprovalTests allows for easy testing of larger objects, strings and anything else that can be saved to a file (images, sounds, CSV, etc...)
+
+The idea is similar to "golden" files, or snapshot testing. Rather than awkwardly maintaining strings within a test file, the approval tool can compare the output for you with an "approved" file you created. You then simply copy over the new version if you approve it. Re-run the test and you're back to green.
+
+- [Part 1/3 - Introducing the Gilded Rose kata and writing test cases using Approval Tests, Emily Bache](https://www.youtube.com/watch?v=zyM2Ep28ED8)
