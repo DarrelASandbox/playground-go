@@ -18,9 +18,16 @@ func TestReader(t *testing.T) {
 			Tags:        []string{"go", "tdd"},
 		}
 	)
+
+	postRenderer, err := blog_renderer.NewPostRenderer()
+
+	if err != nil {
+		t.Fatal(err)
+	}
+
 	t.Run("it converts a single post into HTML", func(t *testing.T) {
 		buf := bytes.Buffer{}
-		err := blog_renderer.Render(&buf, aPost)
+		err := postRenderer.Render(&buf, aPost)
 
 		if err != nil {
 			t.Fatal(err)
@@ -31,6 +38,7 @@ func TestReader(t *testing.T) {
 }
 
 // BenchmarkRender-8          33313             33963 ns/op
+// BenchmarkRender-8         489895              2414 ns/op
 func BenchmarkRender(b *testing.B) {
 	var (
 		aPost = blog_renderer.Post{
@@ -41,8 +49,14 @@ func BenchmarkRender(b *testing.B) {
 		}
 	)
 
+	postRenderer, err := blog_renderer.NewPostRenderer()
+
+	if err != nil {
+		b.Fatal(err)
+	}
+
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		blog_renderer.Render(io.Discard, aPost)
+		postRenderer.Render(io.Discard, aPost)
 	}
 }
