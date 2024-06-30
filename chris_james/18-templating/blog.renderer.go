@@ -4,6 +4,7 @@ import (
 	"embed"
 	"html/template"
 	"io"
+	"strings"
 )
 
 type Post struct {
@@ -66,9 +67,14 @@ We can't just loop through the `[]Post` and replace them in-memory because
 we still want the spaces displayed to the user in the anchors.
 */
 func (r *PostRenderer) RenderIndex(w io.Writer, posts []Post) error {
-	indexTemplate := `<ol>{{range .}}<li><a href="/post/{{.Title}}">{{.Title}}</a></li>{{end}}</ol>`
+	indexTemplate := `<ol>{{range .}}<li><a href="/post/{{sanitizeTitle .Title}}">{{.Title}}</a></li>{{end}}</ol>`
 
-	templ, err := template.New("index").Parse(indexTemplate)
+	templ, err := template.New("index").Funcs(template.FuncMap{
+		"sanitizeTitle": func(title string) string {
+			return strings.ToLower(strings.Replace(title, " ", "-", -1))
+		},
+	}).Parse(indexTemplate)
+
 	if err != nil {
 		return err
 	}

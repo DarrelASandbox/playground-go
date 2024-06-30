@@ -31,6 +31,7 @@
 - [Templating](#templating)
   - [Embed](#embed)
   - [Approval Tests](#approval-tests)
+  - [`template.FuncMap`](#templatefuncmap)
 
 > **Write the test we want to see.** Think about how we'd like to use the code we're going to write from a consumer's point of view.
 >
@@ -422,3 +423,19 @@ If you wish to use different templates depending on configuration though, you ma
 The idea is similar to "golden" files, or snapshot testing. Rather than awkwardly maintaining strings within a test file, the approval tool can compare the output for you with an "approved" file you created. You then simply copy over the new version if you approve it. Re-run the test and you're back to green.
 
 - [Part 1/3 - Introducing the Gilded Rose kata and writing test cases using Approval Tests, Emily Bache](https://www.youtube.com/watch?v=zyM2Ep28ED8)
+
+## `template.FuncMap`
+
+Before you parse a template you can add a `template.FuncMap` into your template, which allows you to define functions that can be called within your template. In this case we've made a `sanitizeTitle` function which we then call inside our template with `{{sanitizeTitle .Title}}`.
+
+This is a powerful feature, being able to send functions in to your template will allow you to do some very cool things, but, should you? Going back to the principles of Mustache and logic-less templates, why did they advocate for logic-less? **What is wrong with logic in templates?**
+
+As we've shown, in order to test our templates, we've had to introduce a whole different kind of testing.
+
+Imagine you introduce a function into a template which has a few different permutations of behaviour and edge cases, **how will you test it?** With this current design, your only means of testing this logic is by rendering HTML and comparing strings. This is not an easy or sane way of testing logic, and definitely not what you'd want for important business logic.
+
+Even though the approval tests technique has reduced the cost of maintaining these tests, they're still more expensive to maintain than most unit tests you'll write. They're still sensitive to any minor markup changes you might make, it's just we've made it easier to manage. We should still strive to architect our code so we don't have to write many tests around our templates, and try and separate concerns so any logic that doesn't need to live inside our rendering code is properly separated.
+
+What Mustache-influenced templating engines give you is a useful constraint, don't try to circumvent it too often; **don't go against the grain**. Instead, embrace the idea of view models, where you construct specific types that contain the data you need to render, in a way that's convenient for the templating language.
+
+This way, whatever important business logic you use to generate that bag of data can be unit tested separately, away from the messy world of HTML and templating.
