@@ -32,6 +32,9 @@
   - [Embed](#embed)
   - [Approval Tests](#approval-tests)
   - [`template.FuncMap`](#templatefuncmap)
+  - [Separating Concerns](#separating-concerns)
+    - [Add a method to Post and then call that in the template](#add-a-method-to-post-and-then-call-that-in-the-template)
+    - [Create a dedicated view model type, such as `PostViewModel` with exactly the data we need](#create-a-dedicated-view-model-type-such-as-postviewmodel-with-exactly-the-data-we-need)
 
 > **Write the test we want to see.** Think about how we'd like to use the code we're going to write from a consumer's point of view.
 >
@@ -439,3 +442,24 @@ Even though the approval tests technique has reduced the cost of maintaining the
 What Mustache-influenced templating engines give you is a useful constraint, don't try to circumvent it too often; **don't go against the grain**. Instead, embrace the idea of view models, where you construct specific types that contain the data you need to render, in a way that's convenient for the templating language.
 
 This way, whatever important business logic you use to generate that bag of data can be unit tested separately, away from the messy world of HTML and templating.
+
+## Separating Concerns
+
+### Add a method to Post and then call that in the template
+
+We can call methods in our templating code on the types we send, so we could add a `SanitizedTitle` method to `Post`. This would simplify the template and we could easily unit test this logic separately if we wish. This is probably the easiest solution, although not necessarily the simplest.
+
+A downside to this approach is that this is still view logic. It's not interesting to the rest of the system but it now becomes a part of the API for a core domain object. This kind of approach over time can lead to you creating [God Objects](https://en.wikipedia.org/wiki/God_object).
+
+### Create a dedicated view model type, such as `PostViewModel` with exactly the data we need
+
+```go
+type PostViewModel struct {
+  Title, SanitizeTitle, Description, Body string
+	Tags                                    []string
+}
+```
+
+A way to keep this clean would be to have a `func NewPostView(p Post) PostView` which would encapsulate the mapping. Callers of our code would have to map from `[]Post` to `[]PostView`, generating the `SanitizedTitle`.
+
+This would keep our rendering code logic-less and is probably the strictest separation of concerns we could do, but the trade-off is a slightly more convoluted process to get our posts rendered.
