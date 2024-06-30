@@ -35,6 +35,27 @@ func TestReader(t *testing.T) {
 
 		approvals.VerifyString(t, buf.String())
 	})
+
+	/*
+	   We're using the `Post`'s title field as a part of the path of the URL,
+	   but we don't really want spaces in the URL so we're replacing them with hyphens.
+	   We've added a `RenderIndex` method to our `PostRenderer` that again takes an `io.Writer` and a slice of `Post`.
+	*/
+	t.Run("it renders an index of posts", func(t *testing.T) {
+		buf := bytes.Buffer{}
+		posts := []blog_renderer.Post{{Title: "Hello World"}, {Title: "Hello World 2"}}
+
+		if err := postRenderer.RenderIndex(&buf, posts); err != nil {
+			t.Fatal(err)
+		}
+
+		got := buf.String()
+		want := `<ol><li><a href="/post/hello-world">Hello World</a></li><li><a href="/post/hello-world-2">Hello World 2</a></li></ol>`
+
+		if got != want {
+			t.Errorf("got %q want %q", got, want)
+		}
+	})
 }
 
 // BenchmarkRender-8          33313             33963 ns/op
