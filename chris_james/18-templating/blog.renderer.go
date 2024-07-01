@@ -44,42 +44,11 @@ func NewPostRenderer() (*PostRenderer, error) {
 }
 
 func (r *PostRenderer) Render(w io.Writer, p Post) error {
-	if err := r.templ.ExecuteTemplate(w, "blog.gohtml", p); err != nil {
-		return err
-	}
-
-	return nil
+	return r.templ.ExecuteTemplate(w, "blog.gohtml", p)
 }
 
-/*
-FAIL: TestReader/it_renders_an_index_of_posts (0.00s)
-
-	        blog.renderer_test.go:56: got
-					"<ol><li><a href=\"/post/Hello%20World\">Hello World</a></li><li><a href=\"/post/Hello%20World%202\">Hello World 2</a></li></ol>"
-					want
-					"<ol><li><a href=\"/post/hello-world\">Hello World</a></li><li><a href=\"/post/hello-world-2\">Hello World 2</a></li></ol>"
-*/
-
-/*
-You can see that the templating code is escaping the spaces in the `href` attributes.
-We need a way to do a string replace of spaces with hyphens.
-We can't just loop through the `[]Post` and replace them in-memory because
-we still want the spaces displayed to the user in the anchors.
-*/
 func (r *PostRenderer) RenderIndex(w io.Writer, posts []Post) error {
-	indexTemplate := `<ol>{{range .}}<li><a href="/post/{{.SanitizedTitle}}">{{.Title}}</a></li>{{end}}</ol>`
-
-	templ, err := template.New("index").Parse(indexTemplate)
-
-	if err != nil {
-		return err
-	}
-
-	if err := templ.Execute(w, posts); err != nil {
-		return err
-	}
-
-	return nil
+	return r.templ.ExecuteTemplate(w, "index.gohtml", posts)
 }
 
 // SanitizedTitle returns the title of the post with spaces replaced by dashes for pleasant URLs

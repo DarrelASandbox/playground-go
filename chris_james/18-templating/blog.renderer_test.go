@@ -5,13 +5,13 @@ import (
 	"io"
 	"testing"
 
-	blog_renderer "github.com/DarrelASandbox/playground-go/chris_james/18-templating"
+	blogRenderer "github.com/DarrelASandbox/playground-go/chris_james/18-templating"
 	approvals "github.com/approvals/go-approval-tests"
 )
 
 func TestReader(t *testing.T) {
 	var (
-		aPost = blog_renderer.Post{
+		aPost = blogRenderer.Post{
 			Title:       "hello world",
 			Body:        "This is a post",
 			Description: "This is a description",
@@ -19,7 +19,7 @@ func TestReader(t *testing.T) {
 		}
 	)
 
-	postRenderer, err := blog_renderer.NewPostRenderer()
+	postRenderer, err := blogRenderer.NewPostRenderer()
 
 	if err != nil {
 		t.Fatal(err)
@@ -43,18 +43,13 @@ func TestReader(t *testing.T) {
 	*/
 	t.Run("it renders an index of posts", func(t *testing.T) {
 		buf := bytes.Buffer{}
-		posts := []blog_renderer.Post{{Title: "Hello World"}, {Title: "Hello World 2"}}
+		posts := []blogRenderer.Post{{Title: "Hello World"}, {Title: "Hello World 2"}}
 
 		if err := postRenderer.RenderIndex(&buf, posts); err != nil {
 			t.Fatal(err)
 		}
 
-		got := buf.String()
-		want := `<ol><li><a href="/post/hello-world">Hello World</a></li><li><a href="/post/hello-world-2">Hello World 2</a></li></ol>`
-
-		if got != want {
-			t.Errorf("got %q want %q", got, want)
-		}
+		approvals.VerifyString(t, buf.String())
 	})
 }
 
@@ -62,7 +57,7 @@ func TestReader(t *testing.T) {
 // BenchmarkRender-8         489895              2414 ns/op
 func BenchmarkRender(b *testing.B) {
 	var (
-		aPost = blog_renderer.Post{
+		aPost = blogRenderer.Post{
 			Title:       "hello world",
 			Body:        "This is a post",
 			Description: "This is a description",
@@ -70,7 +65,7 @@ func BenchmarkRender(b *testing.B) {
 		}
 	)
 
-	postRenderer, err := blog_renderer.NewPostRenderer()
+	postRenderer, err := blogRenderer.NewPostRenderer()
 
 	if err != nil {
 		b.Fatal(err)
