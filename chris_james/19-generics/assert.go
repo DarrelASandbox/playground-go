@@ -2,24 +2,19 @@ package generics
 
 import "testing"
 
-/*
-Ideally, we don't want to have to make specific AssertX functions for every type we ever deal with.
-We'd like to be able to have one AssertEqual function that works with any type but
-does not let you compare apples and oranges.
-*/
-
-func AssertEqual(t *testing.T, got, want interface{}) {
+// Provide type parameters by describing the generic type and give it a label
+func AssertEqual[T comparable](t *testing.T, got, want T) {
 	t.Helper()
 	if got != want {
-		t.Errorf("got %d, want %d", got, want)
+		t.Errorf("got %v, want %v", got, want)
 	}
 }
 
-func AssertNotEqual(t *testing.T, got, want interface{}) {
+func AssertNotEqual[T comparable](t *testing.T, got, want T) {
 	t.Helper()
 	if got == want {
 		if got == want {
-			t.Errorf("didn't want %d", got)
+			t.Errorf("didn't want %v", got)
 		}
 	}
 }
