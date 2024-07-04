@@ -41,4 +41,5 @@ use (
 	./chris_james/16-clockface
 	./chris_james/17-blogposts
 	./chris_james/18-templating
+	./chris_james/19-generics
 )
