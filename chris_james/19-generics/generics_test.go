@@ -44,4 +44,15 @@ func TestStack(t *testing.T) {
 		AssertEqual(t, value, "123")
 		AssertTrue(t, myStackOfStrings.IsEmpty())
 	})
+
+	// invalid operation: operator + not defined on firstNum (variable of type interface{})
+	t.Run("interface stack is horrid", func(t *testing.T) {
+		myStackOfInts := new(StackOfInts)
+
+		myStackOfInts.Push(1)
+		myStackOfInts.Push(2)
+		firstNum, _ := myStackOfInts.Pop()
+		secondNum, _ := myStackOfInts.Pop()
+		AssertEqual(t, firstNum+secondNum, 3)
+	})
 }
