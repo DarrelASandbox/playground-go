@@ -1,8 +1,7 @@
-package generics
+package main
 
 import "testing"
 
-// Provide type parameters by describing the generic type and give it a label
 func AssertEqual[T comparable](t *testing.T, got, want T) {
 	t.Helper()
 	if got != want {
