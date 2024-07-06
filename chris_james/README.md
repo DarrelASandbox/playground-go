@@ -35,6 +35,8 @@
   - [Separating Concerns](#separating-concerns)
     - [Add a method to Post and then call that in the template](#add-a-method-to-post-and-then-call-that-in-the-template)
     - [Create a dedicated view model type, such as `PostViewModel` with exactly the data we need](#create-a-dedicated-view-model-type-such-as-postviewmodel-with-exactly-the-data-we-need)
+- [Generics And Arrays](#generics-and-arrays)
+  - [Functional Programming](#functional-programming)
 
 > **Write the test we want to see.** Think about how we'd like to use the code we're going to write from a consumer's point of view.
 >
@@ -463,3 +465,15 @@ type PostViewModel struct {
 A way to keep this clean would be to have a `func NewPostView(p Post) PostView` which would encapsulate the mapping. Callers of our code would have to map from `[]Post` to `[]PostView`, generating the `SanitizedTitle`.
 
 This would keep our rendering code logic-less and is probably the strictest separation of concerns we could do, but the trade-off is a slightly more convoluted process to get our posts rendered.
+
+# Generics And Arrays
+
+## Functional Programming
+
+> In functional programming, fold (also termed reduce, accumulate, aggregate, compress, or inject) refers to a family of higher-order functions that analyze a recursive data structure and through use of a given combining operation, recombine the results of recursively processing its constituent parts, building up a return value. Typically, a fold is presented with a combining function, a top node of a data structure, and possibly some default values to be used under certain conditions. The fold then proceeds to combine elements of the data structure's hierarchy, using the function in a systematic way.
+
+- [Fold (higher-order function)](<https://en.wikipedia.org/wiki/Fold_(higher-order_function)>)
+
+> **Don't conflate easiness, with simplicity.** Doing loops and copy-pasting code is easy, but it's not necessarily simple. For more on simple vs easy, watch [Rich Hickey's masterpiece of a talk - Simple Made Easy](https://www.youtube.com/watch?v=SxdOUGdseq4).
+
+> **Don't conflate unfamiliarity, with complexity.** Fold/reduce may initially sound scary and computer-sciencey but all it really is, is an abstraction over a very common operation. Taking a collection, and combining it into one item. When you step back, you'll realize you probably do this a lot.

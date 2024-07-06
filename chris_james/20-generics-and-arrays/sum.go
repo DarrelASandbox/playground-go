@@ -6,29 +6,42 @@ Recurring pattern:
 - Iterate over the collection, applying some kind of operation (or function) to the result and
   the next item in the slice, setting a new value for the result
 - Return the result.
+
+`Sum` and `SumAllTails` now describe the behavior of their computations as
+the functions declared on their first lines respectively.
+The act of running the computation on the collection is abstracted away in `Reduce`.
 */
 
 // Sum calculates the total from a slice of numbers.
 func Sum(numbers []int) int {
-	var sum int
-	for _, number := range numbers {
-		sum += number
-	}
-
-	return sum
+	add := func(acc, x int) int { return acc + x }
+	return Reduce(numbers, add, 0)
 }
 
 // SumAllTails calculates the sums of all but the first number given a collection of slices.
-func SumAllTails(numbersToSum ...[]int) []int {
-	var sums []int
-	for _, numbers := range numbersToSum {
-		if len(numbers) == 0 {
-			sums = append(sums, 0)
+func SumAllTails(numbers ...[]int) []int {
+	sumTail := func(acc, x []int) []int {
+		if len(x) == 0 {
+			return append(acc, 0)
 		} else {
-			tail := numbers[1:]
-			sums = append(sums, Sum(tail))
+			tail := x[1:]
+			return append(acc, Sum(tail))
 		}
 	}
 
-	return sums
+	return Reduce(numbers, sumTail, []int{})
+}
+
+/*
+`Reduce` captures the essence of the pattern, it's a function that takes a collection,
+an accumulating function, an initial value, and returns a single value.
+There's no messy distractions around concrete types.
+*/
+func Reduce[A any](collection []A, f func(A, A) A, initialValue A) A {
+	var result = initialValue
+	for _, x := range collection {
+		result = f(result, x)
+	}
+
+	return result
 }
