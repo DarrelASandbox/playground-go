@@ -37,6 +37,7 @@
     - [Create a dedicated view model type, such as `PostViewModel` with exactly the data we need](#create-a-dedicated-view-model-type-such-as-postviewmodel-with-exactly-the-data-we-need)
 - [Generics And Arrays](#generics-and-arrays)
   - [Functional Programming](#functional-programming)
+  - [Identity Element](#identity-element)
 
 > **Write the test we want to see.** Think about how we'd like to use the code we're going to write from a consumer's point of view.
 >
@@ -477,3 +478,9 @@ This would keep our rendering code logic-less and is probably the strictest sepa
 > **Don't conflate easiness, with simplicity.** Doing loops and copy-pasting code is easy, but it's not necessarily simple. For more on simple vs easy, watch [Rich Hickey's masterpiece of a talk - Simple Made Easy](https://www.youtube.com/watch?v=SxdOUGdseq4).
 
 > **Don't conflate unfamiliarity, with complexity.** Fold/reduce may initially sound scary and computer-sciencey but all it really is, is an abstraction over a very common operation. Taking a collection, and combining it into one item. When you step back, you'll realize you probably do this a lot.
+
+## Identity Element
+
+- [Identity Element](https://en.wikipedia.org/wiki/Identity_element)
+
+> In mathematics, an identity element, or neutral element, of a binary operation operating on a set is an element of the set which leaves unchanged every element of the set when the operation is applied.
