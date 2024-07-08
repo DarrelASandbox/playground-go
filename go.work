@@ -23,24 +23,24 @@ use (
 )
 
 use (
-	./chris_james/01-hello-world
-	./chris_james/02-integers
-	./chris_james/03-iteration
-	./chris_james/04-arrays-and-slices
-	./chris_james/05-structs-methods-interfaces
-	./chris_james/06-pointers-and-errors
-	./chris_james/07-maps
-	./chris_james/08-dependency-injection
-	./chris_james/09-mocking
-	./chris_james/10-concurrency
-	./chris_james/11-racer
-	./chris_james/12-reflection
-	./chris_james/13-sync
-	./chris_james/14-context
-	./chris_james/15-intro-to-property-based-tests
-	./chris_james/16-clockface
-	./chris_james/17-blogposts
-	./chris_james/18-templating
-	./chris_james/19-generics
-	./chris_james/20-generics-and-arrays
+	./chris_james/01-go-fundamentals/01-hello-world
+	./chris_james/01-go-fundamentals/02-integers
+	./chris_james/01-go-fundamentals/03-iteration
+	./chris_james/01-go-fundamentals/04-arrays-and-slices
+	./chris_james/01-go-fundamentals/05-structs-methods-interfaces
+	./chris_james/01-go-fundamentals/06-pointers-and-errors
+	./chris_james/01-go-fundamentals/07-maps
+	./chris_james/01-go-fundamentals/08-dependency-injection
+	./chris_james/01-go-fundamentals/09-mocking
+	./chris_james/01-go-fundamentals/10-concurrency
+	./chris_james/01-go-fundamentals/11-racer
+	./chris_james/01-go-fundamentals/12-reflection
+	./chris_james/01-go-fundamentals/13-sync
+	./chris_james/01-go-fundamentals/14-context
+	./chris_james/01-go-fundamentals/15-intro-to-property-based-tests
+	./chris_james/01-go-fundamentals/16-clockface
+	./chris_james/01-go-fundamentals/17-blogposts
+	./chris_james/01-go-fundamentals/18-templating
+	./chris_james/01-go-fundamentals/19-generics
+	./chris_james/01-go-fundamentals/20-generics-and-arrays
 )
