@@ -1,6 +1,9 @@
 package main
 
-import "testing"
+import (
+	"strings"
+	"testing"
+)
 
 func TestReduce(t *testing.T) {
 	/*
@@ -29,5 +32,24 @@ func TestFind(t *testing.T) {
 		firstEvenNumber, found := Find(numbers, func(x int) bool { return x%2 == 0 })
 		AssertTrue(t, found)
 		AssertEqual(t, firstEvenNumber, 2)
+	})
+
+	type Person struct {
+		Name string
+	}
+
+	t.Run("find the best programmer", func(t *testing.T) {
+		people := []Person{
+			{Name: "Kent Beck"},
+			{Name: "Martin Fowler"},
+			{Name: "Chris James"},
+		}
+
+		king, found := Find(people, func(p Person) bool {
+			return strings.Contains(p.Name, "Chris")
+		})
+
+		AssertTrue(t, found)
+		AssertEqual(t, king, Person{Name: "Chris James"})
 	})
 }
