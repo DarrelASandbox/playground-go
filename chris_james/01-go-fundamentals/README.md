@@ -1,6 +1,3 @@
-# TOC
-
-- [TOC](#toc)
 - [shell](#shell)
 - [Structs](#structs)
 - [Pointers](#pointers)

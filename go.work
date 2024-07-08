@@ -44,3 +44,7 @@ use (
 	./chris_james/01-go-fundamentals/19-generics
 	./chris_james/01-go-fundamentals/20-generics-and-arrays
 )
+
+use (
+	./chris_james/02-testing-fundamentals/gracefulshutdown
+)
