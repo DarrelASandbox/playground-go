@@ -4,7 +4,10 @@
   - [Benefits of acceptance tests](#benefits-of-acceptance-tests)
   - [Potential drawbacks vs unit tests](#potential-drawbacks-vs-unit-tests)
   - [High-level steps for the acceptance test](#high-level-steps-for-the-acceptance-test)
-- [`LaunchTestProgram`](#launchtestprogram)
+  - [`LaunchTestProgram`](#launchtestprogram)
+- [Scaling Acceptance Tests](#scaling-acceptance-tests)
+  - [Anatomy of bad acceptance tests](#anatomy-of-bad-acceptance-tests)
+  - [Tight coupling](#tight-coupling)
 
 # shell
 
@@ -55,10 +58,30 @@ go test -count=1 ./...
 - Before the server has a chance to send an HTTP response, send `SIGTERM`
 - See if we still get a response
 
-# `LaunchTestProgram`
+## `LaunchTestProgram`
 
 - building the program
 - launching the program
 - waiting for it to listen on port `8080`
 - providing a `cleanup` function to kill the program and delete it to ensure that when our tests finish, we're left in a clean state
 - providing an `interrupt` function to send the program a SIGTERM to let us test the behaviour
+
+# Scaling Acceptance Tests
+
+- [Dave Farley - How to write acceptance tests](https://www.youtube.com/watch?v=JDD5EEJgpHU)
+- [Nat Pryce - E2E functional tests that can run in milliseconds](https://www.youtube.com/watch?v=Fk4rCn4YLLU)
+- [Growing Object-Oriented Software Guided by Tests](www.growing-object-oriented-software.com)
+
+## Anatomy of bad acceptance tests
+
+- Slow to run
+- Brittle
+- Flaky
+- Expensive to maintain, and seem to make changing the software harder than it ought to be
+- Can only run in a particular environment, causing slow and poor feedback loops
+
+## Tight coupling
+
+- Think about what prompts acceptance tests to change:
+  - An external behavior change. If you want to change what the system does, changing the acceptance test suite seems reasonable, if not desirable.
+  - An implementation detail change / refactoring. Ideally, this shouldn't prompt a change, or if it does, a minor one.
