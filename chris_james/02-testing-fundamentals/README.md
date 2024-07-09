@@ -1,9 +1,17 @@
+- [shell](#shell)
 - [Introduction To Acceptance Tests](#introduction-to-acceptance-tests)
   - [What are they?](#what-are-they)
   - [Benefits of acceptance tests](#benefits-of-acceptance-tests)
   - [Potential drawbacks vs unit tests](#potential-drawbacks-vs-unit-tests)
   - [High-level steps for the acceptance test](#high-level-steps-for-the-acceptance-test)
 - [`LaunchTestProgram`](#launchtestprogram)
+
+# shell
+
+```sh
+# Run all tests, ignoring cached results
+go test -count=1 ./...
+```
 
 # Introduction To Acceptance Tests
 
