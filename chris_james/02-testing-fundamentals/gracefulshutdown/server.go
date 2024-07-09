@@ -27,6 +27,13 @@ type (
 	ServerOption func(server *Server)
 )
 
+// WithShutdownSignal allows you to listen to whatever signals you like, rather than the default ones defined in signal.go
+func WithShutdownSignal(shutdownSignal <-chan os.Signal) ServerOption {
+	return func(server *Server) {
+		server.shutdown = shutdownSignal
+	}
+}
+
 // NewServer returns a Server that can gracefully shutdown on shutdown signals.
 func NewServer(server HTTPServer, options ...ServerOption) *Server {
 	s := &Server{
