@@ -5,8 +5,10 @@ import (
 	"fmt"
 	"io"
 	"log"
+	"net/http"
 	"os"
 	"testing"
+	"time"
 
 	specs_greet "github.com/DarrelASandbox/playground-go/chris_james/02-testing-fundamentals/specs-greet"
 
@@ -58,6 +60,11 @@ func TestGreeterServer(t *testing.T) {
 		assert.NoError(t, container.Terminate(ctx))
 	})
 
-	driver := specs_greet.Driver{BaseURL: fmt.Sprintf("http://localhost:%s", mappedPort.Port())}
+	client := http.Client{Timeout: 1 * time.Second}
+
+	driver := specs_greet.Driver{
+		BaseURL: fmt.Sprintf("http://localhost:%s", mappedPort.Port()),
+		Client:  &client,
+	}
 	specifications.GreetSpecification(t, driver)
 }
