@@ -95,3 +95,12 @@ go test -count=1 ./...
 1. A **driver**. In this case, one works with an HTTP system by using an **HTTP client**. This code will know how to work with our API. Drivers translate DSLs into system-specific calls; in our case, the driver will implement the interface specifications define.
 2. An **HTTP server** with a greet API
 3. A **test**, which is responsible for managing the life-cycle of spinning up the server and then plugging the driver into the specification to run it as a test
+
+```sh
+go test -v ./cmd/httpserver -run TestGreeterServer
+
+# Test the Container Manually
+docker build -t greeter-server -f cmd/httpserver/Dockerfile .
+docker run -p 8080:8080 greeter-server
+curl http://localhost:8080/greet
+```
