@@ -11,4 +11,4 @@ COPY . .
 RUN go build -o svr cmd/httpserver/*.go
 
 EXPOSE 8080
-CMD [ "./svr" ]
+CMD ["./svr"]

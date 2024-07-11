@@ -97,7 +97,7 @@ go test -count=1 ./...
 3. A **test**, which is responsible for managing the life-cycle of spinning up the server and then plugging the driver into the specification to run it as a test
 
 ```sh
-go test -v ./cmd/httpserver -run TestGreeterServer
+go test -v ./cmd/httpserver
 
 # Test the Container Manually
 docker build -t greeter-server -f cmd/httpserver/Dockerfile .
