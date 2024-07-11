@@ -8,6 +8,8 @@
 - [Scaling Acceptance Tests](#scaling-acceptance-tests)
   - [Anatomy of bad acceptance tests](#anatomy-of-bad-acceptance-tests)
   - [Tight coupling](#tight-coupling)
+- [specifications](#specifications)
+  - [First system: HTTP API](#first-system-http-api)
 
 # shell
 
@@ -85,3 +87,11 @@ go test -count=1 ./...
 - Think about what prompts acceptance tests to change:
   - An external behavior change. If you want to change what the system does, changing the acceptance test suite seems reasonable, if not desirable.
   - An implementation detail change / refactoring. Ideally, this shouldn't prompt a change, or if it does, a minor one.
+
+# specifications
+
+## First system: HTTP API
+
+1. A **driver**. In this case, one works with an HTTP system by using an **HTTP client**. This code will know how to work with our API. Drivers translate DSLs into system-specific calls; in our case, the driver will implement the interface specifications define.
+2. An **HTTP server** with a greet API
+3. A **test**, which is responsible for managing the life-cycle of spinning up the server and then plugging the driver into the specification to run it as a test
