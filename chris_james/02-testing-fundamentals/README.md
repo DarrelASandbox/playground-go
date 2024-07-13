@@ -10,6 +10,7 @@
   - [Tight coupling](#tight-coupling)
 - [specifications](#specifications)
   - [First system: HTTP API](#first-system-http-api)
+    - [Adapter Pattern](#adapter-pattern)
 
 # shell
 
@@ -104,3 +105,7 @@ docker build -t greeter-server -f cmd/httpserver/Dockerfile .
 docker run -p 8080:8080 greeter-server
 curl http://localhost:8080/greet
 ```
+
+### Adapter Pattern
+
+> In software engineering, the adapter pattern is a software design pattern (also known as wrapper, an alternative naming shared with the decorator pattern) that allows the interface of an existing class to be used as another interface.[1] It is often used to make existing classes work with others without modifying their source code.
