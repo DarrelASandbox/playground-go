@@ -1,4 +1,4 @@
-package specs_greet
+package interactions
 
 import "fmt"
 

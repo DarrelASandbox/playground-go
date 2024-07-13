@@ -1,4 +1,4 @@
-package specs_greet
+package httpserver
 
 import (
 	"io"

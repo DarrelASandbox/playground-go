@@ -11,6 +11,8 @@
 - [specifications](#specifications)
   - [First system: HTTP API](#first-system-http-api)
     - [Adapter Pattern](#adapter-pattern)
+    - [Reflect](#reflect)
+    - [Complexity](#complexity)
 
 # shell
 
@@ -109,3 +111,19 @@ curl http://localhost:8080/greet
 ### Adapter Pattern
 
 > In software engineering, the adapter pattern is a software design pattern (also known as wrapper, an alternative naming shared with the decorator pattern) that allows the interface of an existing class to be used as another interface.[1] It is often used to make existing classes work with others without modifying their source code.
+
+### Reflect
+
+- Analyze your problem and identify a slight improvement to your system that pushes you in the right direction
+- Capture the new essential complexity in a specification
+- Follow the compilation errors until the AT runs
+- Update your implementation to make the system behave according to the specification
+- Refactor
+
+### Complexity
+
+In the context of Go testing, **essential complexity** refers to the inherent challenges and intricacies that arise directly from the problem you're trying to solve. This includes the logic of the tests, the conditions you need to cover, and the actual behavior of the system under test. For example, if you're testing a complex algorithm or a system with many interdependent components, the complexity of ensuring all paths are tested correctly is essential.
+
+**Accidental complexity**, on the other hand, arises from the tools, frameworks, or practices used to implement the tests, rather than from the problem itself. In Go, this could include difficulties with setting up the test environment, managing dependencies, or dealing with limitations or quirks in the testing framework. For instance, if your tests are hard to write or maintain because of the way the test setup is structured, that’s accidental complexity.
+
+The goal in Go testing, as with any testing, is to minimize accidental complexity so that you can focus on the essential complexity—ensuring your code works correctly under all necessary conditions. Go's standard testing package is designed to keep accidental complexity low by providing simple and effective tools for writing tests.

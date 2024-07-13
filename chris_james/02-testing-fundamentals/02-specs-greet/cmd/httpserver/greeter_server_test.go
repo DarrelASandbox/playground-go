@@ -10,8 +10,7 @@ import (
 	"testing"
 	"time"
 
-	specs_greet "github.com/DarrelASandbox/playground-go/chris_james/02-testing-fundamentals/specs-greet"
-
+	"github.com/DarrelASandbox/playground-go/chris_james/02-testing-fundamentals/specs-greet/adapters/httpserver"
 	"github.com/DarrelASandbox/playground-go/chris_james/02-testing-fundamentals/specs-greet/specifications"
 	"github.com/alecthomas/assert/v2"
 	"github.com/testcontainers/testcontainers-go"
@@ -62,7 +61,7 @@ func TestGreeterServer(t *testing.T) {
 
 	client := http.Client{Timeout: 1 * time.Second}
 
-	driver := specs_greet.Driver{
+	driver := httpserver.Driver{
 		BaseURL: fmt.Sprintf("http://localhost:%s", mappedPort.Port()),
 		Client:  &client,
 	}
