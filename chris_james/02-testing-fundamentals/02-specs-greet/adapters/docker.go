@@ -6,7 +6,7 @@ import (
 	"log"
 	"testing"
 
-	"github.com/DarrelASandbox/playground-go/chris_james/02-testing-fundamentals/gracefulshutdown/assert"
+	"github.com/alecthomas/assert/v2"
 	"github.com/docker/go-connections/nat"
 	"github.com/testcontainers/testcontainers-go"
 	"github.com/testcontainers/testcontainers-go/wait"
