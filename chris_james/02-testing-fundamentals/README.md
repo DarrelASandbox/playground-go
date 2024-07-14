@@ -8,18 +8,28 @@
 - [Scaling Acceptance Tests](#scaling-acceptance-tests)
   - [Anatomy of bad acceptance tests](#anatomy-of-bad-acceptance-tests)
   - [Tight coupling](#tight-coupling)
-- [specifications](#specifications)
-  - [First system: HTTP API](#first-system-http-api)
-    - [Adapter Pattern](#adapter-pattern)
-    - [Reflect](#reflect)
-    - [Complexity](#complexity)
-    - [High-level steps for acceptance test](#high-level-steps-for-acceptance-test)
+- [First system: HTTP API](#first-system-http-api)
+  - [Adapter Pattern](#adapter-pattern)
+  - [Reflect](#reflect)
+  - [Complexity](#complexity)
+  - [High-level steps for acceptance test](#high-level-steps-for-acceptance-test)
+  - [New functionality](#new-functionality)
+- [Second System: GRPC](#second-system-grpc)
 
 # shell
 
 ```sh
 # Run all tests, ignoring cached results
 go test -count=1 ./...
+
+# Individual test
+go test -v ./cmd/httpserver
+go test -v ./cmd/grpcserver
+
+# Test the Container Manually
+docker build -t greeter-server -f cmd/httpserver/Dockerfile .
+docker run -p 8080:8080 greeter-server
+curl http://localhost:8080/greet
 ```
 
 # Introduction To Acceptance Tests
@@ -92,28 +102,17 @@ go test -count=1 ./...
   - An external behavior change. If you want to change what the system does, changing the acceptance test suite seems reasonable, if not desirable.
   - An implementation detail change / refactoring. Ideally, this shouldn't prompt a change, or if it does, a minor one.
 
-# specifications
-
-## First system: HTTP API
+# First system: HTTP API
 
 1. A **driver**. In this case, one works with an HTTP system by using an **HTTP client**. This code will know how to work with our API. Drivers translate DSLs into system-specific calls; in our case, the driver will implement the interface specifications define.
 2. An **HTTP server** with a greet API
 3. A **test**, which is responsible for managing the life-cycle of spinning up the server and then plugging the driver into the specification to run it as a test
 
-```sh
-go test -v ./cmd/httpserver
-
-# Test the Container Manually
-docker build -t greeter-server -f cmd/httpserver/Dockerfile .
-docker run -p 8080:8080 greeter-server
-curl http://localhost:8080/greet
-```
-
-### Adapter Pattern
+## Adapter Pattern
 
 > In software engineering, the adapter pattern is a software design pattern (also known as wrapper, an alternative naming shared with the decorator pattern) that allows the interface of an existing class to be used as another interface.[1] It is often used to make existing classes work with others without modifying their source code.
 
-### Reflect
+## Reflect
 
 - Analyze your problem and identify a slight improvement to your system that pushes you in the right direction
 - Capture the new essential complexity in a specification
@@ -121,7 +120,7 @@ curl http://localhost:8080/greet
 - Update your implementation to make the system behave according to the specification
 - Refactor
 
-### Complexity
+## Complexity
 
 In the context of Go testing, **essential complexity** refers to the inherent challenges and intricacies that arise directly from the problem you're trying to solve. This includes the logic of the tests, the conditions you need to cover, and the actual behavior of the system under test. For example, if you're testing a complex algorithm or a system with many interdependent components, the complexity of ensuring all paths are tested correctly is essential.
 
@@ -129,9 +128,25 @@ In the context of Go testing, **essential complexity** refers to the inherent ch
 
 The goal in Go testing, as with any testing, is to minimize accidental complexity so that you can focus on the essential complexity—ensuring your code works correctly under all necessary conditions. Go's standard testing package is designed to keep accidental complexity low by providing simple and effective tools for writing tests.
 
-### High-level steps for acceptance test
+## High-level steps for acceptance test
 
 - Build a docker image
 - Wait for it to be listening on some port
 - Create a driver that understands how to translate the DSL into system specific calls
 - Plug in the driver into the specification
+
+## New functionality
+
+- Shouldn't have to change the specification;
+- Should be able to reuse the specification;
+- Should be able to reuse the domain code.
+
+# Second System: GRPC
+
+```sh
+# Generate the client and server code
+cd adapters/grpcserver
+protoc --go_out=. --go_opt=paths=source_relative \
+    --go-grpc_out=. --go-grpc_opt=paths=source_relative \
+    greet.proto
+```
