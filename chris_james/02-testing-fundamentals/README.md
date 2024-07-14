@@ -13,6 +13,7 @@
     - [Adapter Pattern](#adapter-pattern)
     - [Reflect](#reflect)
     - [Complexity](#complexity)
+    - [High-level steps for acceptance test](#high-level-steps-for-acceptance-test)
 
 # shell
 
@@ -127,3 +128,10 @@ In the context of Go testing, **essential complexity** refers to the inherent ch
 **Accidental complexity**, on the other hand, arises from the tools, frameworks, or practices used to implement the tests, rather than from the problem itself. In Go, this could include difficulties with setting up the test environment, managing dependencies, or dealing with limitations or quirks in the testing framework. For instance, if your tests are hard to write or maintain because of the way the test setup is structured, that’s accidental complexity.
 
 The goal in Go testing, as with any testing, is to minimize accidental complexity so that you can focus on the essential complexity—ensuring your code works correctly under all necessary conditions. Go's standard testing package is designed to keep accidental complexity low by providing simple and effective tools for writing tests.
+
+### High-level steps for acceptance test
+
+- Build a docker image
+- Wait for it to be listening on some port
+- Create a driver that understands how to translate the DSL into system specific calls
+- Plug in the driver into the specification
