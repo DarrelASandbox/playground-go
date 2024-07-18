@@ -15,6 +15,7 @@
   - [High-level steps for acceptance test](#high-level-steps-for-acceptance-test)
   - [New functionality](#new-functionality)
 - [Second System: GRPC](#second-system-grpc)
+  - [Overview](#overview)
 
 # shell
 
@@ -150,3 +151,9 @@ protoc --go_out=. --go_opt=paths=source_relative \
     --go-grpc_out=. --go-grpc_opt=paths=source_relative \
     greet.proto
 ```
+
+## Overview
+
+- `adapters` have cohesive units of functionality grouped together
+- `cmd` holds our applications and corresponding acceptance tests
+- Our code is totally decoupled from any accidental complexity
