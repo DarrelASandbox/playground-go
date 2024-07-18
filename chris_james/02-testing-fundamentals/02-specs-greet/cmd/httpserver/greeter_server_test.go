@@ -13,13 +13,12 @@ import (
 
 func TestGreeterServer(t *testing.T) {
 	var (
-		host           = "localhost"
-		port           = "8080"
-		protocol       = "tcp"
-		dockerFilePath = "./cmd/httpserver/Dockerfile"
+		host     = "localhost"
+		port     = "8080"
+		protocol = "tcp"
 	)
 
-	mappedPort := adapters.StartDockerServer(t, host, port, protocol, dockerFilePath)
+	mappedPort := adapters.StartDockerServer(t, host, port, protocol, "httpserver")
 	baseURL := fmt.Sprintf("http://%s:%s", host, mappedPort)
 	driver := httpserver.Driver{BaseURL: baseURL, Client: &http.Client{Timeout: 1 * time.Second}}
 	specifications.GreetSpecification(t, driver)

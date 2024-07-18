@@ -17,7 +17,7 @@ func StartDockerServer(
 	host string,
 	port string,
 	protocol string,
-	dockerFilePath string,
+	binToBuild string,
 ) string {
 	exposedPorts := fmt.Sprintf("%s/%s", port, protocol)
 	ctx := context.Background()
@@ -27,7 +27,8 @@ func StartDockerServer(
 	req := testcontainers.ContainerRequest{
 		FromDockerfile: testcontainers.FromDockerfile{
 			Context:       "../../.",
-			Dockerfile:    dockerFilePath,
+			Dockerfile:    "Dockerfile",
+			BuildArgs:     map[string]*string{"bin_to_build": &binToBuild},
 			PrintBuildLog: true,
 		},
 
