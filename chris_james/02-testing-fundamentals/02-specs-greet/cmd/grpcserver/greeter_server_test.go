@@ -10,6 +10,10 @@ import (
 )
 
 func TestGreeterServer(t *testing.T) {
+	if testing.Short() {
+		t.Skip()
+	}
+
 	var (
 		host     = "localhost"
 		port     = "50051"
@@ -19,4 +23,5 @@ func TestGreeterServer(t *testing.T) {
 	mappedPort := adapters.StartDockerServer(t, host, port, protocol, "grpcserver")
 	driver := grpcserver.Driver{Addr: fmt.Sprintf("%s:%s", host, mappedPort)}
 	specifications.GreetSpecification(t, &driver)
+	specifications.CurseSpecification(t, &driver)
 }

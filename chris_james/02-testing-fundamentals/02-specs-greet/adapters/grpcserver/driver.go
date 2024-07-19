@@ -16,6 +16,15 @@ type Driver struct {
 	client         GreeterClient
 }
 
+func (d *Driver) getClient() (GreeterClient, error) {
+	var err error
+	d.connectionOnce.Do(func() {
+		d.conn, err = grpc.Dial(d.Addr, grpc.WithTransportCredentials(insecure.NewCredentials()))
+		d.client = NewGreeterClient(d.conn)
+	})
+	return d.client, err
+}
+
 func (d *Driver) Greet(name string) (string, error) {
 	client, err := d.getClient()
 	if err != nil {
@@ -30,11 +39,6 @@ func (d *Driver) Greet(name string) (string, error) {
 	return greeting.Message, nil
 }
 
-func (d *Driver) getClient() (GreeterClient, error) {
-	var err error
-	d.connectionOnce.Do(func() {
-		d.conn, err = grpc.Dial(d.Addr, grpc.WithTransportCredentials(insecure.NewCredentials()))
-		d.client = NewGreeterClient(d.conn)
-	})
-	return d.client, err
+func (d *Driver) Curse(name string) (string, error) {
+	return "", nil
 }
