@@ -16,6 +16,7 @@
   - [New functionality](#new-functionality)
 - [Second System: GRPC](#second-system-grpc)
   - [Overview](#overview)
+  - [When should I write acceptance tests?](#when-should-i-write-acceptance-tests)
 
 # shell
 
@@ -157,3 +158,10 @@ protoc --go_out=. --go_opt=paths=source_relative \
 - `adapters` have cohesive units of functionality grouped together
 - `cmd` holds our applications and corresponding acceptance tests
 - Our code is totally decoupled from any accidental complexity
+
+## When should I write acceptance tests?
+
+1. Is this an edge case? I'd prefer to unit test those
+2. Is this something that the non-computer people talk about a lot? I would prefer to have a lot of confidence the key thing "really" works, so I'd add an acceptance test
+3. Am I describing a user journey, rather than a specific function? Acceptance test
+4. Would unit tests give me enough confidence? Sometimes you're taking an existing journey that already has an acceptance test, but you're adding other functionality to deal with different scenarios due to different inputs. In this case, adding another acceptance test adds a cost but brings little value, so I'd prefer some unit tests.
