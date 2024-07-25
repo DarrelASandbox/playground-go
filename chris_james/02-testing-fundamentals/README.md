@@ -27,6 +27,7 @@ go test -count=1 ./...
 # Individual test
 go test -v ./cmd/httpserver
 go test -v ./cmd/grpcserver
+go test -v ./cmd/webserver
 
 # Test the Container Manually
 docker build -t greeter-server -f cmd/httpserver/Dockerfile .
