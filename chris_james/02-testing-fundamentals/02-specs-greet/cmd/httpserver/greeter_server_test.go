@@ -12,6 +12,10 @@ import (
 )
 
 func TestGreeterServer(t *testing.T) {
+	if testing.Short() {
+		t.Skip()
+	}
+
 	var (
 		host     = "localhost"
 		port     = "8080"
@@ -22,4 +26,5 @@ func TestGreeterServer(t *testing.T) {
 	baseURL := fmt.Sprintf("http://%s:%s", host, mappedPort)
 	driver := httpserver.Driver{BaseURL: baseURL, Client: &http.Client{Timeout: 1 * time.Second}}
 	specifications.GreetSpecification(t, driver)
+	specifications.CurseSpecification(t, driver)
 }
