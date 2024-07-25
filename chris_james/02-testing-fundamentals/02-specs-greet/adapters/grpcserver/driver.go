@@ -25,6 +25,12 @@ func (d *Driver) getClient() (GreeterClient, error) {
 	return d.client, err
 }
 
+func (d *Driver) Close() {
+	if d.conn != nil {
+		d.conn.Close()
+	}
+}
+
 func (d *Driver) Greet(name string) (string, error) {
 	client, err := d.getClient()
 	if err != nil {

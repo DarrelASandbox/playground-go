@@ -22,6 +22,7 @@ func TestGreeterServer(t *testing.T) {
 
 	mappedPort := adapters.StartDockerServer(t, host, port, protocol, "grpcserver")
 	driver := grpcserver.Driver{Addr: fmt.Sprintf("%s:%s", host, mappedPort)}
+	t.Cleanup(driver.Close)
 	specifications.GreetSpecification(t, &driver)
 	specifications.CurseSpecification(t, &driver)
 }
