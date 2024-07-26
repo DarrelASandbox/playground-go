@@ -6,6 +6,7 @@ import (
 
 	"github.com/DarrelASandbox/playground-go/chris_james/02-testing-fundamentals/specs-greet/adapters"
 	"github.com/DarrelASandbox/playground-go/chris_james/02-testing-fundamentals/specs-greet/adapters/webserver"
+	"github.com/DarrelASandbox/playground-go/chris_james/02-testing-fundamentals/specs-greet/specifications"
 	"github.com/alecthomas/assert/v2"
 )
 
@@ -23,7 +24,9 @@ func TestGreeterWeb(t *testing.T) {
 	mappedPort := adapters.StartDockerServer(t, host, port, protocol, "webserver")
 	baseURL := fmt.Sprintf("http://%s:%s", host, mappedPort)
 	t.Logf("mappedPort: %s", mappedPort)
-	_, cleanup := webserver.NewDriver(baseURL)
+	driver, cleanup := webserver.NewDriver(baseURL)
 	webserver.NewDriver(baseURL)
 	t.Cleanup(func() { assert.NoError(t, cleanup()) })
+	specifications.GreetSpecification(t, driver)
+	specifications.CurseSpecification(t, driver)
 }
