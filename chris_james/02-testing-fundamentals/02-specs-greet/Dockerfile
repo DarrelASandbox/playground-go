@@ -1,4 +1,4 @@
-FROM golang:1.21-alpine
+FROM golang:1.21-alpine as builder
 
 WORKDIR /app
 
@@ -11,5 +11,9 @@ RUN go mod download
 COPY . .
 
 RUN go build -o svr cmd/${bin_to_build}/main.go
+
+FROM alpine:3.18
+
+COPY --from=builder /app/svr .
 
 CMD ["./svr"]
