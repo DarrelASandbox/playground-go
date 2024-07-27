@@ -48,4 +48,5 @@ use (
 use (
 	./chris_james/02-testing-fundamentals/01-gracefulshutdown
 	./chris_james/02-testing-fundamentals/02-specs-greet
+	./chris_james/02-testing-fundamentals/03-fakes-and-contracts
 )

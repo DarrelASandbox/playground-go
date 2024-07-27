@@ -8,16 +8,18 @@
 - [Scaling Acceptance Tests](#scaling-acceptance-tests)
   - [Anatomy of bad acceptance tests](#anatomy-of-bad-acceptance-tests)
   - [Tight coupling](#tight-coupling)
-- [First system: HTTP API](#first-system-http-api)
-  - [Adapter Pattern](#adapter-pattern)
-  - [Reflect](#reflect)
-  - [Complexity](#complexity)
-  - [High-level steps for acceptance test](#high-level-steps-for-acceptance-test)
-  - [New functionality](#new-functionality)
-- [Second System: GRPC](#second-system-grpc)
-  - [Overview](#overview)
-  - [When should I write acceptance tests?](#when-should-i-write-acceptance-tests)
-- [Third System: Web](#third-system-web)
+  - [First system: HTTP API](#first-system-http-api)
+    - [Adapter Pattern](#adapter-pattern)
+    - [Reflect](#reflect)
+    - [Complexity](#complexity)
+    - [High-level steps for acceptance test](#high-level-steps-for-acceptance-test)
+    - [New functionality](#new-functionality)
+  - [Second System: GRPC](#second-system-grpc)
+    - [Overview](#overview)
+    - [When should I write acceptance tests?](#when-should-i-write-acceptance-tests)
+  - [Third System: Web](#third-system-web)
+- [Working Without Mocks](#working-without-mocks)
+  - [A primer on test doubles](#a-primer-on-test-doubles)
 
 # shell
 
@@ -106,17 +108,17 @@ curl http://localhost:8080/greet
   - An external behavior change. If you want to change what the system does, changing the acceptance test suite seems reasonable, if not desirable.
   - An implementation detail change / refactoring. Ideally, this shouldn't prompt a change, or if it does, a minor one.
 
-# First system: HTTP API
+## First system: HTTP API
 
 1. A **driver**. In this case, one works with an HTTP system by using an **HTTP client**. This code will know how to work with our API. Drivers translate DSLs into system-specific calls; in our case, the driver will implement the interface specifications define.
 2. An **HTTP server** with a greet API
 3. A **test**, which is responsible for managing the life-cycle of spinning up the server and then plugging the driver into the specification to run it as a test
 
-## Adapter Pattern
+### Adapter Pattern
 
 > In software engineering, the adapter pattern is a software design pattern (also known as wrapper, an alternative naming shared with the decorator pattern) that allows the interface of an existing class to be used as another interface.[1] It is often used to make existing classes work with others without modifying their source code.
 
-## Reflect
+### Reflect
 
 - Analyze your problem and identify a slight improvement to your system that pushes you in the right direction
 - Capture the new essential complexity in a specification
@@ -124,7 +126,7 @@ curl http://localhost:8080/greet
 - Update your implementation to make the system behave according to the specification
 - Refactor
 
-## Complexity
+### Complexity
 
 In the context of Go testing, **essential complexity** refers to the inherent challenges and intricacies that arise directly from the problem you're trying to solve. This includes the logic of the tests, the conditions you need to cover, and the actual behavior of the system under test. For example, if you're testing a complex algorithm or a system with many interdependent components, the complexity of ensuring all paths are tested correctly is essential.
 
@@ -132,20 +134,20 @@ In the context of Go testing, **essential complexity** refers to the inherent ch
 
 The goal in Go testing, as with any testing, is to minimize accidental complexity so that you can focus on the essential complexity—ensuring your code works correctly under all necessary conditions. Go's standard testing package is designed to keep accidental complexity low by providing simple and effective tools for writing tests.
 
-## High-level steps for acceptance test
+### High-level steps for acceptance test
 
 - Build a docker image
 - Wait for it to be listening on some port
 - Create a driver that understands how to translate the DSL into system specific calls
 - Plug in the driver into the specification
 
-## New functionality
+### New functionality
 
 - Shouldn't have to change the specification;
 - Should be able to reuse the specification;
 - Should be able to reuse the domain code.
 
-# Second System: GRPC
+## Second System: GRPC
 
 ```sh
 # Generate the client and server code
@@ -155,21 +157,41 @@ protoc --go_out=. --go_opt=paths=source_relative \
     greet.proto
 ```
 
-## Overview
+### Overview
 
 - `adapters` have cohesive units of functionality grouped together
 - `cmd` holds our applications and corresponding acceptance tests
 - Our code is totally decoupled from any accidental complexity
 
-## When should I write acceptance tests?
+### When should I write acceptance tests?
 
 1. Is this an edge case? I'd prefer to unit test those
 2. Is this something that the non-computer people talk about a lot? I would prefer to have a lot of confidence the key thing "really" works, so I'd add an acceptance test
 3. Am I describing a user journey, rather than a specific function? Acceptance test
 4. Would unit tests give me enough confidence? Sometimes you're taking an existing journey that already has an acceptance test, but you're adding other functionality to deal with different scenarios due to different inputs. In this case, adding another acceptance test adds a cost but brings little value, so I'd prefer some unit tests.
 
-# Third System: Web
+## Third System: Web
 
 - [GopherCon UK 2021: Riya Dattani & Chris James - Acceptance Tests, BDD & GO](https://www.youtube.com/watch?v=ZMWJCk_0WrY)
 
 > Imagine the least technical person that you can think of, who understands the problem-domain, reading your Acceptance Tests. The tests should make sense to that person.
+
+# Working Without Mocks
+
+- Mocks, spies and stubs encourage you to encode assumptions of the behavior of your dependencies ad-hocly in each test.
+- These assumptions are usually not validated beyond manual checking, so they threaten your test suite's usefulness.
+- Fakes and contracts give us a more sustainable method for creating test doubles with validated assumptions and better reuse than the alternatives.
+
+> In Mocking, we learned how mocks, stubs and spies are useful tools for controlling and inspecting the behaviour of units of code in conjunction with Dependency Injection.
+>
+> As a project grows, though, these kinds of test doubles can become a maintenance burden, and we should instead look to other design ideas to keep our system easy to reason and test.
+>
+> Fakes and contracts allow developers to test their systems with more realistic scenarios, improve local development experience with faster and more accurate feedback loops, and manage the complexity of evolving dependencies.
+
+## A primer on test doubles
+
+- **Test doubles** is the collective noun for the different ways you can construct dependencies that you can control for a **subject under test (SUT)**, the thing you're testing. Test doubles are often a better alternative than using the real dependency as it can avoid issues like
+  - Needing the internet to use an API
+  - Avoid latency and other performance issues
+  - Unable to exercise non-happy path cases
+  - Decoupling your build from another team's.
