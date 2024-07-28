@@ -1,4 +1,3 @@
-- [shell](#shell)
 - [Introduction To Acceptance Tests](#introduction-to-acceptance-tests)
   - [What are they?](#what-are-they)
   - [Benefits of acceptance tests](#benefits-of-acceptance-tests)
@@ -6,6 +5,7 @@
   - [High-level steps for the acceptance test](#high-level-steps-for-the-acceptance-test)
   - [`LaunchTestProgram`](#launchtestprogram)
 - [Scaling Acceptance Tests](#scaling-acceptance-tests)
+  - [shell](#shell)
   - [Anatomy of bad acceptance tests](#anatomy-of-bad-acceptance-tests)
   - [Tight coupling](#tight-coupling)
   - [First system: HTTP API](#first-system-http-api)
@@ -20,23 +20,10 @@
   - [Third System: Web](#third-system-web)
 - [Working Without Mocks](#working-without-mocks)
   - [A primer on test doubles](#a-primer-on-test-doubles)
-
-# shell
-
-```sh
-# Run all tests, ignoring cached results
-go test -count=1 ./...
-
-# Individual test
-go test -v ./cmd/httpserver
-go test -v ./cmd/grpcserver
-go test -v ./cmd/webserver
-
-# Test the Container Manually
-docker build -t greeter-server -f cmd/httpserver/Dockerfile .
-docker run -p 8080:8080 greeter-server
-curl http://localhost:8080/greet
-```
+    - [Stubs](#stubs)
+    - [Spies](#spies)
+    - [Mocks](#mocks)
+    - [Fakes](#fakes)
 
 # Introduction To Acceptance Tests
 
@@ -93,6 +80,23 @@ curl http://localhost:8080/greet
 - [Dave Farley - How to write acceptance tests](https://www.youtube.com/watch?v=JDD5EEJgpHU)
 - [Nat Pryce - E2E functional tests that can run in milliseconds](https://www.youtube.com/watch?v=Fk4rCn4YLLU)
 - [Growing Object-Oriented Software Guided by Tests](www.growing-object-oriented-software.com)
+
+## shell
+
+```sh
+# Run all tests, ignoring cached results
+go test -count=1 ./...
+
+# Individual test
+go test -v ./cmd/httpserver
+go test -v ./cmd/grpcserver
+go test -v ./cmd/webserver
+
+# Test the Container Manually
+docker build -t greeter-server -f cmd/httpserver/Dockerfile .
+docker run -p 8080:8080 greeter-server
+curl http://localhost:8080/greet
+```
 
 ## Anatomy of bad acceptance tests
 
@@ -188,10 +192,102 @@ protoc --go_out=. --go_opt=paths=source_relative \
 >
 > Fakes and contracts allow developers to test their systems with more realistic scenarios, improve local development experience with faster and more accurate feedback loops, and manage the complexity of evolving dependencies.
 
-## A primer on test doubles
+## [A primer on test doubles](https://quii.gitbook.io/learn-go-with-tests/testing-fundamentals/working-without-mocks#a-primer-on-test-doubles)
 
 - **Test doubles** is the collective noun for the different ways you can construct dependencies that you can control for a **subject under test (SUT)**, the thing you're testing. Test doubles are often a better alternative than using the real dependency as it can avoid issues like
   - Needing the internet to use an API
   - Avoid latency and other performance issues
   - Unable to exercise non-happy path cases
   - Decoupling your build from another team's.
+
+### Stubs
+
+```go
+// Stubs return the same canned data every time they are called
+type StubRecipeStore struct {
+	recipes []Recipe
+	err     error
+}
+
+func (s *StubRecipeStore) GetRecipes() ([]Recipe, error) {
+	return s.recipes, s.err
+}
+
+// AddRecipes omitted for brevity
+
+// in test, we can set up the stub to always return specific recipes, or an error
+stubStore := &StubRecipeStore{
+	recipes: someRecipes,
+}
+```
+
+### Spies
+
+```go
+// Spies are like stubs but also record how they were called so the test can assert that the SUT calls the dependencies in specific ways.
+type SpyRecipeStore struct {
+	AddCalls [][]Recipe
+	err      error
+}
+
+func (s *SpyRecipeStore) AddRecipes(r ...Recipe) error {
+	s.AddCalls = append(s.AddCalls, r)
+	return s.err
+}
+
+// GetRecipes omitted for brevity
+
+// in test
+spyStore := &SpyRecipeStore{}
+sut := NewThing(spyStore)
+sut.DoStuff()
+
+// now we can check the store had the right recipes added by inspection spyStore.AddCalls
+```
+
+### Mocks
+
+```go
+/*
+Mocks are like a superset of the above, but they only respond with specific data to specific invocations.
+If the SUT calls the dependencies with the wrong arguments, it'll typically panic.
+ */
+
+// set up the mock with expected calls
+mockStore := &MockRecipeStore{}
+mockStore.WhenCalledWith(someRecipes).Return(someError)
+
+// when the sut uses the dependency, if it doesn't call it with someRecipes, usually mocks will panic
+```
+
+### Fakes
+
+```go
+/*
+Fakes are like a genuine version of the dependency but implemented in a way more suited to fast running,
+reliable tests and local development.
+
+Often, your system will have some abstraction around persistence, which will be implemented with a database,
+but in your tests, you could use an in-memory fake instead.
+ */
+
+type FakeRecipeStore struct {
+	recipes []Recipe
+}
+
+func (f *FakeRecipeStore) GetRecipes() ([]Recipe, error) {
+	return f.recipes, nil
+}
+
+func (f *FakeRecipeStore) AddRecipes(r ...Recipe) error {
+	f.recipes = append(f.recipes, r...)
+	return nil
+}
+```
+
+- Fakes are useful because:
+  - Their statefulness is useful for tests involving multiple subjects and invocations, such as an integration test. Managing state with the other kinds of test doubles is generally discouraged.
+  - If they have a sensible API, offer a more natural way of asserting state. Rather than spying on specific calls to a dependency, you can query its final state to see if the real effect you want happened.
+  - You can use them to run your application locally without spinning up or depending on real dependencies. This will usually improve developer experience (DX) because the fakes will be faster and more reliable than their real counterparts.
+
+Spies, Mocks and Stubs can typically be autogenerated from an interface using a tool or using reflection. However, as Fakes encode the behavior of the dependency you're trying to make a double for, you'll have to write at least most of the implementation yourself
