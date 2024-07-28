@@ -19,7 +19,6 @@ require (
 	github.com/alecthomas/repr v0.4.0 // indirect
 	github.com/cenkalti/backoff/v4 v4.3.0 // indirect
 	github.com/containerd/containerd v1.7.20 // indirect
-	github.com/containerd/errdefs v0.1.0 // indirect
 	github.com/containerd/log v0.1.0 // indirect
 	github.com/containerd/platforms v0.2.1 // indirect
 	github.com/cpuguy83/dockercfg v0.3.1 // indirect
@@ -31,7 +30,6 @@ require (
 	github.com/go-logr/stdr v1.2.2 // indirect
 	github.com/go-ole/go-ole v1.3.0 // indirect
 	github.com/gogo/protobuf v1.3.2 // indirect
-	github.com/golang/protobuf v1.5.4 // indirect
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/hexops/gotextdiff v1.0.3 // indirect
 	github.com/klauspost/compress v1.17.9 // indirect
