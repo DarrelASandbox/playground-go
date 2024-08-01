@@ -25,6 +25,7 @@
     - [Mocks](#mocks)
     - [Fakes](#fakes)
   - [The problem with stubs and mocks](#the-problem-with-stubs-and-mocks)
+  - [Evolving software](#evolving-software)
 
 # Introduction To Acceptance Tests
 
@@ -326,3 +327,20 @@ assert.NoErr(t, customerService.Update(updatedCustomerRequest))
 updatedFakeAPICustomer := fakeAPI1.Get(createdCustomer.FakeAPI1Details.ID)
 assert.Equal(t, updatedFakeAPICustomer.SocialSecurityNumber, updatedCustomerRequest.SocialSecurityNumber)
 ```
+
+## Evolving software
+
+Most software is not built and "finished" forever, in one release.
+
+It's an incremental learning exercise, adapting to customer demands and other external changes. In the example, the APIs we were calling were also evolving and changing; plus, as we developed our software, we learned more about what system we really needed to make. Assumptions we made in our contracts turned out to be wrong or became wrong.
+
+Thankfully, once the setup for the contracts was made, we had a simple way to deal with change. Once we learned something new, as a result of a bug being fixed or a colleague informing us that the API was changing, we'd:
+
+- Write a test to exercise the new scenario. A part of this will involve changing the contract to drive you to simulate the behavior in the fake
+- Running the test should fail, but before anything else, run the contract against the real dependency to ensure the change to the contract is valid.
+- Update the fake so it conforms to the contract.
+- Make the test pass.
+- Refactor.
+- Run all the tests and ship.
+
+Running the full test suite before checking in may result in other tests failing due to the fake having a different behaviour. This is a good thing! You can now fix all the other areas of the system depending on the changed system; confident they will also handle this scenario in production. Without this approach, you'd have to remember to find all the relevant tests and update the stubs. Error-prone, laborious and boring.
