@@ -18,3 +18,16 @@ type Recipe struct {
 }
 
 type Recipes []Recipe
+
+func (m MealType) String() string {
+	return [...]string{"Breakfast", "Lunch", "Dinner"}[m]
+}
+
+func (r Recipes) FindByName(name string) (Recipe, bool) {
+	for _, recipe := range r {
+		if recipe.Name == name {
+			return recipe, true
+		}
+	}
+	return Recipe{}, false
+}

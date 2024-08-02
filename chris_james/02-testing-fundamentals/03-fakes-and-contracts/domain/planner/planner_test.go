@@ -120,8 +120,24 @@ func (r RecipePlannerTest) Test(t *testing.T) {
 	})
 
 	t.Run("suggesting recipes", func(t *testing.T) {
-		t.Run("if don't have the ingredients for a meal, we can't make it", func(t *testing.T) {})
+		t.Run("if don't have the ingredients for a meal, we can't make it", func(t *testing.T) {
+			var (
+				ctx                          = context.Background()
+				pie                          = plannertest.RandomRecipe()
+				recipeBook, pantry, teardown = r.CreateDependencies()
+				sut                          = planner.New(recipeBook, pantry)
+			)
+
+			t.Cleanup(teardown)
+
+			expect.NoErr(t, recipeBook.AddRecipes(ctx, pie))
+			recipes, err := sut.SuggestRecipes(ctx)
+			expect.NoErr(t, err)
+			plannertest.AssertDoesntHaveRecipe(t, recipes, pie)
+		})
+
 		t.Run("if we have the ingredients for a recipe we can make it", func(t *testing.T) {})
+
 		t.Run("if we have ingredients for 2 recipes, we can make both", func(t *testing.T) {})
 	})
 }

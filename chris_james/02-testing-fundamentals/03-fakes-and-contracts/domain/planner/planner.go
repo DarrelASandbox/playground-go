@@ -37,7 +37,7 @@ func (p Planner) ScheduleMeal(ctx context.Context, r recipe.Recipe, _ time.Time)
 	return p.pantry.Remove(ctx, r.Ingredients...)
 }
 
-// // returns slice of missing ingredients
+// returns slice of missing ingredients
 func haveIngredients(availableIngredients ingredients.Ingredients, recipe recipe.Recipe) (hasIngredients bool, missing ingredients.Ingredients) {
 	for _, ingredient := range recipe.Ingredients {
 		if !availableIngredients.Has(ingredient) {
@@ -50,6 +50,27 @@ func haveIngredients(availableIngredients ingredients.Ingredients, recipe recipe
 	}
 
 	return true, nil
+}
+
+func (p Planner) SuggestRecipes(ctx context.Context) (recipe.Recipes, error) {
+	availableIngredients, err := p.pantry.GetIngredients(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	recipes, err := p.recipeBook.GetRecipes(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	var suggestions []recipe.Recipe
+	for _, r := range recipes {
+		if hasIngredients, _ := haveIngredients(availableIngredients, r); hasIngredients {
+			suggestions = append(suggestions, r)
+		}
+	}
+
+	return suggestions, nil
 }
 
 func (e ErrorMissingIngredients) Error() string {
