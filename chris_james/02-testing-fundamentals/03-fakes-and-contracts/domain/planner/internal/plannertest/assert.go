@@ -12,3 +12,9 @@ func AssertDoesntHaveRecipe(t *testing.T, recipes recipe.Recipes, expected recip
 	_, found := recipes.FindByName(expected.Name)
 	expect.False(t, found)
 }
+
+func AssertHasRecipe(t *testing.T, recipes recipe.Recipes, expected recipe.Recipe) {
+	t.Helper()
+	_, found := recipes.FindByName(expected.Name)
+	expect.True(t, found)
+}

@@ -136,8 +136,43 @@ func (r RecipePlannerTest) Test(t *testing.T) {
 			plannertest.AssertDoesntHaveRecipe(t, recipes, pie)
 		})
 
-		t.Run("if we have the ingredients for a recipe we can make it", func(t *testing.T) {})
+		t.Run("if we have the ingredients for a recipe we can make it", func(t *testing.T) {
+			var (
+				ctx                             = context.Background()
+				bananaBread                     = plannertest.RandomRecipe()
+				aRecipeWeWontHaveIngredientsFor = plannertest.RandomRecipe()
+				recipeBook, pantry, teardown    = r.CreateDependencies()
+				sut                             = planner.New(recipeBook, pantry)
+			)
 
-		t.Run("if we have ingredients for 2 recipes, we can make both", func(t *testing.T) {})
+			t.Cleanup(teardown)
+
+			expect.NoErr(t, recipeBook.AddRecipes(ctx, bananaBread, aRecipeWeWontHaveIngredientsFor))
+			expect.NoErr(t, pantry.Store(ctx, bananaBread.Ingredients...))
+			recipes, err := sut.SuggestRecipes(ctx)
+			expect.NoErr(t, err)
+			plannertest.AssertHasRecipe(t, recipes, bananaBread)
+			plannertest.AssertDoesntHaveRecipe(t, recipes, aRecipeWeWontHaveIngredientsFor)
+		})
+
+		t.Run("if we have ingredients for 2 recipes, we can make both", func(t *testing.T) {
+			var (
+				ctx                          = context.Background()
+				bananaBread                  = plannertest.RandomRecipe()
+				bananaMilkshake              = plannertest.RandomRecipe()
+				recipeBook, pantry, teardown = r.CreateDependencies()
+				sut                          = planner.New(recipeBook, pantry)
+			)
+
+			t.Cleanup(teardown)
+
+			expect.NoErr(t, recipeBook.AddRecipes(ctx, bananaBread, bananaMilkshake))
+			expect.NoErr(t, pantry.Store(ctx, bananaBread.Ingredients...))
+			expect.NoErr(t, pantry.Store(ctx, bananaMilkshake.Ingredients...))
+			recipes, err := sut.SuggestRecipes(ctx)
+			expect.NoErr(t, err)
+			plannertest.AssertHasRecipe(t, recipes, bananaBread)
+			plannertest.AssertHasRecipe(t, recipes, bananaMilkshake)
+		})
 	})
 }
