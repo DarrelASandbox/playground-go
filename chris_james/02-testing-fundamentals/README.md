@@ -26,6 +26,7 @@
     - [Fakes](#fakes)
   - [The problem with stubs and mocks](#the-problem-with-stubs-and-mocks)
   - [Evolving software](#evolving-software)
+- [ent](#ent)
 
 # Introduction To Acceptance Tests
 
@@ -344,3 +345,13 @@ Thankfully, once the setup for the contracts was made, we had a simple way to de
 - Run all the tests and ship.
 
 Running the full test suite before checking in may result in other tests failing due to the fake having a different behaviour. This is a good thing! You can now fix all the other areas of the system depending on the changed system; confident they will also handle this scenario in production. Without this approach, you'd have to remember to find all the relevant tests and update the stubs. Error-prone, laborious and boring.
+
+# ent
+
+- [An entity framework for Go](https://entgo.io/)
+
+```sh
+# Require `schema` folder and `generate.go`
+cd adapters/driven/persistence/sqlite
+go generate ./...
+```
