@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/DarrelASandbox/playground-go/chris_james/02-testing-fundamentals/fakes-and-contracts/adapters/driven/persistence/inmemory"
+	"github.com/DarrelASandbox/playground-go/chris_james/02-testing-fundamentals/fakes-and-contracts/adapters/driven/persistence/sqlite"
 	"github.com/DarrelASandbox/playground-go/chris_james/02-testing-fundamentals/fakes-and-contracts/domain/ingredients"
 	"github.com/DarrelASandbox/playground-go/chris_james/02-testing-fundamentals/fakes-and-contracts/domain/planner"
 	"github.com/DarrelASandbox/playground-go/chris_james/02-testing-fundamentals/fakes-and-contracts/domain/planner/internal/expect"
@@ -30,6 +31,22 @@ func TestRecipePlanner(t *testing.T) {
 				}
 			},
 		}.Test(t)
+	})
+
+	// we can run a broader integration test with a "real" db if we wish, using this contract approach
+	t.Run("with sqlite", func(t *testing.T) {
+		if !testing.Short() {
+			RecipePlannerTest{
+				CreateDependencies: func() (planner.RecipeBook, planner.Pantry, Cleanup) {
+					client := sqlite.NewSQLiteClient()
+					return sqlite.NewRecipeStore(client), sqlite.NewPantry(client), func() {
+						if err := client.Close(); err != nil {
+							t.Error(err)
+						}
+					}
+				},
+			}.Test(t)
+		}
 	})
 }
 
