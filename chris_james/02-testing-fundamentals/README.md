@@ -26,7 +26,10 @@
     - [Fakes](#fakes)
   - [The problem with stubs and mocks](#the-problem-with-stubs-and-mocks)
   - [Evolving software](#evolving-software)
-- [ent](#ent)
+  - [ent](#ent)
+- [Refactoring Checklist](#refactoring-checklist)
+  - [Use your tools to help you practice refactoring](#use-your-tools-to-help-you-practice-refactoring)
+  - [Don't ask permission to refactor](#dont-ask-permission-to-refactor)
 
 # Introduction To Acceptance Tests
 
@@ -346,7 +349,7 @@ Thankfully, once the setup for the contracts was made, we had a simple way to de
 
 Running the full test suite before checking in may result in other tests failing due to the fake having a different behaviour. This is a good thing! You can now fix all the other areas of the system depending on the changed system; confident they will also handle this scenario in production. Without this approach, you'd have to remember to find all the relevant tests and update the stubs. Error-prone, laborious and boring.
 
-# ent
+## ent
 
 - [An entity framework for Go](https://entgo.io/)
 
@@ -355,3 +358,30 @@ Running the full test suite before checking in may result in other tests failing
 cd adapters/driven/persistence/sqlite
 go generate ./...
 ```
+
+# Refactoring Checklist
+
+> Refactoring is a skill that, once practiced enough, becomes, in most cases, second nature reasonably easy.
+>
+> The activity often gets conflated with more significant design changes, but they are separate. Delineating between refactoring and other programming activities is helpful because it allows me to work with clarity and discipline.
+>
+> Refactoring is just improving existing code and not changing behavior; therefore, tests shouldn't have to change.
+
+- Refactoring shouldn't require you to change the tests, so you can't:
+  - Change behavior
+  - Change method signatures
+- but you can:
+  - Introduce private methods, fields and even new types & interfaces
+  - Change the internals of public methods
+
+## Use your tools to help you practice refactoring
+
+- You should run your unit tests every time you do one of these small changes. We invest time in making our code unit-testable, and the feedback loop of a few milliseconds is one of the significant benefits; use it!
+- Lean on source control. You shouldn't feel shy about trying out ideas. If you're happy, commit it; if not, revert. This should feel comfortable and easy and not a big deal.
+- The better you leverage your unit tests and source control, the easier to practice refactoring. Once you master this discipline, your **design skills increase quickly** because you have a reliable and effective feedback loop and safety net.
+- Too often in my career, I've heard developers complain about not having time to refactor; unfortunately, it is clear that it takes so much time for them because they don't do it with discipline - and they have not practiced it enough
+- Whilst typing is never the bottleneck, you should be able to use whatever editor/IDE you use to refactor safely and quickly. For instance, if your tool doesn't let you extract variables at a keystroke, you'll do it less because it's more labour-intensive and risky.
+
+## Don't ask permission to refactor
+
+> Other than when you are very close to a deadline, however, you should not put off refactoring because you haven’t got time. Experience with several projects has shown that a bout of refactoring results in increased productivity. Not having enough time usually is a sign that you need to do some refactoring.
