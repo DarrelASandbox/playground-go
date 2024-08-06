@@ -48,3 +48,7 @@ use (
 	./chris_james/02-testing-fundamentals/02-specs-greet
 	./chris_james/02-testing-fundamentals/03-fakes-and-contracts
 )
+
+use (
+	./chris_james/03-build-an-app/01-http-server
+)
