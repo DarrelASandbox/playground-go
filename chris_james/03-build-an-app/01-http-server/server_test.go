@@ -28,6 +28,19 @@ func TestGETPlayer(t *testing.T) {
 		server.ServeHTTP(response, request)
 		assertResponseBody(t, response.Body.String(), "10")
 	})
+
+	// I have done the bare minimum (knowing it is not correct),
+	// which is write a StatusNotFound on all responses but all our tests are passing!
+	t.Run("returns 404 on missing players", func(t *testing.T) {
+		request := newGetScoreRequest("Apollo")
+		response := httptest.NewRecorder()
+		server.ServeHTTP(response, request)
+		got := response.Code
+		want := http.StatusNotFound
+		if got != want {
+			t.Errorf("got status %d want %d", got, want)
+		}
+	})
 }
 
 func (s *StubPlayerStore) GetPlayerScore(name string) int {
