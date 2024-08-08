@@ -19,6 +19,7 @@ func TestGETPlayer(t *testing.T) {
 		request := newGetScoreRequest("Pepper")
 		response := httptest.NewRecorder()
 		server.ServeHTTP(response, request)
+		assertStatus(t, response.Code, http.StatusOK)
 		assertResponseBody(t, response.Body.String(), "20")
 	})
 
@@ -26,20 +27,15 @@ func TestGETPlayer(t *testing.T) {
 		request := newGetScoreRequest("Floyd")
 		response := httptest.NewRecorder()
 		server.ServeHTTP(response, request)
+		assertStatus(t, response.Code, http.StatusOK)
 		assertResponseBody(t, response.Body.String(), "10")
 	})
 
-	// I have done the bare minimum (knowing it is not correct),
-	// which is write a StatusNotFound on all responses but all our tests are passing!
 	t.Run("returns 404 on missing players", func(t *testing.T) {
 		request := newGetScoreRequest("Apollo")
 		response := httptest.NewRecorder()
 		server.ServeHTTP(response, request)
-		got := response.Code
-		want := http.StatusNotFound
-		if got != want {
-			t.Errorf("got status %d want %d", got, want)
-		}
+		assertStatus(t, response.Code, http.StatusNotFound)
 	})
 }
 
@@ -51,6 +47,13 @@ func (s *StubPlayerStore) GetPlayerScore(name string) int {
 func newGetScoreRequest(name string) *http.Request {
 	req, _ := http.NewRequest(http.MethodGet, fmt.Sprintf("/players/%s", name), nil)
 	return req
+}
+
+func assertStatus(t testing.TB, got, want int) {
+	t.Helper()
+	if got != want {
+		t.Errorf("did not get correct status, got %d, want %d", got, want)
+	}
 }
 
 func assertResponseBody(t testing.TB, got, want string) {
