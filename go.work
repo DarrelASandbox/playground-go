@@ -51,4 +51,5 @@ use (
 
 use (
 	./chris_james/03-build-an-app/01-http-server
+	./chris_james/03-build-an-app/02-json-routing-embedding
 )
