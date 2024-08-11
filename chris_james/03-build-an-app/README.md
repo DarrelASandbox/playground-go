@@ -23,6 +23,13 @@ By adding mutexes, we enforce concurrency safety especially for the counter in o
 
 # JSON, Routing and Embedding
 
+## Why not test the JSON string?
+
+- **Brittleness**. If you change the data-model your tests will fail.
+- **Hard to debug**. It can be tricky to understand what the actual problem is when comparing two JSON strings.
+- **Poor intention**. Whilst the output should be JSON, what's really important is exactly what the data is, rather than how it's encoded.
+- **Re-testing the standard library**. There is no need to test how the standard library outputs JSON, it is already tested. Don't test other people's code.
+
 # IO and Sorting
 
 # Command Line & Project Structure
