@@ -26,3 +26,8 @@ func (i *InMemoryPlayerStore) RecordWin(name string) {
 	defer i.lock.Unlock()
 	i.store[name]++
 }
+
+// GetLeague currently doesn't work, but it should return the player league.
+func (i *InMemoryPlayerStore) GetLeague() []Player {
+	return nil
+}

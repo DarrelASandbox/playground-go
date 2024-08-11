@@ -1,4 +1,11 @@
 - [Intro](#intro)
+- [HTTP Server](#http-server)
+- [JSON, Routing and Embedding](#json-routing-and-embedding)
+  - [Why not test the JSON string?](#why-not-test-the-json-string)
+- [IO and Sorting](#io-and-sorting)
+- [Command Line \& Project Structure](#command-line--project-structure)
+- [Time](#time)
+- [WebSockets](#websockets)
 
 # Intro
 
