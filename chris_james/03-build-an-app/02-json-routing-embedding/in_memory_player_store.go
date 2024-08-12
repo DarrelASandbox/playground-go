@@ -29,5 +29,9 @@ func (i *InMemoryPlayerStore) RecordWin(name string) {
 
 // GetLeague currently doesn't work, but it should return the player league.
 func (i *InMemoryPlayerStore) GetLeague() []Player {
-	return nil
+	var league []Player
+	for name, wins := range i.store {
+		league = append(league, Player{name, wins})
+	}
+	return league
 }
