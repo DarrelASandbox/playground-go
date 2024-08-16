@@ -14,14 +14,14 @@ it should only need to read the file when the program starts up and only need to
 We can create a constructor which can do some of this initialization for us and store the league as a value in our FileSystemStore to be used on the reads instead.
 */
 type FileSystemPlayerStore struct {
-	database io.Writer
+	database *json.Encoder
 	league   League
 }
 
 func NewFileSystemPlayerStore(file *os.File) *FileSystemPlayerStore {
 	file.Seek(0, io.SeekStart)
 	league, _ := NewLeague(file)
-	return &FileSystemPlayerStore{database: &tape{file}, league: league}
+	return &FileSystemPlayerStore{database: json.NewEncoder(&tape{file}), league: league}
 }
 
 func (f *FileSystemPlayerStore) GetLeague() League {
@@ -38,11 +38,16 @@ func (f *FileSystemPlayerStore) GetPlayerScore(name string) int {
 
 func (f *FileSystemPlayerStore) RecordWin(name string) {
 	player := f.league.Find(name)
+
 	if player != nil {
 		player.Wins++
 	} else {
 		f.league = append(f.league, Player{name, 1})
 	}
 
-	json.NewEncoder(f.database).Encode(f.league)
+	/*
+		In RecordWin we have the line json.NewEncoder(f.database).Encode(f.league).
+		We don't need to create a new encoder every time we write, we can initialize one in our constructor and use that instead.
+	*/
+	f.database.Encode(f.league)
 }
