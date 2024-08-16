@@ -3,6 +3,7 @@
 - [JSON, Routing and Embedding](#json-routing-and-embedding)
   - [Why not test the JSON string?](#why-not-test-the-json-string)
 - [IO and Sorting](#io-and-sorting)
+  - [Didn't we just break some rules there? Testing private things? No interfaces?](#didnt-we-just-break-some-rules-there-testing-private-things-no-interfaces)
 - [Command Line \& Project Structure](#command-line--project-structure)
 - [Time](#time)
 - [WebSockets](#websockets)
@@ -38,6 +39,16 @@ By adding mutexes, we enforce concurrency safety especially for the counter in o
 - **Re-testing the standard library**. There is no need to test how the standard library outputs JSON, it is already tested. Don't test other people's code.
 
 # IO and Sorting
+
+## [Didn't we just break some rules there? Testing private things? No interfaces?](https://quii.gitbook.io/learn-go-with-tests/build-an-application/io#didnt-we-just-break-some-rules-there-testing-private-things-no-interfaces)
+
+It's true that in general you should favour not testing private things as that can sometimes lead to your tests being too tightly coupled to the implementation, which can hinder refactoring in future.
+
+However, we must not forget that tests should give us confidence.
+
+We were not confident that our implementation would work if we added any kind of edit or delete functionality. We did not want to leave the code like that, especially if this was being worked on by more than one person who may not be aware of the shortcomings of our initial approach.
+
+Finally, it's just one test! If we decide to change the way it works it won't be a disaster to just delete the test but we have at the very least captured the requirement for future maintainers.
 
 # Command Line & Project Structure
 
