@@ -52,6 +52,16 @@ Finally, it's just one test! If we decide to change the way it works it won't be
 
 # Command Line & Project Structure
 
+```sh
+go test
+cd cmd/webserver && go run main.go
+curl -X POST http://localhost:5000/players/Pepper
+curl -X POST http://localhost:5000/players/Pepper
+curl -X POST http://localhost:5000/players/Pepper
+curl http://localhost:5000/players/Pepper
+# Check http://localhost:5000/league
+```
+
 # Time
 
 # WebSockets
