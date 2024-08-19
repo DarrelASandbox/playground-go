@@ -10,10 +10,11 @@ import (
 type CLI struct {
 	playerStore PlayerStore
 	in          *bufio.Scanner
+	alerter     BlindAlerter
 }
 
-func NewCLI(store PlayerStore, in io.Reader) *CLI {
-	return &CLI{playerStore: store, in: bufio.NewScanner(in)}
+func NewCLI(store PlayerStore, in io.Reader, alerter BlindAlerter) *CLI {
+	return &CLI{playerStore: store, in: bufio.NewScanner(in), alerter: alerter}
 }
 
 func (cli *CLI) PlayPoker() {

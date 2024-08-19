@@ -4,7 +4,7 @@ import (
 	"log"
 	"net/http"
 
-	poker "github.com/DarrelASandbox/playground-go/chris_james/03-build-an-app/cli-pkg-struct"
+	poker "github.com/DarrelASandbox/playground-go/chris_james/03-build-an-app/time"
 )
 
 const dbFileName = "game.db.json"
