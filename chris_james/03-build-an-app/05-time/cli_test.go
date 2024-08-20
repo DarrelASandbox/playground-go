@@ -54,7 +54,7 @@ func TestCLI(t *testing.T) {
 			expectedScheduleTime time.Duration
 			expectedAmount       int
 		}{
-			// {0 * time.Second, 100},
+			{0 * time.Second, 100},
 			{10 * time.Minute, 200},
 			{20 * time.Minute, 300},
 			{30 * time.Minute, 400},
