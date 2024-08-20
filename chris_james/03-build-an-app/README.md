@@ -64,4 +64,6 @@ curl http://localhost:5000/players/Pepper
 
 # Time
 
+- [Dummy objects are passed around but never actually used. Usually they are just used to fill parameter lists.](https://martinfowler.com/articles/mocksArentStubs.html)
+
 # WebSockets

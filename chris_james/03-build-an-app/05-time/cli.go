@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"io"
 	"strings"
+	"time"
 )
 
 // Switch to `bufio.Scanner` instead of a reader as it's now automatically wrapped at construction time
@@ -18,6 +19,7 @@ func NewCLI(store PlayerStore, in io.Reader, alerter BlindAlerter) *CLI {
 }
 
 func (cli *CLI) PlayPoker() {
+	cli.alerter.ScheduleAlertAt(5*time.Second, 100)
 	userInput := cli.readLine()
 	cli.playerStore.RecordWin(extractWinner(userInput))
 }
