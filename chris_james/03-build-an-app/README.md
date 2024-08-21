@@ -6,6 +6,7 @@
   - [Didn't we just break some rules there? Testing private things? No interfaces?](#didnt-we-just-break-some-rules-there-testing-private-things-no-interfaces)
 - [Command Line \& Project Structure](#command-line--project-structure)
 - [Time](#time)
+  - [Let's listen to our tests](#lets-listen-to-our-tests)
 - [WebSockets](#websockets)
 
 # Intro
@@ -69,5 +70,16 @@ curl http://localhost:5000/players/Pepper
 Remember that any type can implement an interface, not just `structs`. If you are making a library that exposes an interface with one function defined it is a common idiom to also expose a `MyInterfaceFunc` type.
 
 This type will be a `func` which will also implement your interface. That way users of your interface have the option to implement your interface with just a function; rather than having to create an empty `struct` type.
+
+## Let's listen to our tests
+
+- In order to test that we are scheduling some alerts we set up 4 different dependencies. Whenever you have a lot of dependencies for a thing in your system, it implies it's doing too much. Visually we can see it in how cluttered our test is.
+- To me it feels like **we need to make a cleaner abstraction between reading user input and the business logic we want to do**
+- A better test would be given this user input, do we call a new type `Game` with the correct number of players.
+- We would then extract the testing of the scheduling into the tests for our new `Game`.
+
+We can refactor toward our `Game` first and our test should continue to pass. Once we've made the structural changes we want we can think about how we can refactor the tests to reflect our new separation of concerns
+
+Remember when making changes in refactoring try to keep them as small as possible and keep re-running the tests.
 
 # WebSockets
