@@ -86,6 +86,8 @@ func TestCLI(t *testing.T) {
 		- We remove our dummy for StdIn and instead send in a mocked version representing our user entering 7
 		- We also remove our dummy on the blind alerter so we can see that the number of players has had an effect on the scheduling
 		- We test what alerts are scheduled
+
+		While our new test has been fixed, a lot of others have failed because now our system only works if the game starts with a user entering a number. You'll need to fix the tests by changing the user inputs so that a number followed by a newline is added (this is highlighting yet more flaws in our approach right now).
 	*/
 	t.Run("it prompts the user to enter the number of players", func(t *testing.T) {
 		stdout := &bytes.Buffer{}
