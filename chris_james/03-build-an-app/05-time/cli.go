@@ -10,14 +10,19 @@ import (
 
 const PlayerPrompt = "Please enter the number of players: "
 
+type Game interface {
+	Start(numberOfPlayers int)
+	Finish(winner string)
+}
+
 // Switch to `bufio.Scanner` instead of a reader as it's now automatically wrapped at construction time
 type CLI struct {
 	in   *bufio.Scanner
 	out  io.Writer
-	game *Game
+	game Game
 }
 
-func NewCLI(in io.Reader, out io.Writer, game *Game) *CLI {
+func NewCLI(in io.Reader, out io.Writer, game Game) *CLI {
 	return &CLI{in: bufio.NewScanner(in), out: out, game: game}
 }
 
