@@ -45,22 +45,24 @@ func TestCLI(t *testing.T) {
 		}
 	})
 
-	t.Run("record chris win from user input", func(t *testing.T) {
+	t.Run("finish the game with 'Chris' as the winner", func(t *testing.T) {
 		in := strings.NewReader("1\nChris wins\n")
-		playerStore := &poker.StubPlayerStore{}
-		game := poker.NewTexasHoldem(dummyBlindAlerter, playerStore)
+		game := &GameSpy{}
 		cli := poker.NewCLI(in, dummyStdOut, game)
 		cli.PlayPoker()
-		poker.AssertPlayerWin(t, playerStore, "Chris")
+		if game.FinishCalledWith != "Chris" {
+			t.Errorf("expected finish called with 'Chris' but got %q", game.FinishCalledWith)
+		}
 	})
 
-	t.Run("record chris win from user input", func(t *testing.T) {
+	t.Run("record 'Cleo' win from user input", func(t *testing.T) {
 		in := strings.NewReader("1\nCleo wins\n")
-		playerStore := &poker.StubPlayerStore{}
-		game := poker.NewTexasHoldem(dummyBlindAlerter, playerStore)
+		game := &GameSpy{}
 		cli := poker.NewCLI(in, dummyStdOut, game)
 		cli.PlayPoker()
-		poker.AssertPlayerWin(t, playerStore, "Cleo")
+		if game.FinishCalledWith != "Cleo" {
+			t.Errorf("expected finish called with 'Cleo' but got %q", game.FinishCalledWith)
+		}
 	})
 }
 
