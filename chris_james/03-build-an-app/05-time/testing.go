@@ -1,6 +1,22 @@
 package poker
 
-import "testing"
+import (
+	"testing"
+	"time"
+)
+
+type ScheduledAlert struct {
+	At     time.Duration
+	Amount int
+}
+
+type SpyBlindAlerter struct {
+	Alerts []ScheduledAlert
+}
+
+func (s *SpyBlindAlerter) ScheduleAlertAt(at time.Duration, amount int) {
+	s.Alerts = append(s.Alerts, ScheduledAlert{at, amount})
+}
 
 type StubPlayerStore struct {
 	scores   map[string]int
