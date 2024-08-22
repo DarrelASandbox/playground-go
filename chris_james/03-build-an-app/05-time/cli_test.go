@@ -32,26 +32,26 @@ var dummyPlayerStore = &poker.StubPlayerStore{}
 var dummyStdOut = &bytes.Buffer{}
 
 func TestCLI(t *testing.T) {
-	// t.Run("record chris win from user input", func(t *testing.T) {
-	// 	in := strings.NewReader("Chris wins\n")
-	// 	playerStore := &poker.StubPlayerStore{}
-	// 	game := poker.NewGame(dummyBlindAlerter, playerStore)
-	// 	cli := poker.NewCLI(in, dummyStdOut, game)
-	// 	cli.PlayPoker()
-	// 	poker.AssertPlayerWin(t, playerStore, "Chris")
-	// })
+	t.Run("record chris win from user input", func(t *testing.T) {
+		in := strings.NewReader("1\nChris wins\n")
+		playerStore := &poker.StubPlayerStore{}
+		game := poker.NewGame(dummyBlindAlerter, playerStore)
+		cli := poker.NewCLI(in, dummyStdOut, game)
+		cli.PlayPoker()
+		poker.AssertPlayerWin(t, playerStore, "Chris")
+	})
 
-	// t.Run("record chris win from user input", func(t *testing.T) {
-	// 	in := strings.NewReader("Cleo wins\n")
-	// 	playerStore := &poker.StubPlayerStore{}
-	// 	game := poker.NewGame(dummyBlindAlerter, playerStore)
-	// 	cli := poker.NewCLI(in, dummyStdOut, game)
-	// 	cli.PlayPoker()
-	// 	poker.AssertPlayerWin(t, playerStore, "Cleo")
-	// })
+	t.Run("record chris win from user input", func(t *testing.T) {
+		in := strings.NewReader("1\nCleo wins\n")
+		playerStore := &poker.StubPlayerStore{}
+		game := poker.NewGame(dummyBlindAlerter, playerStore)
+		cli := poker.NewCLI(in, dummyStdOut, game)
+		cli.PlayPoker()
+		poker.AssertPlayerWin(t, playerStore, "Cleo")
+	})
 
 	// t.Run("it schedules printing of blind values", func(t *testing.T) {
-	// 	in := strings.NewReader("Chris wins\n")
+	// 	in := strings.NewReader("1\nChris wins\n")
 	// 	playerStore := &poker.StubPlayerStore{}
 	// 	blindAlerter := &SpyBlindAlerter{}
 	// 	game := poker.NewGame(blindAlerter, playerStore)
