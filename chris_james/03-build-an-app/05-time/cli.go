@@ -8,7 +8,10 @@ import (
 	"strings"
 )
 
-const PlayerPrompt = "Please enter the number of players: "
+const (
+	PlayerPrompt         = "Please enter the number of players: "
+	BadPlayerInputErrMsg = "Bad value received for number of players, please try again with a number"
+)
 
 type Game interface {
 	Start(numberOfPlayers int)
@@ -28,8 +31,13 @@ func NewCLI(in io.Reader, out io.Writer, game Game) *CLI {
 
 func (cli *CLI) PlayPoker() {
 	fmt.Fprint(cli.out, PlayerPrompt)
-	numberOfPlayersInput := cli.readLine()
-	numberOfPlayers, _ := strconv.Atoi(strings.Trim(numberOfPlayersInput, "\n"))
+	numberOfPlayers, err := strconv.Atoi(cli.readLine())
+	if err != nil {
+		fmt.Fprint(cli.out, BadPlayerInputErrMsg)
+		return
+	}
+
+	cli.game.Start(numberOfPlayers)
 	cli.game.Start(numberOfPlayers)
 	winnerInput := cli.readLine()
 	winner := extractWinner(winnerInput)
