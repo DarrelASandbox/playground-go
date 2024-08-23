@@ -2,6 +2,7 @@ package poker_test
 
 import (
 	"bytes"
+	"io"
 	"strings"
 	"testing"
 
@@ -25,8 +26,21 @@ func (g *GameSpy) Finish(winner string) {
 	g.FinishCalledWith = winner
 }
 
+type failOnEndReader struct {
+	t   *testing.T
+	rdr io.Reader
+}
+
+func (m failOnEndReader) Read(p []byte) (n int, err error) {
+	n, err = m.rdr.Read(p)
+	if n == 0 || err == io.EOF {
+		m.t.Fatal("Read to the end when you shouldn't have")
+	}
+	return n, err
+}
+
 func TestCLI(t *testing.T) {
-	t.Run("it prompts the user to enter the number of players", func(t *testing.T) {
+	t.Run("it prompts the user to enter the number of players and starts the game", func(t *testing.T) {
 		stdout := &bytes.Buffer{}
 		in := strings.NewReader("7\n")
 		game := &GameSpy{}
@@ -63,6 +77,13 @@ func TestCLI(t *testing.T) {
 		if game.FinishCalledWith != "Cleo" {
 			t.Errorf("expected finish called with 'Cleo' but got %q", game.FinishCalledWith)
 		}
+	})
+
+	t.Run("do no read beyond the first newline", func(t *testing.T) {
+		in := failOnEndReader{t, strings.NewReader("1\nChris wins\n hello there")}
+		game := poker.NewTexasHoldem(dummyBlindAlerter, dummyPlayerStore)
+		cli := poker.NewCLI(in, dummyStdOut, game)
+		cli.PlayPoker()
 	})
 }
 
