@@ -94,9 +94,8 @@ func TestCLI(t *testing.T) {
 		game := &GameSpy{}
 		cli := poker.NewCLI(in, stdout, game)
 		cli.PlayPoker()
-		if game.StartCalled {
-			t.Errorf("game should not have started")
-		}
+		assertGameNotStarted(t, game)
+		assertMessagesSentToUser(t, stdout, poker.PlayerPrompt, poker.BadPlayerInputErrMsg)
 	})
 }
 
@@ -104,5 +103,21 @@ func assertScheduledAlert(t testing.TB, got, want poker.ScheduledAlert) {
 	t.Helper()
 	if got != want {
 		t.Errorf("got %+v, want %+v", got, want)
+	}
+}
+
+func assertGameNotStarted(t testing.TB, game *GameSpy) {
+	t.Helper()
+	if game.StartCalled {
+		t.Errorf("game should not have started")
+	}
+}
+
+func assertMessagesSentToUser(t testing.TB, stdout *bytes.Buffer, messages ...string) {
+	t.Helper()
+	want := strings.Join(messages, "")
+	got := stdout.String()
+	if got != want {
+		t.Errorf("got %q sent to stdout but expected %+v", got, messages)
 	}
 }
