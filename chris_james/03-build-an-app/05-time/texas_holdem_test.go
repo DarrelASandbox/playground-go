@@ -47,6 +47,14 @@ func TestGame_Start(t *testing.T) {
 	})
 }
 
+func TestGame_Finish(t *testing.T) {
+	store := &poker.StubPlayerStore{}
+	game := poker.NewTexasHoldem(dummyBlindAlerter, store)
+	winner := "Ruth"
+	game.Finish(winner)
+	poker.AssertPlayerWin(t, store, winner)
+}
+
 func checkSchedulingCases(cases []poker.ScheduledAlert, t *testing.T, blindAlerter *poker.SpyBlindAlerter) {
 	for i, want := range cases {
 		t.Run(fmt.Sprint(want), func(t *testing.T) {
