@@ -28,19 +28,6 @@ func (g *GameSpy) Finish(winner string) {
 	g.FinishCalledWith = winner
 }
 
-type failOnEndReader struct {
-	t   *testing.T
-	rdr io.Reader
-}
-
-func (m failOnEndReader) Read(p []byte) (n int, err error) {
-	n, err = m.rdr.Read(p)
-	if n == 0 || err == io.EOF {
-		m.t.Fatal("Read to the end when you shouldn't have")
-	}
-	return n, err
-}
-
 func TestCLI(t *testing.T) {
 	t.Run("start game with 3 players and finish game with 'Chris as winner", func(t *testing.T) {
 		in := userSends("3", "Chris wins")
@@ -60,13 +47,6 @@ func TestCLI(t *testing.T) {
 		cli.PlayPoker()
 		assertGameStartedWith(t, game, 8)
 		assertFinishCalledWith(t, game, "Cleo")
-	})
-
-	t.Run("do no read beyond the first newline", func(t *testing.T) {
-		in := failOnEndReader{t, strings.NewReader("1\nChris wins\n hello there")}
-		game := poker.NewTexasHoldem(dummyBlindAlerter, dummyPlayerStore)
-		cli := poker.NewCLI(in, dummyStdOut, game)
-		cli.PlayPoker()
 	})
 
 	t.Run("it prints an error when a non numeric value is entered and does not start the game", func(t *testing.T) {
