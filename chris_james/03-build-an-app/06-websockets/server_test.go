@@ -16,7 +16,7 @@ import (
 
 func TestGETPlayer(t *testing.T) {
 	store := StubPlayerStore{map[string]int{"Pepper": 20, "Floyd": 10}, nil, nil}
-	server := NewPlayerServer(&store)
+	server := mustMakePlayerServer(t, &store)
 
 	t.Run("returns Pepper's score", func(t *testing.T) {
 		request := newGetScoreRequest("Pepper")
@@ -44,7 +44,7 @@ func TestGETPlayer(t *testing.T) {
 
 func TestStoreWins(t *testing.T) {
 	store := StubPlayerStore{map[string]int{}, nil, nil}
-	server := NewPlayerServer(&store)
+	server := mustMakePlayerServer(t, &store)
 
 	t.Run("it records wins when POST", func(t *testing.T) {
 		player := "Pepper"
@@ -64,7 +64,7 @@ func TestLeague(t *testing.T) {
 	}
 
 	store := StubPlayerStore{nil, nil, wantedLeague}
-	server := NewPlayerServer(&store)
+	server := mustMakePlayerServer(t, &store)
 
 	t.Run("it returns the league table as JSON", func(t *testing.T) {
 		request := newLeagueRequest()
@@ -79,7 +79,7 @@ func TestLeague(t *testing.T) {
 
 func TestGame(t *testing.T) {
 	t.Run("GET /game returns 200", func(t *testing.T) {
-		server := NewPlayerServer(&StubPlayerStore{})
+		server, _ := NewPlayerServer(&StubPlayerStore{})
 		request := newGameRequest()
 		response := httptest.NewRecorder()
 		server.ServeHTTP(response, request)
@@ -89,7 +89,7 @@ func TestGame(t *testing.T) {
 	t.Run("when we get a message over a websocket it is a winner of a game", func(t *testing.T) {
 		store := &StubPlayerStore{}
 		winner := "Ruth"
-		server := httptest.NewServer(NewPlayerServer(store))
+		server := httptest.NewServer(mustMakePlayerServer(t, store))
 		defer server.Close()
 
 		wsURL := "ws" + strings.TrimPrefix(server.URL, "http") + "/ws"
@@ -108,6 +108,14 @@ func TestGame(t *testing.T) {
 		time.Sleep(10 * time.Millisecond)
 		AssertPlayerWin(t, store, winner)
 	})
+}
+
+func mustMakePlayerServer(t *testing.T, store PlayerStore) *PlayerServer {
+	server, err := NewPlayerServer(store)
+	if err != nil {
+		t.Fatal("problem creating player server", err)
+	}
+	return server
 }
 
 func newGetScoreRequest(name string) *http.Request {

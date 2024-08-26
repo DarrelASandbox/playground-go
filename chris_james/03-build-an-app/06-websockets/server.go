@@ -10,7 +10,15 @@ import (
 	"github.com/gorilla/websocket"
 )
 
-const jsonContentType = "application/json"
+const (
+	jsonContentType  = "application/json"
+	htmlTemplatePath = "game.html"
+)
+
+var wsUpgrader = websocket.Upgrader{
+	ReadBufferSize:  1024,
+	WriteBufferSize: 1024,
+}
 
 type PlayerStore interface {
 	GetPlayerScore(name string) int
@@ -21,6 +29,7 @@ type PlayerStore interface {
 type PlayerServer struct {
 	store PlayerStore
 	http.Handler
+	template *template.Template
 }
 
 type Player struct {
@@ -28,8 +37,19 @@ type Player struct {
 	Wins int
 }
 
-func NewPlayerServer(store PlayerStore) *PlayerServer {
+/*
+Our call to template.ParseFiles("game.html") will run on every GET /game
+which means we'll go to the file system on every request even though
+we have no need to re-parse the template. Let's refactor our code
+so that we parse the template once in NewPlayerServer instead.
+*/
+func NewPlayerServer(store PlayerStore) (*PlayerServer, error) {
 	p := new(PlayerServer)
+	tmpl, err := template.ParseFiles(htmlTemplatePath)
+	if err != nil {
+		return nil, fmt.Errorf("problem opening %s %v", htmlTemplatePath, err)
+	}
+	p.template = tmpl
 	p.store = store
 	router := http.NewServeMux()
 	router.Handle("/league", http.HandlerFunc(p.leagueHandler))
@@ -37,27 +57,16 @@ func NewPlayerServer(store PlayerStore) *PlayerServer {
 	router.Handle("/game", http.HandlerFunc(p.game))
 	router.Handle("/ws", http.HandlerFunc(p.webSocket))
 	p.Handler = router
-	return p
+	return p, nil
 }
 
 func (p *PlayerServer) game(w http.ResponseWriter, r *http.Request) {
-	tmpl, err := template.ParseFiles("game.html")
-	if err != nil {
-		http.Error(w, fmt.Sprintf("problem loading template %s", err.Error()), http.StatusInternalServerError)
-		return
-	}
-
-	tmpl.Execute(w, nil)
+	p.template.Execute(w, nil)
 }
 
 // Now that we have a connection opened, we'll want to listen for a message and then record it as the winner.
 func (p *PlayerServer) webSocket(w http.ResponseWriter, r *http.Request) {
-	upgrader := websocket.Upgrader{
-		ReadBufferSize:  1024,
-		WriteBufferSize: 1024,
-	}
-
-	conn, _ := upgrader.Upgrade(w, r, nil)
+	conn, _ := wsUpgrader.Upgrade(w, r, nil)
 	_, winnerMsg, _ := conn.ReadMessage()
 	p.store.RecordWin(string(winnerMsg))
 }
