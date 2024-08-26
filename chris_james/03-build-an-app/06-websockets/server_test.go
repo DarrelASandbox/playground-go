@@ -90,18 +90,11 @@ func TestGame(t *testing.T) {
 		store := &StubPlayerStore{}
 		winner := "Ruth"
 		server := httptest.NewServer(mustMakePlayerServer(t, store))
+		ws := mustDialWS(t, "ws"+strings.TrimPrefix(server.URL, "http")+"/ws")
 		defer server.Close()
-
-		wsURL := "ws" + strings.TrimPrefix(server.URL, "http") + "/ws"
-		ws, _, err := websocket.DefaultDialer.Dial(wsURL, nil)
-		if err != nil {
-			t.Fatalf("could not open a ws connection on %s %v", wsURL, err)
-		}
 		defer ws.Close()
 
-		if err := ws.WriteMessage(websocket.TextMessage, []byte(winner)); err != nil {
-			t.Fatalf("could not send message over ws connection %v", err)
-		}
+		writeWSMessage(t, ws, winner)
 
 		// There is a delay between our WebSocket connection reading the message and
 		// recording the win and our test finishes before it happens.
@@ -116,6 +109,21 @@ func mustMakePlayerServer(t *testing.T, store PlayerStore) *PlayerServer {
 		t.Fatal("problem creating player server", err)
 	}
 	return server
+}
+
+func mustDialWS(t *testing.T, url string) *websocket.Conn {
+	ws, _, err := websocket.DefaultDialer.Dial(url, nil)
+	if err != nil {
+		t.Fatalf("could not open a ws connection on %s %v", url, err)
+	}
+	return ws
+}
+
+func writeWSMessage(t testing.TB, conn *websocket.Conn, message string) {
+	t.Helper()
+	if err := conn.WriteMessage(websocket.TextMessage, []byte(message)); err != nil {
+		t.Fatalf("could not send message over ws connection %v", err)
+	}
 }
 
 func newGetScoreRequest(name string) *http.Request {
