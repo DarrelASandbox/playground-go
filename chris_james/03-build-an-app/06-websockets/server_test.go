@@ -9,6 +9,7 @@ import (
 	"reflect"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/gorilla/websocket"
 )
@@ -102,6 +103,9 @@ func TestGame(t *testing.T) {
 			t.Fatalf("could not send message over ws connection %v", err)
 		}
 
+		// There is a delay between our WebSocket connection reading the message and
+		// recording the win and our test finishes before it happens.
+		time.Sleep(10 * time.Millisecond)
 		AssertPlayerWin(t, store, winner)
 	})
 }
