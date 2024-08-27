@@ -32,7 +32,7 @@ func NewFileSystemPlayerStore(file *os.File) (*FileSystemPlayerStore, error) {
 		return nil, fmt.Errorf("problem loading player store from file %s, %v", file.Name(), err)
 	}
 
-	return &FileSystemPlayerStore{database: json.NewEncoder(&tape{file}), league: league}, nil
+	return &FileSystemPlayerStore{database: json.NewEncoder(&Tape{file}), league: league}, nil
 }
 
 func FileSystemPlayerStoreFromFile(path string) (*FileSystemPlayerStore, func(), error) {

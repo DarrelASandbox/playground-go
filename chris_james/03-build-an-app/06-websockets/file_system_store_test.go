@@ -1,8 +1,10 @@
-package poker
+package poker_test
 
 import (
 	"os"
 	"testing"
+
+	poker "github.com/DarrelASandbox/playground-go/chris_james/03-build-an-app/websockets"
 )
 
 func TestFileSystemStore(t *testing.T) {
@@ -11,14 +13,14 @@ func TestFileSystemStore(t *testing.T) {
     {"Name": "Chris", "Wins": 33}]`)
 	defer cleanDatabase()
 
-	store, err := NewFileSystemPlayerStore(database)
+	store, err := poker.NewFileSystemPlayerStore(database)
 	assertNoError(t, err)
 
 	t.Run("league sorted", func(t *testing.T) {
-		store, err := NewFileSystemPlayerStore(database)
+		store, err := poker.NewFileSystemPlayerStore(database)
 		assertNoError(t, err)
 		got := store.GetLeague()
-		want := League{{"Chris", 33}, {"Cleo", 10}}
+		want := poker.League{{"Chris", 33}, {"Cleo", 10}}
 		assertLeague(t, got, want)
 		got = store.GetLeague() // Read again
 		assertLeague(t, got, want)
@@ -47,7 +49,7 @@ func TestFileSystemStore(t *testing.T) {
 	t.Run("works with an empty file", func(t *testing.T) {
 		database, cleanDatabase := createTempFile(t, "")
 		defer cleanDatabase()
-		_, err := NewFileSystemPlayerStore(database)
+		_, err := poker.NewFileSystemPlayerStore(database)
 		assertNoError(t, err)
 	})
 }

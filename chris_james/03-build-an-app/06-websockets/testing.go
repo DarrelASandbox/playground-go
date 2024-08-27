@@ -25,13 +25,13 @@ func (s *SpyBlindAlerter) ScheduleAlertAt(at time.Duration, amount int, to io.Wr
 }
 
 type StubPlayerStore struct {
-	scores   map[string]int
+	Scores   map[string]int
 	winCalls []string
-	league   []Player
+	League   []Player
 }
 
 func (s *StubPlayerStore) GetPlayerScore(name string) int {
-	score := s.scores[name]
+	score := s.Scores[name]
 	return score
 }
 
@@ -40,7 +40,7 @@ func (s *StubPlayerStore) RecordWin(name string) {
 }
 
 func (s *StubPlayerStore) GetLeague() League {
-	return s.league
+	return s.League
 }
 
 func AssertPlayerWin(t testing.TB, store *StubPlayerStore, winner string) {
