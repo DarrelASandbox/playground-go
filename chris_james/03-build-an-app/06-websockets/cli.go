@@ -15,11 +15,6 @@ const (
 	BadWinnerInputMsg    = "invalid winner input, expect format of 'PlayerName wins"
 )
 
-type Game interface {
-	Start(numberOfPlayers int)
-	Finish(winner string)
-}
-
 // Switch to `bufio.Scanner` instead of a reader as it's now automatically wrapped at construction time
 type CLI struct {
 	in   *bufio.Scanner
@@ -39,7 +34,7 @@ func (cli *CLI) PlayPoker() {
 		return
 	}
 
-	cli.game.Start(numberOfPlayers)
+	cli.game.Start(numberOfPlayers, cli.out)
 	winnerInput := cli.readLine()
 	winner, err := extractWinner(winnerInput)
 	if err != nil {
