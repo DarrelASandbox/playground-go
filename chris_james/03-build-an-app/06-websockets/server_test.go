@@ -91,20 +91,26 @@ func TestGame(t *testing.T) {
 		assertStatus(t, response, http.StatusOK)
 	})
 
-	t.Run("start game with 3 players and declare Ruth the winner", func(t *testing.T) {
-		winner := "Ruth"
-		game := &GameSpy{}
-		server := httptest.NewServer(mustMakePlayerServer(t, dummyPlayerStore, game))
-		ws := mustDialWS(t, "ws"+strings.TrimPrefix(server.URL, "http")+"/ws")
-		defer server.Close()
-		defer ws.Close()
+	t.Run("start game with 3 players, send some blind alerts down WS and declare Ruth the winner",
+		func(t *testing.T) {
+			wantedBlindAlert := "Blind is 100"
+			winner := "Ruth"
+			game := &GameSpy{BlindAlert: []byte(wantedBlindAlert)}
+			server := httptest.NewServer(mustMakePlayerServer(t, dummyPlayerStore, game))
+			ws := mustDialWS(t, "ws"+strings.TrimPrefix(server.URL, "http")+"/ws")
+			defer server.Close()
+			defer ws.Close()
 
-		writeWSMessage(t, ws, "3")
-		writeWSMessage(t, ws, winner)
-		time.Sleep(10 * time.Millisecond)
-		assertGameStartedWith(t, game, 3)
-		assertFinishCalledWith(t, game, winner)
-	})
+			writeWSMessage(t, ws, "3")
+			writeWSMessage(t, ws, winner)
+			time.Sleep(10 * time.Millisecond)
+			assertGameStartedWith(t, game, 3)
+			assertFinishCalledWith(t, game, winner)
+			_, gotBlindAlert, _ := ws.ReadMessage() // Will block until it gets a message, which it never will
+			if string(gotBlindAlert) != wantedBlindAlert {
+				t.Errorf("got blind alert %q, want %q", string(gotBlindAlert), wantedBlindAlert)
+			}
+		})
 }
 
 func mustMakePlayerServer(t *testing.T, store poker.PlayerStore, game poker.Game) *poker.PlayerServer {
