@@ -92,11 +92,6 @@ func TestGame(t *testing.T) {
 		assertStatus(t, response, http.StatusOK)
 	})
 
-	/*
-		FAIL: TestGame/start_game_with_3_players,_send_some_blind_alerts_down_WS_and_declare_Ruth_the_winner (0.02s)
-			server_test.go:110: timed out
-			server_test.go:212: got "", want "Blind is 100"
-	*/
 	t.Run("start game with 3 players, send some blind alerts down WS and declare Ruth the winner",
 		func(t *testing.T) {
 			wantedBlindAlert := "Blind is 100"

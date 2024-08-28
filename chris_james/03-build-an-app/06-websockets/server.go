@@ -3,7 +3,6 @@ package poker
 import (
 	"encoding/json"
 	"fmt"
-	"io"
 	"net/http"
 	"strconv"
 	"strings"
@@ -72,10 +71,10 @@ func (p *PlayerServer) playGame(w http.ResponseWriter, r *http.Request) {
 func (p *PlayerServer) webSocket(w http.ResponseWriter, r *http.Request) {
 	ws := newPlayerServerWS(w, r)
 	numberOfPlayersMsg := ws.WaitForMsg()
-	numberOfPlayers, _ := strconv.Atoi(string(numberOfPlayersMsg))
-	p.game.Start(numberOfPlayers, io.Discard) //@TODO: Don't discard the blinds messages!
+	numberOfPlayers, _ := strconv.Atoi(numberOfPlayersMsg)
+	p.game.Start(numberOfPlayers, ws)
 	winner := ws.WaitForMsg()
-	p.game.Finish(string(winner))
+	p.game.Finish(winner)
 }
 
 func (p *PlayerServer) leagueHandler(w http.ResponseWriter, r *http.Request) {
