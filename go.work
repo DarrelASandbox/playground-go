@@ -57,3 +57,7 @@ use (
 	./chris_james/03-build-an-app/05-time
 	./chris_james/03-build-an-app/06-websockets
 )
+
+use(
+	./chris_james/04-q-n-a/01-os-exec
+)
