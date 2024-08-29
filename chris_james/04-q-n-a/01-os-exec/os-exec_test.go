@@ -1,7 +1,9 @@
 package osexec
 
 import (
+	"bytes"
 	"encoding/xml"
+	"io"
 	"os/exec"
 	"strings"
 	"testing"
@@ -11,23 +13,39 @@ type Payload struct {
 	Message string `xml:"message"`
 }
 
-// The problem with GetData is the business logic is coupled with the means of getting the XML.
-// To make our design better we need to decouple them
-func GetData() string {
-	cmd := exec.Command("cat", "msg.xml")
-	out, _ := cmd.StdoutPipe()
+// Decoding the XML data and applying our business logic
+// (in this case strings.ToUpper on the <message>)
+func GetData(data io.Reader) string {
 	var payload Payload
-	decoder := xml.NewDecoder(out)
-
-	// these 3 can return errors but I'm ignoring for brevity
-	cmd.Start()
-	decoder.Decode(&payload)
-	cmd.Wait()
+	xml.NewDecoder(data).Decode(&payload)
 	return strings.ToUpper(payload.Message)
 }
 
+// Retrieving the raw XML data
+func getXMLFromCommand() io.Reader {
+	cmd := exec.Command("cat", "msg.xml")
+	out, _ := cmd.StdoutPipe()
+	cmd.Start()
+	data, _ := io.ReadAll(out)
+	cmd.Wait()
+	return bytes.NewReader(data)
+}
+
 func TestGetData(t *testing.T) {
-	got := GetData()
+	input := strings.NewReader(`
+<payload>
+  <message>Cats are the best animal</message>
+</payload>`)
+
+	got := GetData(input)
+	want := "CATS ARE THE BEST ANIMAL"
+	if got != want {
+		t.Errorf("got %q, want %q", got, want)
+	}
+}
+
+func TestGetDataIntegration(t *testing.T) {
+	got := GetData(getXMLFromCommand())
 	want := "HAPPY NEW YEAR!"
 	if got != want {
 		t.Errorf("got %q, want %q", got, want)
