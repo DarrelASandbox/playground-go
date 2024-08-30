@@ -1,6 +1,7 @@
 - [Question \& Answer](#question--answer)
   - [OS Exec](#os-exec)
   - [Error Types](#error-types)
+  - [Context-Aware Reader](#context-aware-reader)
 
 # Question & Answer
 
@@ -29,3 +30,16 @@ Pedro on the Gopher Slack asks
 - **Tips**:
   - If you find yourself testing for multiple error conditions don't fall in to the trap of comparing the error messages.
   - [Working with Errors in Go 1.13](https://go.dev/blog/go1.13-errors)
+
+## Context-Aware Reader
+
+This chapter demonstrates how to test-drive a context aware `io.Reader` as written by Mat Ryer and David Hernandez in [The Pace Dev Blog](https://pace.dev/blog/2020/02/03/context-aware-ioreader-for-golang-by-mat-ryer.html).
+
+[In a previous chapter](https://quii.gitbook.io/learn-go-with-tests/go-fundamentals/context) we discussed how we can use context to provide cancellation. This is especially useful if you're performing tasks which may be computationally expensive and you want to be able to stop them.
+
+- What we want to demonstrate is something like
+  - Given an `io.Reader` with "ABCDEF", when I send a cancel signal half-way through I when I try to continue to read I get nothing else so all I get is "ABC"
+- So rather than reading everything, we could:
+  - Supply a fixed-size byte array that doesn't fit all the contents
+  - Send a cancel signal
+  - Try and read again and this should return an error with 0 bytes read
