@@ -8,7 +8,25 @@ import (
 	"testing"
 )
 
+/*
+Instead of checking the exact string of the error,
+we are doing a type assertion on the error to see if it is a `BadStatusError`.
+
+This reflects our desire for the kind of error clearer.
+Assuming the assertion passes we can then check the properties of the error are correct.
+*/
+type BadStatusError struct {
+	URL    string
+	Status int
+}
+
+func (b BadStatusError) Error() string {
+	return fmt.Sprintf("did not get 200 from %s, got %d", b.URL, b.Status)
+}
+
 // DumbGetter will get the string body of url if it gets a 200
+// Function has become simpler, it's no longer concerned with the intricacies of an error string,
+// it just creates a BadStatusError.
 func DumbGetter(url string) (string, error) {
 	res, err := http.Get(url)
 	if err != nil {
@@ -16,7 +34,7 @@ func DumbGetter(url string) (string, error) {
 	}
 
 	if res.StatusCode != http.StatusOK {
-		return "", fmt.Errorf("did not get 200 from %s, got %d", url, res.StatusCode)
+		return "", BadStatusError{URL: url, Status: res.StatusCode}
 	}
 
 	defer res.Body.Close()
@@ -25,13 +43,11 @@ func DumbGetter(url string) (string, error) {
 }
 
 /*
-This test creates a server which always returns `StatusTeapot` and
-then we use its URL as the argument to `DumbGetter` so
-we can see it handles non `200` responses correctly.
+Our tests now reflect (and document) what a user of our code could do if
+they decided they wanted to do some more sophisticated error handling than just logging.
+Just do a type assertion and then you get easy access to the properties of the error.
 
-- We're constructing the same string as production code does, to test it
-- It's annoying to read and write
-- Is the exact error message string what we're actually concerned with?
+It is still "just" an error, so if they choose to they can pass it up the call stack or log it like any other error.
 */
 func TestDumbGetter(t *testing.T) {
 	t.Run("when you don't get a 200, you get a status error", func(t *testing.T) {
@@ -46,8 +62,12 @@ func TestDumbGetter(t *testing.T) {
 			t.Fatal("expected an error")
 		}
 
-		want := fmt.Sprintf("did not get 200 from %s, got %d", svr.URL, http.StatusTeapot)
-		got := err.Error()
+		got, isStatusErr := err.(BadStatusError)
+		if !isStatusErr {
+			t.Fatalf("was not a BadStatusError, got %T", err)
+		}
+
+		want := BadStatusError{URL: svr.URL, Status: http.StatusTeapot}
 		if got != want {
 			t.Errorf(`got "%v", want "%v"`, got, want)
 		}

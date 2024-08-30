@@ -25,3 +25,6 @@ keith6014 asks on [reddit](https://www.reddit.com/r/golang/comments/aaz8ji/testd
 Pedro on the Gopher Slack asks
 
 > If I’m creating an error like `fmt.Errorf("%s must be foo, got %s", bar, baz)`, is there a way to test equality without comparing the string value?
+
+- **Tips**:
+  - If you find yourself testing for multiple error conditions don't fall in to the trap of comparing the error messages.
