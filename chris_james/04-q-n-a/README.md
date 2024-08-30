@@ -28,3 +28,4 @@ Pedro on the Gopher Slack asks
 
 - **Tips**:
   - If you find yourself testing for multiple error conditions don't fall in to the trap of comparing the error messages.
+  - [Working with Errors in Go 1.13](https://go.dev/blog/go1.13-errors)

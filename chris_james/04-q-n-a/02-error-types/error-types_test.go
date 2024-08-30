@@ -1,6 +1,7 @@
 package errortypes
 
 import (
+	"errors"
 	"fmt"
 	"io"
 	"net/http"
@@ -62,12 +63,15 @@ func TestDumbGetter(t *testing.T) {
 			t.Fatal("expected an error")
 		}
 
-		got, isStatusErr := err.(BadStatusError)
-		if !isStatusErr {
+		// In this case we are using `errors.As` to try and extract our error into our custom type.
+		// It returns a `bool` to denote success and extracts it into `got` for us.
+		var got BadStatusError
+		isBadStatusError := errors.As(err, &got)
+		want := BadStatusError{URL: svr.URL, Status: http.StatusTeapot}
+		if !isBadStatusError {
 			t.Fatalf("was not a BadStatusError, got %T", err)
 		}
 
-		want := BadStatusError{URL: svr.URL, Status: http.StatusTeapot}
 		if got != want {
 			t.Errorf(`got "%v", want "%v"`, got, want)
 		}
