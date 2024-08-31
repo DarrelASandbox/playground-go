@@ -6,11 +6,11 @@ import (
 )
 
 func TestContextAwareReader(t *testing.T) {
-	t.Run("lets just see how a normal reader works", func(t *testing.T) {
-		rdr := strings.NewReader("123456")
+	// We want to be able to compose an `io.Reader` with a `context.Context`.
+	t.Run("behaves like a normal reader", func(t *testing.T) {
+		rdr := NewCancellableReader(strings.NewReader("123456"))
 		got := make([]byte, 3)
 		_, err := rdr.Read(got)
-
 		if err != nil {
 			t.Fatal(err)
 		}
