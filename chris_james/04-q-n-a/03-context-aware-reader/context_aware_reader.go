@@ -1,9 +1,10 @@
 package cancelreader
 
 import (
+	"context"
 	"io"
 )
 
-func NewCancellableReader(rdr io.Reader) io.Reader {
+func NewCancellableReader(ctx context.Context, rdr io.Reader) io.Reader {
 	return rdr
 }
