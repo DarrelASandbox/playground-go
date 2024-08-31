@@ -6,12 +6,6 @@ import (
 	"testing"
 )
 
-/*
---- FAIL: TestContextAwareReader (0.00s)
-    --- FAIL: TestContextAwareReader/stops_reading_when_cancelled (0.00s)
-        context_aware_reader_test.go:47: expected an error after cancellation but didn't get one
-        context_aware_reader_test.go:51: expected 0 bytes to be read after cancellation but 3 were read
-*/
 func TestContextAwareReader(t *testing.T) {
 	// We want to be able to compose an `io.Reader` with a `context.Context`.
 	t.Run("behaves like a normal reader", func(t *testing.T) {

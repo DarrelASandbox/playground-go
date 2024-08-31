@@ -43,3 +43,10 @@ This chapter demonstrates how to test-drive a context aware `io.Reader` as writt
   - Supply a fixed-size byte array that doesn't fit all the contents
   - Send a cancel signal
   - Try and read again and this should return an error with 0 bytes read
+- Summary:
+  - Small interfaces are good and are easily composed
+  - When you're trying to augment one thing (e.g io.Reader) with another you usually want to reach for the [delegation pattern](https://en.wikipedia.org/wiki/Delegation_pattern)
+
+> In software engineering, the delegation pattern is an object-oriented design pattern that allows object composition to achieve the same code reuse as inheritance.
+
+- An easy way to start this kind of work is to wrap your delegate and write a test that asserts it behaves how the delegate normally does before you start composing other parts to change behaviour. This will help you to keep things working correctly as you code toward your goal
