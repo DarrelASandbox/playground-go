@@ -62,4 +62,5 @@ use(
 	./chris_james/04-q-n-a/01-os-exec
 	./chris_james/04-q-n-a/02-error-types
 	./chris_james/04-q-n-a/03-context-aware-reader
+	./chris_james/04-q-n-a/04-http-handlers
 )
