@@ -5,6 +5,8 @@
     - [(Well designed) units](#well-designed-units)
     - [Small steps](#small-steps)
     - [In a Nutshell](#in-a-nutshell)
+  - [Anti-patterns](#anti-patterns)
+    - [Interface pollution](#interface-pollution)
 
 # META
 
@@ -53,3 +55,21 @@
 - A good test suite can help you refactor quicker and in a less stressful manner
 - Writing good unit tests is a design problem so think about structuring your code so you have meaningful units that you can integrate together like Lego bricks.
 - TDD can help and force you to design well factored software iteratively, backed by tests to help future work as it arrives.
+
+## [Anti-patterns](https://quii.gitbook.io/learn-go-with-tests/meta/anti-patterns)
+
+One of the strengths of TDD is that it gives you a formal process to break down problems, understand what you're trying to achieve (red), get it done (green), then have a good think about how to make it right (blue/refactor).
+
+Without this, the process is often ad-hoc and loose, which can make engineering more difficult than it could be.
+
+> **You can do whatever you like to the code when the tests are green**, the only thing you're not allowed to do is **add or change behavior**.
+
+- Example of not following the red stage strictly enough.
+  - Letting an existing design influence how you write your test **rather than thinking of the desired behavior**
+  - Not giving enough consideration to the failing test's error message
+
+### Interface pollution
+
+- Generally speaking, you should expose an interface to the clients only when:
+  - the interface consists of a small and coherent set of functions.
+  - the interface and its implementation need to be decoupled (e.g. because users can choose among multiple implementations or they need to mock an external dependency).
