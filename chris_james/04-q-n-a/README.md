@@ -6,6 +6,7 @@
     - [Given Code](#given-code)
     - [What is a HTTP Handler and what should it do?](#what-is-a-http-handler-and-what-should-it-do)
     - [Separate of concern for given code](#separate-of-concern-for-given-code)
+    - [Databases](#databases)
 
 # Question & Answer
 
@@ -158,3 +159,8 @@ func Registration(w http.ResponseWriter, r *http.Request) {
 2. Call a `UserService.Register(user)` (this is our `ServiceThing`)
 3. If there's an error act on it (the example always sends a `400 BadRequest` which I don't think is right), I'll just have a catch-all handler of a `500 Internal Server Error` for now. I must stress that returning `500` for all errors makes for a terrible API! Later on we can make the error handling more sophisticated, perhaps with error types.
 4. If there's no error, `201 Created` with the ID as the response body (again for terseness/laziness)
+
+### Databases
+
+- We don't want HTTP handlers concerned with our business logic, databases, connections, etc.
+- By doing this we have liberated the handler from messy details, we've also made it easier to test our persistence layer and business logic as it is also no longer coupled to irrelevant HTTP details.

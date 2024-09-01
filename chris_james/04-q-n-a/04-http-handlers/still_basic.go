@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 )
 
@@ -42,4 +43,22 @@ func (u *UserServer) RegisterUser(w http.ResponseWriter, r *http.Request) {
 
 	w.WriteHeader(http.StatusCreated)
 	fmt.Fprint(w, insertedID)
+}
+
+type MongoUserService struct{}
+
+func NewMongoUserService() *MongoUserService {
+	// @TODO: pass in DB URL as argument to this function
+	// @TODO: connect to db, create a connection pool
+	return &MongoUserService{}
+}
+
+func (m MongoUserService) Register(user User) (insertedID string, err error) {
+	panic("implement me")
+}
+
+func main() {
+	mongoService := NewMongoUserService()
+	server := NewUserServer(mongoService)
+	log.Fatal(http.ListenAndServe(":8000", http.HandlerFunc(server.RegisterUser)))
 }
