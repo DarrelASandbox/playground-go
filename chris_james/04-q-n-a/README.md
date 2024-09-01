@@ -5,6 +5,7 @@
   - [HTTP Handlers](#http-handlers)
     - [Given Code](#given-code)
     - [What is a HTTP Handler and what should it do?](#what-is-a-http-handler-and-what-should-it-do)
+    - [Separate of concern for given code](#separate-of-concern-for-given-code)
 
 # Question & Answer
 
@@ -150,3 +151,10 @@ func Registration(w http.ResponseWriter, r *http.Request) {
   - Importantly testing ImportantBusinessLogic no longer has to concern itself with `HTTP`, you can test the business logic cleanly.
   - You can use `ImportantBusinessLogic` in other contexts without having to modify it.
   - If `ImportantBusinessLogic` changes what it does, so long as the interface remains the same you don't have to change your handlers.
+
+### Separate of concern for given code
+
+1. Decode the request's body into a `User`
+2. Call a `UserService.Register(user)` (this is our `ServiceThing`)
+3. If there's an error act on it (the example always sends a `400 BadRequest` which I don't think is right), I'll just have a catch-all handler of a `500 Internal Server Error` for now. I must stress that returning `500` for all errors makes for a terrible API! Later on we can make the error handling more sophisticated, perhaps with error types.
+4. If there's no error, `201 Created` with the ID as the response body (again for terseness/laziness)
